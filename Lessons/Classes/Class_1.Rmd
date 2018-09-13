@@ -1,0 +1,100 @@
+---
+title: 'Numbers Ninja: Class 1'
+author: |
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    code_folding: hide
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  pdf_document: default
+  html_document:
+    df_print: paged
+css: assets/custom.css
+---
+
+##Pre-requisites
+
+There a two things we need to do before we start the lesson.
+
+1. [Install R](https://cran.r-project.org/mirrors.html): Any of the links on that page should work
+2. [Install Rstudio](https://www.rstudio.com/products/rstudio/download/): Choose the option that is suited for your Operating System (OS).
+
+##Get familiar with your working environment
+
+While R ships with a basic code editor it does not provide any additional functionality to make our lives easier. This is where R Studio comes in. R Studio is an integrated development environment (IDE) that is dedicated to code in R. The basic version is free and by far the most popular and easy to install code editor amongst R users. Lets look at its various components
+
+####What are the different parts of the Rstudio IDE?
+
+####What are the different types of files you can use to write R code?
+
+
+**⚡Ninja Tasks⚡**
+
+1. Create a Numbers Ninja Folder on your local machine
+2. Create an R Notebook and save it in this folder
+3. Install the following package - tidyverse, wbstats and nycflights13 using Rstudio
+
+##A quick markdown detour
+
+####What is a markup language?
+
+>In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text. The idea and terminology evolved from the "marking up" of paper manuscripts, i.e., the revision instructions by editors, traditionally written with a blue pencil on authors' manuscripts. In digital media, this "blue pencil instruction text" was replaced by tags, that is, instructions are expressed directly by tags or "instruction text encapsulated by tags." However the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - Wikipedia
+
+Some examples of markup languages includes - [TeX](https://en.wikipedia.org/wiki/TeX), [LaTeX](https://en.wikipedia.org/wiki/LaTeX), [HTML](https://en.wikipedia.org/wiki/HTML) etc. TeX markup language that created a [typesetting system](https://en.wikipedia.org/wiki/Typesetting) in computers for high quality books. LaTeX is used extensively in academia to create documents. HTML is the language used to create and organize content on the web. All websites use HTML.
+
+####What is R Markdown?
+
+>The document format “R Markdown” was first introduced in the knitr package (Xie 2015, 2018d) in early 2012. The idea was to embed code chunks (of R or other languages) in Markdown documents. In fact, knitr supported several authoring languages from the beginning in addition to Markdown, including LaTeX, HTML, AsciiDoc, reStructuredText, and Textile. Looking back over the five years, it seems to be fair to say that Markdown has become the most popular document format, which is what we expected. The simplicity of Markdown clearly stands out among these document formats.
+
+>However, the original version of Markdown invented by John Gruber was often found overly simple and not suitable to write highly technical documents. For example, there was no syntax for tables, footnotes, math expressions, or citations. Fortunately, John MacFarlane created a wonderful package named Pandoc (http://pandoc.org) to convert Markdown documents (and many other types of documents) to a large variety of output formats. More importantly, the Markdown syntax was significantly enriched. Now we can write more types of elements with Markdown while still enjoying its simplicity.
+
+>In a nutshell, R Markdown stands on the shoulders of knitr and Pandoc. The former executes the computer code embedded in Markdown, and converts R Markdown to Markdown. The latter renders Markdown to the output format you want (such as PDF, HTML, Word, and so on). - [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
+
+The main benefit of R Markdown is readability and reproducibility. Code written using an R notebook is easy to share, reproduce and understand. An R Notebook is an R Markdown document with chunks that can be executed independently and interactively, with output visible immediately beneath the input. We will be using R Notebooks almost exclusively for this fellowship.
+
+In addition to using markdown to markup text, R Markdown documents also use a YAML header. You don't have to learn much about YAML, however, we need to be familiar enough to perform basic tweaks such as adding a new title, changing authors etc.
+
+Here are a few references to keep handy
+
+1. [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
+2. [R Markdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+
+**⚡Ninja Tasks⚡**
+
+1. Create an H2 level header with title Class 1 Exercises
+2. Write the following text: "The list below shows the exercises for this class"
+3. Create an unordered list with following list items: "1. Practice Shortcuts" "2. Practice dplyr"
+3. Click on the preview button at the top left of the IDE to preview your document.
+
+##Shortcuts
+
+Here are a few keyboard shortcuts you should use all the time
+
+1. `Cmd + Option + I` or `Ctrl + Alt + I`: Insert a chunk in markdown/notebook etc
+2. `Option + -` or `Alt + -`: Enter the assignment operator
+3. `Cmd + Enter` or `Ctrl + Enter`: Run current line/selection
+4. `Cmd + Shift + Enter` `Ctrl + Shift + Enter`: Run the entire script if it is a script file or the current chunk in the case of a notebook.
+5. `Cmd + Shift + M` or `Ctrl + Shift + M`: Insert pipe operator
+
+You can find more shortcut keys [here](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
+
+**⚡Ninja Tasks⚡**
+
+1. Use the shortcuts to create a new code chunk %>% assign the string "Hello World" to `myFirstVar` variable %>% run the line of code %>% add a print command using `print(myFirstVar)` %>% run the entire chunk
+
+
+##Data Manipulation using dplyr
+
+We will be using the `nycflights13` package for this section.
+
+2. Load the nycflights13 package
+
+##Post-requisites
+
+1. Setup a [GitHub Account](https://github.com)
+2. Install [GitHub Desktop](https://desktop.github.com/)
+3. Read up about [version control](https://www.atlassian.com/git/tutorials/what-is-version-control)
