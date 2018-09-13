@@ -18,7 +18,7 @@ css: assets/custom.css
 
 ##Pre-requisites
 
-There a two things we need to do before we start the lesson.
+There two things we need to do before we start the lesson.
 
 1. [Install R](https://cran.r-project.org/mirrors.html): Any of the links on that page should work
 2. [Install Rstudio](https://www.rstudio.com/products/rstudio/download/): Choose the option that is suited for your Operating System (OS).
