@@ -1,0 +1,190 @@
+---
+title: "Numeracy Assignment Notebook"
+author: |
+    | Hari Subhash
+    | Data Scientist @NRGI
+output:
+  html_notebook:
+    code_folding: hide
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  html_document:
+    df_print: paged
+date: '`r Sys.Date()`'
+---
+
+```{r}
+rm(list = ls())
+library(tidyverse); library(googlesheets); library(ggthemes); library(ggridges)
+
+##vector subsets
+country_vec <- countryClassification[c(1, 3, 5), 1:2]
+
+southAsiaCountries <- countryClassification[countryClassification$region == "South Asia",]
+
+newSouthAsiaCountries <- southAsiaCountries %>% 
+    filter(region == "South Asia")
+```
+
+subsetting
+
+
+
+
+
+<br>
+**Description**: This notebook is a quick summary of the relation between [wealth](http://www.worldbank.org/en/news/infographic/2018/01/30/the-changing-wealth-of-nations) and gdp per capita. Both these data sources were downloaded from the [World Bank Databank](http://databank.worldbank.org/data/home.aspx). The downloaded data were copied to `Numeracy Data` spreadsheet on Google Drive so that it is easy to share.
+
+```{r, message=FALSE, warning=FALSE}
+rm(list = ls())
+library(tidyverse); library(googlesheets); library(ggthemes); library(ggridges)
+
+##load all the different data
+gdpData <- gs_title("Numeracy Data") %>% 
+    gs_read(ws = "GDP Data") %>% 
+    select(country = `Country Name`, year = Time, gdp = Value)
+
+wealthData <- gs_title("Numeracy Data") %>% 
+    gs_read(ws = "Wealth Data") %>% 
+    select(country = `Country Name`, wealthIndicator = `Series Name`, year = Time, value = Value)
+
+countryClassification <- gs_title("Numeracy Data") %>% 
+    gs_read(ws = "WB Classification") %>% 
+    select(country = Economy, region = Region, income = `Income group`)
+
+```
+
+
+##Prompt 1: Trends in GDP per capita
+
+The chart below shows the average GDP per capita trend from 1960 to 2018. In the chart we can make out clear periods of sharp growth, along with certain periods of low to negative growth. The data also bear out the 2008 crash, however, it seems like we have moved on from that period as though it never happened.
+
+```{r, fig.width=9, fig.align='center'}
+gdpData %>% 
+    ##fill missing values
+    group_by(country) %>% 
+    fill(gdp, .direction = "down") %>% 
+    ungroup() %>% 
+    ##calculate average gdp per year
+    group_by(year) %>% 
+    summarise(avgGDP = mean(gdp, na.rm = T)) %>% 
+    ggplot(., aes(x = year, y = avgGDP)) +
+    geom_point() +
+    labs(y = "Avg. GDP per Capita", x = "Year", title = "The global average gdp has been increasing over the years" %>% str_wrap(width = 60)) +
+    annotate("rect", xmin = 1967, xmax = 1979, ymin = 6030, ymax = 10000,
+  alpha = .2, fill = "lightgreen", size = 14) +
+    annotate("rect", xmin = 1979, xmax = 1995, ymin = 10200, ymax = 9000,
+  alpha = .2, fill = "lightblue", size = 14) +
+    annotate("rect", xmin = 1995, xmax = 2008, ymin = 10200, ymax = 14800,
+  alpha = .2, fill = "lightgreen", size = 14) +
+    annotate("text", x = 1970, y = 10400, label = "Accelerated Growth", colour = "darkred") +
+    annotate("text", x = 1988, y = 8500, label = "Growth Plateau", colour = "darkred") +
+    annotate("text", x = 2002, y = 15200, label = "Accelerated Growth", colour = "darkred") +
+    annotate("text", x = 2010, y = 13300, label = "2008 Collapse", colour = "darkred") +
+    theme_fivethirtyeight() +
+    theme(
+        axis.title = element_text()
+    )
+```
+
+Overall, the average GDP per capita in the world seems to have been increasing i.e. <span style="background-color:#FFD701">the average income of humans have increased dramatically</span>. However, there is an important question to consider i.e. <span style="background-color:#FFD701">is this true for countries from different regions or income levels?</span>
+
+The next chart shows that it isn't as straightforward. While the overall gdp has increased for all regions during the period of the data, <span style="background-color:#FFD701">most regions have gone through remarkable periods of fluctuating growth</span>. While some regions like North and Latin America have seem to have grown consistently other regions seem to have experienced more fluctuating growth trends.
+
+
+```{r, fig.width=12}
+left_join(gdpData, countryClassification, by = "country") %>% 
+    group_by(country) %>% 
+    fill(gdp, .direction = "down") %>% 
+    ungroup() %>% 
+    group_by(region, year) %>% 
+    filter(!is.na(region)) %>% 
+    summarise(avgGDP = mean(gdp, na.rm = T)) %>% 
+    ggplot(., aes(x = year, y = avgGDP)) +
+    geom_point() +
+    labs(y = "Avg. GDP per Capita", x = "Year", title = "Some regions have seen big fluctuations in growth" %>% str_wrap(width = 60)) +
+    facet_wrap(.~region, scales = "free_y") +
+    theme_fivethirtyeight() +
+    theme(
+        axis.title = element_text()
+    )
+```
+
+There also seem to be some <span style="background-color:#FFD701">strange kinks in the data</span>.[^1] This could either be a calculation mistake or an artefact of the data. For instance, look at Middle East around 1975 and South Asia around 1995. The average GDP per capita for these regions seem to experience a remarkable jump around these years. Why might this be?
+
+[^1]: Kinks are sharp departures from a trend. For instance, observe South Asia, there seems to be a sudden jump in the average gdp per capita around 1195. Such sudden shifts indicate some underlying data feature that could be driving these shifts.
+
+My hunch is that this is because of missing data i.e. say a high GDP per capita country has certain years of data missing, in the years that the country is present the average gdp will be high while for years that it is missing it will be lower, thereby introducing a 'kink' in the chart. 
+
+We can see if this is true by plotting the same chart as below but without the averages. Lets do that for the middle east region. The chart below shows that my initial hunch was true i.e. there are several countries like Kuwait, Israel, Lebanon etc that have data only from a certain point onwards. However, this does not fully explain all the fluctuations in GDP per capita in the Middle East. 
+
+Another thing to note here is that the chart below (unlike the previous two charts), shows the actual gdp per capita numbers for each of these countries instead of the averaged out values for each region/world. This points to one of the issues with taking averages. <span style="background-color:#FFD701">Whenever we take a summary statistic (for instance, mean/median/mode) we lose the nuance in the data by 'smoothing' the fluctuations in the underlying data.</span>. In this case, because we looked at the overall regional average, we lose information about country specific fluctuations in the data, which could indicate underlying patterns.
+
+```{r, fig.width=12}
+left_join(gdpData, countryClassification, by = "country") %>% 
+    filter(region == "Middle East & North Africa" & !is.na(gdp) & country != "Djibouti") %>% 
+    ggplot(., aes(x = year, y = gdp)) +
+    geom_point() +
+    facet_wrap(~country, scales = "free_y") +
+    labs(y = "GDP per Capita", x = "Year", title = "The middle east is all over the place!" %>% str_wrap(width = 60)) +
+    theme_fivethirtyeight()
+```
+
+**Question 1**: It is interesting that the GDP of the middle east flutuates, any guesses for a few reasons that might explain this and how we might further explore that?? 
+
+**Hint**: Its something that is relevant to our work!
+
+To wind this section up, lets look at the movement of gdp for different income categories. While most income groups have seen an increase in GDP per capita, the average for low income countries have not seen an increase in the time period with data. 
+
+```{r, fig.width=9}
+left_join(gdpData, countryClassification, by = "country") %>%
+    group_by(country) %>% 
+    fill(gdp, .direction = "down") %>% 
+    ungroup() %>% 
+    group_by(income, year) %>% 
+    filter(!is.na(income)) %>% 
+    summarise(avgGDP = mean(gdp, na.rm = T)) %>% 
+    ggplot(., aes(x = year, y = avgGDP)) +
+    geom_point() +
+    labs(y = "Avg. GDP per Capita", x = "Year", title = "Low income regions have not experienced a significant increase in GDP over the time period" %>% str_wrap(width = 60)) +
+    facet_wrap(.~income, scales = "free_y") +
+    theme_fivethirtyeight() +
+    theme(
+        axis.title = element_text()
+    )
+    
+```
+
+**Question 2**: Why might this be the case? How would you go about answering this?
+
+
+```{r, fig.height=12, message=FALSE, warning=FALSE}
+left_join(gdpData, countryClassification, by = "country") %>% 
+    mutate(income = factor(income, levels = c("High income", "Upper middle income", "Lower middle income", "Low income"), ordered = T)) %>% 
+    filter(!is.na(gdp)) %>% 
+    ggplot(., aes(x = gdp, y = as.factor(year))) +
+    geom_density_ridges(aes(fill = income), alpha = 0.6) +
+    facet_wrap(~region) +
+    theme_ridges(grid = FALSE) +
+    theme_fivethirtyeight() +
+    scale_y_discrete(breaks = c(2017, 2000, 1980, 1960), expand = c(0.01, 0)) +
+    scale_fill_viridis_d(alpha = 0.6, option = "B") +
+    labs(x = "GDP per Capita", y = "Year", title = "The entire gdp per capita data in a single chart" %>% str_wrap(width = 60)) +
+    theme(
+        legend.position = "top",
+        legend.text = element_text(size = 18),
+        strip.text = element_text(size = 20),
+        axis.title = element_text(),
+        axis.text = element_text(size = 16),
+        title = element_text(size = 24)
+    )
+    
+    
+```
+
+
+
+##Prompt 2: The relationship between wealth and gdp
+
+Lets explore this during the next call.
