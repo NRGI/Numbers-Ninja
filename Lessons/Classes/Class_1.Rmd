@@ -36,7 +36,7 @@ While R ships with a basic code editor it does not provide any additional functi
 
 1. Create a Numbers Ninja Folder on your local machine
 2. Create an R Notebook and save it in this folder
-3. Install the following package - tidyverse, wbstats and nycflights13 using Rstudio
+3. Install the following package - `tidyverse` and `nycflights13` pacakges using Rstudio
 
 ##A quick markdown detour
 
@@ -89,12 +89,58 @@ You can find more shortcut keys [here](https://support.rstudio.com/hc/en-us/arti
 
 ##Data Manipulation using dplyr
 
-We will be using the `nycflights13` package for this section.
+We will be using the `nycflights13` and the `tidyverse` packages for this section. Here is a resource to keep handy whenever you are using the `tidyverse` for [data wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 
-2. Load the nycflights13 package
+####Tibbles
+
+**⚡Ninja Tasks⚡**
+
+1. Create a tibble (of your choice) with three observations and three variables.
+2. Show the class and structure of the tibble you created.
+3. Convert the mtcars dataset to a tibble.
+4. Load the nycflights13 package.
+
+####Pipes
+
+
+
+####Filter
+
+
+**⚡Ninja Tasks⚡**
+
+1. Which flight out of JFK was the most delayed in 2013?
+2. Answer the previous question without using dplyr or pipes.
+3. What were the 5 longest flights (in air time) from NYC in 2013?
+
+####Select
+
+**⚡Ninja Tasks⚡**
+
+1. Select all the columns that are relevant for arrival and departure delays using a utility function (refer to cheat sheet)
+
+
+####Arrange
+
+####Mutate
+
+####Group and Summarise
+
+
+**⚡Ninja Tasks⚡**
+
+1. Create a summary table with the following characteristics for each of the origin airports.
+    + Number of flights
+    + Number of unique carriers
+    + Average departure delays
+    + Average flight times (air time)
+    + Average arrival delays
+
+**⚡Ninja Tasks⚡**
 
 ##Post-requisites
 
 1. Setup a [GitHub Account](https://github.com)
 2. Install [GitHub Desktop](https://desktop.github.com/)
 3. Read up about [version control](https://www.atlassian.com/git/tutorials/what-is-version-control)
+4. Read up about the [tidy tools manifesto](https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html)
