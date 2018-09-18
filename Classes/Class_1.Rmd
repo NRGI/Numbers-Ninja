@@ -14,7 +14,23 @@ output:
   html_document:
     df_print: paged
 css: assets/custom.css
+runtime: shiny
 ---
+```{r eruptions, echo=FALSE}
+selectInput(
+  'breaks', label = 'Number of bins:',
+  choices = c(10, 20, 35, 50), selected = 20
+)
+
+renderPlot({
+  par(mar = c(4, 4, .1, .5))
+  hist(
+    faithful$eruptions, as.numeric(input$breaks),
+    col = 'gray', border = 'white',
+    xlab = 'Duration (minutes)', main = ''
+  )
+})
+```
 
 ##Pre-requisites
 
@@ -34,21 +50,26 @@ There are four different panes on RStudio.
 3. The viewer
 4. The environment
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 1. Create a Numbers Ninja Folder on your local machine
 2. Create an R Notebook and save it in this folder
-3. Install the following package - `tidyverse` and `nycflights13` pacakges using Rstudio
 
 ##A quick markdown detour
 
 ####What is a markup language?
 
->In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text. The idea and terminology evolved from the "marking up" of paper manuscripts, i.e., the revision instructions by editors, traditionally written with a blue pencil on authors' manuscripts. In digital media, this "blue pencil instruction text" was replaced by tags, that is, instructions are expressed directly by tags or "instruction text encapsulated by tags." However the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - Wikipedia
+>In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text...the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - Wikipedia
 
 Some examples of markup languages includes - [TeX](https://en.wikipedia.org/wiki/TeX), [LaTeX](https://en.wikipedia.org/wiki/LaTeX), [HTML](https://en.wikipedia.org/wiki/HTML) etc. TeX markup language that created a [typesetting system](https://en.wikipedia.org/wiki/Typesetting) in computers for high quality books. LaTeX is used extensively in academia to create documents. HTML is the language used to create and organize content on the web. All websites use HTML.
 
+####What is markdown?
+
+
+
 ####What is R Markdown?
+
+R Markdown combine markdown with R code. You can think of markdown as a human readable version of HTML that is suitable for producing content heavy websites like blogs. Using R Markdown we can insert "code chunks" that 
 
 >The document format “R Markdown” was first introduced in the knitr package (Xie 2015, 2018d) in early 2012. The idea was to embed code chunks (of R or other languages) in Markdown documents. In fact, knitr supported several authoring languages from the beginning in addition to Markdown, including LaTeX, HTML, AsciiDoc, reStructuredText, and Textile. Looking back over the five years, it seems to be fair to say that Markdown has become the most popular document format, which is what we expected. The simplicity of Markdown clearly stands out among these document formats.
 
@@ -56,7 +77,7 @@ Some examples of markup languages includes - [TeX](https://en.wikipedia.org/wiki
 
 >In a nutshell, R Markdown stands on the shoulders of knitr and Pandoc. The former executes the computer code embedded in Markdown, and converts R Markdown to Markdown. The latter renders Markdown to the output format you want (such as PDF, HTML, Word, and so on). - [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
 
-The main benefit of R Markdown is readability and reproducibility. Code written using an R notebook is easy to share, reproduce and understand. An R Notebook is an R Markdown document with chunks that can be executed independently and interactively, with output visible immediately beneath the input. We will be using R Notebooks almost exclusively for this fellowship.
+The main benefit of R Markdown is readability and reproducible. Code written using an R notebook is easy to share, reproduce and understand. An R Notebook is an R Markdown document with chunks that can be executed independently and interactively, with output visible immediately beneath the input. We will be using R Notebooks almost exclusively for this fellowship.
 
 In addition to using markdown to markup text, R Markdown documents also use a YAML header. You don't have to learn much about YAML, however, we need to be familiar enough to perform basic tweaks such as adding a new title, changing authors etc.
 
@@ -65,7 +86,7 @@ Here are a few references to keep handy
 1. [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
 2. [R Markdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 1. Create an H2 level header with title Class 1 Exercises
 2. Write the following text: "The list below shows the exercises for this class"
@@ -84,10 +105,14 @@ Here are a few keyboard shortcuts you should use all the time
 
 You can find more shortcut keys [here](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 1. Use the shortcuts to create a new code chunk %>% assign the string "Hello World" to `myFirstVar` variable %>% run the line of code %>% add a print command using `print(myFirstVar)` %>% run the entire chunk
 
+
+##Packages
+
+2. Install the following package - `tidyverse` and `nycflights13` packages using Rstudio
 
 ##Data Manipulation using dplyr
 
@@ -95,11 +120,11 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 
 ####Tibbles
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 1. Create a tibble (of your choice) with three observations and three variables.
 2. Show the class and structure of the tibble you created.
-3. Convert the mtcars dataset to a tibble.
+3. Convert the mtcars data set to a tibble.
 4. Load the nycflights13 package.
 
 ####Pipes
@@ -109,7 +134,7 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 ####Filter
 
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 1. Which flight out of JFK was the most delayed in 2013?
 2. Answer the previous question without using dplyr or pipes.
@@ -117,7 +142,7 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 
 ####Select
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 1. Select all the columns that are relevant for arrival and departure delays using a utility function (refer to cheat sheet)
 
@@ -129,7 +154,7 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 ####Group and Summarise
 
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 1. Create a summary table with the following characteristics for each of the origin airports.
     + Number of flights
@@ -138,7 +163,7 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
     + Average flight times (air time)
     + Average arrival delays
 
-####Ninja Tasks⚡
+⚡***Ninja Tasks***⚡
 
 ##Post-requisites
 
