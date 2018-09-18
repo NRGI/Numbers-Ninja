@@ -14,23 +14,7 @@ output:
   html_document:
     df_print: paged
 css: assets/custom.css
-runtime: shiny
 ---
-```{r eruptions, echo=FALSE}
-selectInput(
-  'breaks', label = 'Number of bins:',
-  choices = c(10, 20, 35, 50), selected = 20
-)
-
-renderPlot({
-  par(mar = c(4, 4, .1, .5))
-  hist(
-    faithful$eruptions, as.numeric(input$breaks),
-    col = 'gray', border = 'white',
-    xlab = 'Duration (minutes)', main = ''
-  )
-})
-```
 
 ##Pre-requisites
 
@@ -63,23 +47,13 @@ There are four different panes on RStudio.
 
 Some examples of markup languages includes - [TeX](https://en.wikipedia.org/wiki/TeX), [LaTeX](https://en.wikipedia.org/wiki/LaTeX), [HTML](https://en.wikipedia.org/wiki/HTML) etc. TeX markup language that created a [typesetting system](https://en.wikipedia.org/wiki/Typesetting) in computers for high quality books. LaTeX is used extensively in academia to create documents. HTML is the language used to create and organize content on the web. All websites use HTML.
 
-####What is markdown?
-
-
-
 ####What is R Markdown?
 
-R Markdown combine markdown with R code. You can think of markdown as a human readable version of HTML that is suitable for producing content heavy websites like blogs. Using R Markdown we can insert "code chunks" that 
+R Markdown combine markdown with R code. You can think of markdown as a markup language that is human readable version of HTML. Using R Markdown we can insert "code chunks" in between R markdown to generate a variety of different document formats such as HTML reports and notebooks, pdf, Word etc. The main benefit of R Markdown is that it is readable and reproducible. 
 
->The document format “R Markdown” was first introduced in the knitr package (Xie 2015, 2018d) in early 2012. The idea was to embed code chunks (of R or other languages) in Markdown documents. In fact, knitr supported several authoring languages from the beginning in addition to Markdown, including LaTeX, HTML, AsciiDoc, reStructuredText, and Textile. Looking back over the five years, it seems to be fair to say that Markdown has become the most popular document format, which is what we expected. The simplicity of Markdown clearly stands out among these document formats.
+For this and future R Lab sessions we will be using an RStudio's Notebook feature which is build using R Markdown. An R Notebook is a markdown document with chunks that can be executed independently and interactively, with output visible immediately beneath the input.
 
->However, the original version of Markdown invented by John Gruber was often found overly simple and not suitable to write highly technical documents. For example, there was no syntax for tables, footnotes, math expressions, or citations. Fortunately, John MacFarlane created a wonderful package named Pandoc (http://pandoc.org) to convert Markdown documents (and many other types of documents) to a large variety of output formats. More importantly, the Markdown syntax was significantly enriched. Now we can write more types of elements with Markdown while still enjoying its simplicity.
-
->In a nutshell, R Markdown stands on the shoulders of knitr and Pandoc. The former executes the computer code embedded in Markdown, and converts R Markdown to Markdown. The latter renders Markdown to the output format you want (such as PDF, HTML, Word, and so on). - [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
-
-The main benefit of R Markdown is readability and reproducible. Code written using an R notebook is easy to share, reproduce and understand. An R Notebook is an R Markdown document with chunks that can be executed independently and interactively, with output visible immediately beneath the input. We will be using R Notebooks almost exclusively for this fellowship.
-
-In addition to using markdown to markup text, R Markdown documents also use a YAML header. You don't have to learn much about YAML, however, we need to be familiar enough to perform basic tweaks such as adding a new title, changing authors etc.
+In addition to using markdown to markup text, R Markdown documents also use a [YAML](https://en.wikipedia.org/wiki/YAML) header. This is the section right at the top of the notebook that is separated by the `---`. You don't have to learn much about YAML, however, we need to be familiar enough to perform basic tweaks such as adding a new title, changing authors etc.
 
 Here are a few references to keep handy
 
@@ -107,12 +81,15 @@ You can find more shortcut keys [here](https://support.rstudio.com/hc/en-us/arti
 
 ⚡***Ninja Tasks***⚡
 
-1. Use the shortcuts to create a new code chunk %>% assign the string "Hello World" to `myFirstVar` variable %>% run the line of code %>% add a print command using `print(myFirstVar)` %>% run the entire chunk
-
+1. Use the shortcuts to create a new code chunk => assign the string "Hello World" to `myFirstVar` variable => run the line of code => add a print command using `print(myFirstVar)` => run the entire chunk
 
 ##Packages
 
-2. Install the following package - `tidyverse` and `nycflights13` packages using Rstudio
+R packages are additional features that extends the functionality of base R. Packages contain custom functions that are pre-written so that you don't have to worry about re-writing all the code required to create them. In addition to functions, packages can also contain data or point database api (such `wbstats` which points to the World Banks data).
+
+⚡***Ninja Tasks***⚡
+
+1. Install the following package - `tidyverse` and `nycflights13` packages using Rstudio
 
 ##Data Manipulation using dplyr
 
