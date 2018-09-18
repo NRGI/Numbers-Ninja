@@ -25,12 +25,14 @@ There two things we need to do before we start the lesson.
 
 ##Get familiar with your working environment
 
-While R ships with a basic code editor it does not provide any additional functionality to make our lives easier. This is where R Studio comes in. R Studio is an integrated development environment (IDE) that is dedicated to code in R. The basic version is free and by far the most popular and easy to install code editor amongst R users. Lets look at its various components
+RStudio is an [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment)(IDE) for the programming language R. An IDE is a software application that makes it easier to write and manage code. It is by far the most popular IDE for R and has several features that are custom made to support data science in R.
 
-####What are the different parts of the Rstudio IDE?
+There are four different panes on RStudio.
 
-####What are the different types of files you can use to write R code?
-
+1. The console
+2. The scripts
+3. The viewer
+4. The environment
 
 **⚡Ninja Tasks⚡**
 

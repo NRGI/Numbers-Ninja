@@ -1,0 +1,31 @@
+---
+title: 'Numbers Ninja: Class 0'
+author: |
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    code_folding: hide
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  pdf_document: default
+  html_document:
+    df_print: paged
+css: assets/custom.css
+---
+
+##Pre-requisites
+
+There two things we need to do before we start the lesson.
+
+1. [Install R](https://cran.r-project.org/mirrors.html): Any of the links on that page should work
+2. [Install Rstudio](https://www.rstudio.com/products/rstudio/download/): Choose the option that is suited for your Operating System (OS).
+
+##Get familiar with your working environment
+
+RStudio is an [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment)(IDE) for the programming language R. An IDE is a software application that makes it easier to write and manage code. It is by far the most popular IDE for R and has several features that are custom made to support data science in R.
+
+There are four different panes on RStudio: The console, scripts, environment and viewer. You can reposition these using the Pane Layout tab on preferences.
+
