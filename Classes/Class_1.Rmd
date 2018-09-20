@@ -16,6 +16,7 @@ output:
 css: assets/custom.css
 ---
 
+<div class="completed">
 ##Pre-requisites
 
 There two things we need to do before we start the lesson.
@@ -37,7 +38,7 @@ There are four different panes on RStudio.
 ⚡***Ninja Tasks***⚡
 
 1. Create a Numbers Ninja Folder on your local machine
-2. Create an R Notebook and save it in this folder
+2. Create an R Notebook "Class 1" and save it in this folder
 
 ##A quick markdown detour
 
@@ -59,6 +60,7 @@ Here are a few references to keep handy
 
 1. [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
 2. [R Markdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+
 
 ⚡***Ninja Tasks***⚡
 
@@ -91,9 +93,12 @@ R packages are additional features that extends the functionality of base R. Pac
 
 1. Install the following package - `tidyverse` and `nycflights13` packages using Rstudio
 
+</div>
+
 ##Data Manipulation using dplyr
 
 We will be using the `nycflights13` and the `tidyverse` packages for this section. Here is a resource to keep handy whenever you are using the `tidyverse` for [data wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
 
 ####Tibbles
 
@@ -104,11 +109,17 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 3. Convert the mtcars data set to a tibble.
 4. Load the nycflights13 package.
 
+
 ####Pipes
 
 
+⚡***Ninja Tasks***⚡
+
+1. Calculate the square root of the sum of all even numbers from 0 to 200 and create a sequence that goes from the square root to twice its value.
+
 
 ####Filter
+
 
 
 ⚡***Ninja Tasks***⚡
@@ -126,7 +137,16 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 
 ####Arrange
 
+⚡***Ninja Tasks***⚡
+
+1. Filter the top 10 most delayed flights in JFK and arrange by dep_delay (highest to lowest)
+
 ####Mutate
+
+
+⚡***Ninja Tasks***⚡
+
+1. Create a new variable called total_delay that is the sum of the arrival delay and departure delay
 
 ####Group and Summarise
 

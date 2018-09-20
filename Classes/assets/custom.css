@@ -1,3 +1,10 @@
+html {
+  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+}
+code,
+pre {
+  font-family: Menlo, Monaco, "Courier New", monospace;
+}
 p,
 li {
   font-size: 1.1em;
@@ -36,4 +43,8 @@ h4 {
 
 blockquote {
   font-size: 0.9em;
+}
+
+.completed {
+  color: darkgrey;
 }
