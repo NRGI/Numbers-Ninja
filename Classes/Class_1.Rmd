@@ -15,6 +15,10 @@ output:
     df_print: paged
 css: assets/custom.css
 ---
+To-Do Items
+
+1. Add package installations to the pre-requisite
+2. Add some reading material
 
 ##Pre-requisites
 
@@ -28,6 +32,15 @@ There two things we need to do before we start the lesson.
 While R ships with a basic code editor it does not provide any additional functionality to make our lives easier. This is where R Studio comes in. R Studio is an integrated development environment (IDE) that is dedicated to code in R. The basic version is free and by far the most popular and easy to install code editor amongst R users. Lets look at its various components
 
 ####What are the different parts of the Rstudio IDE?
+
+
+```{r}
+library(datasets)
+
+carsNew <- mtcars
+nameOfNinjas <- c("Anne", "Alonso", "Solongo")
+
+```
 
 ####What are the different types of files you can use to write R code?
 
@@ -93,6 +106,21 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 
 ####Tibbles
 
+
+```{r}
+library(dplyr); library(nycflights13)
+
+carsNew <- mtcars
+
+ninjaNames <- c("anne", "alonso", "solongo")
+
+ninjaTibble <- tibble(nameOfNinja = ninjaNames, favPet = c("dogs", "guinea pigs", "cats"), nationality = c("nigeria", "peru", "mongolia"))
+
+ninjaDF <- data.frame(nameOfNinja = ninjaNames, favPet = c("dogs", "guinea pigs", "cats"), nationality = c("nigeria", "peru", "mongolia"), stringsAsFactors = F)
+
+```
+
+
 ####Ninja Tasks⚡
 
 1. Create a tibble (of your choice) with three observations and three variables.
@@ -103,8 +131,39 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 ####Pipes
 
 
+```{r}
+seq(from = 1, to = 100, by = 2) %>% 
+        sum() %>% 
+        sqrt() %>% 
+        seq(from = ., to = .*3, by = 3)
+
+seq(from = sqrt(sum(seq(from = 1, to = 100, by = 2))), to = 3 * sqrt(sum(seq(from = 1, to = 100, by = 2))), by = 3)
+```
+
 
 ####Filter
+
+Lets find all the flights that departed in the morning
+
+```{r}
+morningFlights <- flights %>% 
+        filter(dep_time <= 1200 & month == 1 & day == 1)
+
+max(morningFlights$dep_time, na.rm = T)
+```
+
+The most delayed flight from JFK in 2013 
+
+```{r}
+flights %>% 
+        filter(origin == "EWR") %>% 
+        filter(dep_delay == max(dep_delay, na.rm = T))
+```
+
+```{r}
+max(flights$dep_delay, na.rm = T)
+```
+
 
 
 ####Ninja Tasks⚡
