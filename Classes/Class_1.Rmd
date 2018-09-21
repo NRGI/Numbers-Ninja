@@ -186,12 +186,31 @@ flights %>%
 
 ####Select
 
+
+```{r}
+flights %>% 
+    filter(origin %in% c("JFK")) %>% ##origin == "JFK" | origin == "EWR"
+    select(origin, contains("dest"),air_time) %>% 
+    top_n(air_time, n = 10)
+```
+
+
 ⚡***Ninja Tasks***⚡
 
 1. Select all the columns that are relevant for arrival and departure delays using a utility function (refer to cheat sheet)
 
 
 ####Arrange
+
+```{r}
+flights %>% 
+    arrange(desc(dep_delay))
+```
+
+Hypothesis: Flights are more delayed around Christmas. Compare mean(dep_delay) to find the answer.
+
+Find the answer? Is that correct?
+
 
 ⚡***Ninja Tasks***⚡
 
