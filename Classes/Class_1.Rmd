@@ -109,6 +109,26 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 3. Convert the mtcars data set to a tibble.
 4. Load the nycflights13 package.
 
+```{r}
+library(dplyr)
+myFavoriteThings <- tibble(gadgets = c("Pixel", "Kindle", "Vaccum Cleaner"), books = c("Das Kapital", "Harry Potter", "Enid Blyton"), hobbies = c("dancing", "hiking", "reading"), milesRun = c(1, 3, 10))
+
+class(myFavoriteThings)
+```
+
+```{r}
+str(myFavoriteThings)
+```
+
+```{r}
+mtcars
+
+mtcarTibble <- as_tibble(mtcars)
+
+str(mtcarTibble)
+```
+
+
 
 ####Pipes
 
@@ -125,8 +145,44 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 ⚡***Ninja Tasks***⚡
 
 1. Which flight out of JFK was the most delayed in 2013?
+
+
+```{r}
+library(nycflights13)
+
+
+flights %>% 
+    filter(origin == "JFK") %>% 
+    filter(dep_delay == max(dep_delay, na.rm = T))
+    
+
+```
+
 2. Answer the previous question without using dplyr or pipes.
+```{r}
+jfkFlights <- flights[flights$origin == "JFK", ]
+
+maxDelay <- max(jfkFlights$dep_delay, na.rm = T)
+
+jfkFlights[jfkFlights$dep_delay == maxDelay & !is.na(jfkFlights$dep_delay), ]
+```
+
 3. What were the 5 longest flights (in air time) from NYC in 2013?
+
+```{r}
+flights %>%
+    arrange(desc(air_time)) %>% 
+    filter(row_number() <= 5)
+
+```
+
+another easier way to do this
+
+```{r}
+flights %>% 
+    top_n(air_time, n = 5)
+```
+
 
 ####Select
 

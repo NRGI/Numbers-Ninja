@@ -47,4 +47,5 @@ blockquote {
 
 .completed {
   color: darkgrey;
+  /* text-decoration: underline overline wavy rgb(192, 192, 207); */
 }
