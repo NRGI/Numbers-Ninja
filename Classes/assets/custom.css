@@ -1,5 +1,12 @@
+html {
+  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+}
+code,
+pre {
+  font-family: Menlo, Monaco, "Courier New", monospace;
+}
 p,
-li { 
+li {
   font-size: 1.1em;
 }
 
@@ -13,16 +20,16 @@ ul {
 .date {
   margin-top: 5px;
 }
-.author div {
-  font-size: 0.9em;
-  font-style: normal;
-  font-weight: 600;
+.author {
+  font-size: 1em;
+  font-weight: 300;
+  margin-bottom: 0px;
 }
 
-.date em {
-  font-size: 0.7em;
-  font-style: normal;
-  font-weight: 400;
+.date {
+  font-size: 0.9em;
+  font-weight: 300;
+  margin-bottom: 20px;
 }
 
 h3,
@@ -36,4 +43,9 @@ h4 {
 
 blockquote {
   font-size: 0.9em;
+}
+
+.completed {
+  color: darkgrey;
+  /* text-decoration: underline overline wavy rgb(192, 192, 207); */
 }
