@@ -1,0 +1,23 @@
+---
+title: 'Numbers Ninja: Class Plan'
+author: |
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    code_folding: hide
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  pdf_document: default
+  html_document:
+    df_print: paged
+css: assets/custom.css
+---
+
+1. R Basics (already covered through data camp)
+2. Data manipulation with dplyr and nycflights13
+3. Introduction to ggplot2
+4. Load and clean data
+    + File traversal (working directory etc)
