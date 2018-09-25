@@ -15,9 +15,13 @@ date: '`r Sys.Date()`'
 css: assets/custom.css
 ---
 
+##Topics
 
-###What is a working directory?
+1. ggplot2
+2. Data Joins
+3. More plots
 
-####Folder traversal
 
-##Load data
+##ggplot2
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JXR2p_vtP3c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>

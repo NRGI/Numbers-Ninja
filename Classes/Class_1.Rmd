@@ -50,7 +50,9 @@ There are four different panes on RStudio that you need to get familiar with.
 ##A quick R Markdown detour
 Markdown is a markup language.
 
->In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text...the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - Wikipedia
+From [Wikipedia](https://en.wikipedia.org/wiki/Markup_language):
+
+>In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text...the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - 
 
 <span class="highlight">Hyper Text Markup Language</span>([HTML](https://en.wikipedia.org/wiki/HTML)) is perhaps the most well-known markup language out there [^3]. It is used to render content on websites. Go ahead and right click on any webpage and click on inspect to open up the web inspector to view the underlying HTML code that was used to generate it. <span class="highlight">Markdown</span> is a more human friendly (but limited) version of HTML. Markdown uses simple and easy to read tags to markup text which is compiled (by your computer) into HTML that can be used to render webpages. Making it easier to create content that can be rendered on a webpage for those who are unfamiliar with HTML. 
 
@@ -106,14 +108,21 @@ library(tidyverse); library(nycflights13)
 ##Tidyverse
 The tidyverse is a collection of packages that follow the tidy tools philosophy. 
 
->There are four basic principles to a tidy API:
->
-1. Reuse existing data structures.
+[The Tidy Tools Manifesto](https://tidyverse.tidyverse.org/articles/manifesto.html) by Hadley Wickham, describes the four basic principles of a tidy API as follows:
+
+>1. Reuse existing data structures.
 2. Compose simple functions with the pipe.
 3. Embrace functional programming.
 4. Design for humans.
->
--- The Tidy Tools Manifesto, Hadley Wickham
+
+There are two overarching programming concepts here that are important for us to note - composition and the use of declaritive instead of imperative code. Composition is simply the use of several smaller functions to create a more complex function. The tidyverse achieves composition through the use of pipes (`%>%`). We will learn about pipes relatively soon.
+
+According to [Wikipedia](https://en.wikipedia.org/wiki/Declarative_programming):
+
+> In computer science, declarative programming is a programming paradigm—a style of building the structure and elements of computer programs—that expresses the logic of a computation without describing its control flow.
+
+This video explains this further using the real-world example of a car (albeit from the persepective of React a Javascript library).
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JXR2p_vtP3c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 The tidyverse packages are characterized by their extensive use of pipes to break down complex functions into simpler pieces that are easier to to read and understand. We will learn about pipes shortly.
 
