@@ -15,9 +15,9 @@ date: '`r Sys.Date()`'
 css: assets/custom.css
 ---
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-htmltools::img(src = knitr::image_uri('assets/ninja-logo.jpg'), 
+htmltools::img(src = knitr::image_uri('assets/ninja-logo2.jpg'), 
                alt = 'logo', 
-               style = 'position:absolute; top:5%; right:5%; padding:10px; width:12%')
+               style = 'position:absolute; top:5%; right:5%; padding:10px;')
 ```
 
 ##Topics
