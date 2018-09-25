@@ -16,9 +16,12 @@ output:
   pdf_document: default
 css: assets/custom.css
 ---
+
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-
-
+htmltools::img(src = knitr::image_uri('assets/ninja-logo.jpg'), 
+               alt = 'logo', 
+               style = 'position:absolute; top:5%; right:5%; padding:10px; width:12%')
 ```
 
 <div class="completed">

@@ -14,6 +14,11 @@ output:
 date: '`r Sys.Date()`'
 css: assets/custom.css
 ---
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+htmltools::img(src = knitr::image_uri('assets/ninja-logo.jpg'), 
+               alt = 'logo', 
+               style = 'position:absolute; top:5%; right:5%; padding:10px; width:12%')
+```
 
 ##Topics
 
@@ -23,5 +28,4 @@ css: assets/custom.css
 
 
 ##ggplot2
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/JXR2p_vtP3c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+ggplot2 is a declaritive plotting library that is used
