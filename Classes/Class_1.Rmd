@@ -16,6 +16,10 @@ output:
   pdf_document: default
 css: assets/custom.css
 ---
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+
+```
 
 <div class="completed">
 ##Pre-requisites
@@ -134,7 +138,7 @@ dplyr is a package in the tidyverse collection. It provides elegant and easy to 
 
 Keep this [data wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) cheatsheet open on your browser as a ready reference for the rest of the notebook.
 
-####Tibbles
+###Tibbles
 
 A tibble is a tidy version of a data.frame. It adds a few extra features (through two new classes) that give it a few advantages over data.frames.
 
@@ -187,79 +191,61 @@ str(mtTibble)
 
 
 
-####The Pipe Operator
+###The Pipe Operator
 
-The pipe operator is a part of the `magittr` packages
-```{r}
-# mtcars[[3]]
-# models <- mtcars %>% 
-#   split(.$cyl) %>% 
-#   map(function(df) lm(mpg ~ wt, data = df))
-# 
-# models %>% 
-#   map(summary) %>% 
-#   map_dbl(~.$r.squared)
-```
-
-
-
-
+The pipe operator is a part of the `magittr` package. You can create one using the shortcuts you learnt earlier (`Cmd + Shift + M` or `Ctrl + Shift + M`). The pipe transfers the values that are to the left of it to the right side. While this might seem a bit abstract at this point, `%>%` is an excellent way to break down code into smaller pieces that are easier to read and maintain.
 
 ⚡***Ninja Tasks***⚡
 
 1. Calculate the square root of the sum of all even numbers from 0 to 200 and create a sequence that goes from the square root to twice its value.
+2. Repeat the task using base commands.
 
+🏆***Solution***🏆
+
+First lets do it using pipes. Notice the use of the dot on the last line of the code. When using pipes the `.` is used to refer explicitly to the data on the left side of the pipe. We do this so that we can perform operation on it. In our case, we need to create a sequence that goes from the left-hand side value to twice its value and we acheive this using `. * 2`. Note that we could have used the dot notation to refer to the data on the left hand side explicitly for each command, however, dplyr automatically assumes that you are passing the data from the left side saving us the trouble. We only need to use a `.` if we need to perform an operation or use it explicitly as a function argument.
 ```{r}
-seq(from = 1, to = 100, by = 2) %>% 
-        sum() %>% 
-        sqrt() %>% 
-        seq(from = ., to = .*3, by = 3)
+##create a sequence of even numbers from 0 to 200
+seq(from = 0, to = 200, by = 2) %>% 
+    ##calculate the sum of all values in the previous vector
+    sum() %>% 
+    ##calculate the square root of the value from the sum operation
+    sqrt() %>% 
+    ##create a new seq from the previous value to twice its value
+    seq(from = ., to = . * 2, by = 2)
+```
 
-seq(from = sqrt(sum(seq(from = 1, to = 100, by = 2))), to = 3 * sqrt(sum(seq(from = 1, to = 100, by = 2))), by = 3)
+Now lets do this without the pipes. Notice how the base command combines multiple steps i.e. `sum()`, `sqrt()` and `seq()` into a single command. Code such as this is harder to read, understand and debug compared to the version that uses `%>%`.
+```{r}
+##create the a sequence, calculate its sum and find the square root
+sqrtValue <- sqrt(sum(seq(from = 1, to = 200, by = 2)))
+##create a sequence
+seq(from = sqrtValue, to = 2 * sqrtValue, by = 2)
 ```
 
 
+###Filter
 
-
-####Filter
-
-Lets find all the flights that departed in the morning
-
-```{r}
-morningFlights <- flights %>% 
-        filter(dep_time <= 1200 & month == 1 & day == 1)
-
-max(morningFlights$dep_time, na.rm = T)
-```
-
-The most delayed flight from JFK in 2013 
-
-```{r}
-flights %>% 
-        filter(origin == "EWR") %>% 
-        filter(dep_delay == max(dep_delay, na.rm = T))
-```
-
-```{r}
-max(flights$dep_delay, na.rm = T)
-```
-
-
+Filter is the dplyr verb for subsetting rows of data based on a particular condition.
 
 
 ⚡***Ninja Tasks***⚡
 
 1. Which flight out of JFK was the most delayed in 2013?
+2. Answer the previous question without using dplyr or pipes.
+3. What were the 5 longest flights (in air time) from NYC in 2013?
 
+🏆***Solution***🏆
+
+Lets find the most delayed flight out of JFK
 ```{r}
 flights %>% 
+    ##filter all flights from JFK
     filter(origin == "JFK") %>% 
+    ##find the flight that had the maximum departure delay
     filter(dep_delay == max(dep_delay, na.rm = T))
-    
-
 ```
 
-2. Answer the previous question without using dplyr or pipes.
+Lets try to do this using base R. Notice how the code is far less readable in this case.
 ```{r}
 jfkFlights <- flights[flights$origin == "JFK", ]
 
@@ -268,16 +254,7 @@ maxDelay <- max(jfkFlights$dep_delay, na.rm = T)
 jfkFlights[jfkFlights$dep_delay == maxDelay & !is.na(jfkFlights$dep_delay), ]
 ```
 
-3. What were the 5 longest flights (in air time) from NYC in 2013?
-
-```{r}
-flights %>%
-    arrange(desc(air_time)) %>% 
-    filter(row_number() <= 5)
-
-```
-
-another easier way to do this
+dplyr also ships with helper function. We can use one of these `top_n` to find the flights that had the highest air times.
 
 ```{r}
 flights %>% 
@@ -285,47 +262,73 @@ flights %>%
 ```
 
 
-####Select
+###Select
 
-
-```{r}
-flights %>% 
-    filter(origin %in% c("JFK")) %>% ##origin == "JFK" | origin == "EWR"
-    select(origin, contains("dest"),air_time) %>% 
-    top_n(air_time, n = 10)
-```
-
+Select is a dplyr verb that is used for subsetting columns.
 
 ⚡***Ninja Tasks***⚡
 
 1. Select all the columns that are relevant for arrival and departure delays using a utility function (refer to cheat sheet)
 
 
-####Arrange
+🏆***Solution***🏆
 
+We can combine the select verb with the `contain` helper function to achieve this task.
 ```{r}
 flights %>% 
-    arrange(desc(dep_delay))
+    select(contains("delay"))
 ```
 
-Hypothesis: Flights are more delayed around Christmas. Compare mean(dep_delay) to find the answer.
 
-Find the answer? Is that correct?
-
+###Arrange
+Arrange is a verb that arranges the rows based on the values of a particular column i.e. performs a sort.
 
 ⚡***Ninja Tasks***⚡
 
 1. Filter the top 10 most delayed flights in JFK and arrange by dep_delay (highest to lowest)
 
-####Mutate
+🏆***Solution***🏆
 
+Note that I have 
+```{r}
+flights %>% 
+    ##arrange dep_delay in descending order (high to low)
+    arrange(desc(dep_delay)) %>% 
+    ##filter the first 10 rows using row_number()
+    filter(row_number() <= 10) %>% 
+    ##select the relevant columns
+    select(month, day, origin, dep_delay)
+```
+
+
+###Mutate
+Mutate changes a tibble by adding a new column vector or changing an existing one.
 
 ⚡***Ninja Tasks***⚡
 
 1. Create a new variable called total_delay that is the sum of the arrival delay and departure delay
+2. Do the same task using Base R
 
-####Group and Summarise
+🏆***Solution***🏆
 
+```{r}
+flights %>% 
+    ##combine arrival delay and departure delay
+    mutate(tot_delay = arr_delay + dep_delay) %>% 
+    ##select all the delay columns
+    select(contains("delay"))
+```
+
+Now lets repeat this using Base R.
+```{r}
+flights$tot_delay <- flights$arr_delay + flights$dep_delay
+
+flights[names(flights) %in% c("dep_delay", "arr_delay", "tot_delay")]
+```
+
+
+###Group and Summarise
+`group_by()` categorizes the data based on the grouping variable, while summarise calculates summary statistics within these groups.
 
 ⚡***Ninja Tasks***⚡
 
@@ -336,11 +339,29 @@ Find the answer? Is that correct?
     + Average flight times (air time)
     + Average arrival delays
 
+🏆***Solution***🏆
+
+Note the use of the functions `n()` and `n_distinct()`. Look up the help to understand what they do.
+```{r}
+flights %>% 
+    ##group the data by the origin (JFK, EWR, LGA)
+    group_by(origin) %>% 
+    ##calculate the summary statistics of interest
+    summarise(nFlights = n(),
+              nCarriers = n_distinct(carrier),
+              meanDepDelay = mean(dep_delay, na.rm = T),
+              meanAirTime = mean(air_time, na.rm = T),
+              meanArrDelay = mean(arr_delay, na.rm = T))
+    
+```
+
+    
+
 ⚡***Ninja Tasks***⚡
 
-##Post-requisites
+##Homework
 
 1. Setup a [GitHub Account](https://github.com)
 2. Install [GitHub Desktop](https://desktop.github.com/)
 3. Read up about [version control](https://www.atlassian.com/git/tutorials/what-is-version-control)
-4. Read up about the [tidy tools manifesto](https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html)
+
