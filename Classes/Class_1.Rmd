@@ -223,9 +223,6 @@ max(flights$dep_delay, na.rm = T)
 
 
 ```{r}
-library(nycflights13)
-
-
 flights %>% 
     filter(origin == "JFK") %>% 
     filter(dep_delay == max(dep_delay, na.rm = T))
