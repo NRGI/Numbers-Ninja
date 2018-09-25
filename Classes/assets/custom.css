@@ -1,13 +1,23 @@
-html {
-  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+body {
+  /* font-family: "PT Serif", Georgia, "Times New Roman", serif; */
+  line-height: 1.7em;
+}
+h1, h2, h3, h4, h5, h6{
+  
+  font-family: 'PT Sans Narrow', sans-serif;
 }
 code,
 pre {
   font-family: Menlo, Monaco, "Courier New", monospace;
+  background-color: #F7F7F7;
+}
+.sourceCode{
+  /* margin:0px; */
 }
 p,
 li {
-  font-size: 1.1em;
+  font-size: 1em;
+  font-family: 'Roboto', sans-serif;
 }
 
 p,
@@ -46,6 +56,12 @@ blockquote {
 }
 
 .completed {
-  color: darkgrey;
+  /* background-color: lightgrey; */
   /* text-decoration: underline overline wavy rgb(192, 192, 207); */
+}
+
+.highlight{
+  background-color: #FEF2CC;
+  padding: 2px 4px 2px 4px;
+  border-radius: 6px;
 }
