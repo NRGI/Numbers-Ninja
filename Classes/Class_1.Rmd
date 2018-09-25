@@ -6,19 +6,15 @@ author: |
 date: "`r Sys.Date()`"
 output:
   html_notebook:
-    code_folding: hide
     highlight: kate
     smart: yes
     theme: cosmo
   pdf_document: default
   html_document:
     df_print: paged
+    includes: assets/header.html
 css: assets/custom.css
 ---
-To-Do Items
-
-1. Add package installations to the pre-requisite
-2. Add some reading material
 
 <div class="completed">
 ##Pre-requisites
@@ -30,52 +26,53 @@ There two things we need to do before we start the lesson.
 
 ##Get familiar with your working environment
 
-RStudio is an [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment)(IDE) for the programming language R. An IDE is a software application that makes it easier to write and manage code. It is by far the most popular IDE for R and has several features that are custom made to support data science in R.
+When you installed R on your computer, you provide it the tools necessary to process code that is written in R. RStudio is a software application that gives you additional functionality to write and manage R code and projects [^1]. It is by far the most popular IDE for R and has several features that are custom made to support data science in R.
 
-There are four different panes on RStudio.
+There are four different panes on RStudio that you need to get familiar with.
 
-1. The console
-2. The scripts
-3. The viewer
-4. The environment
+1. The console: This is the pane that is usually located on the left (at the bottom if you have a script or notebook open) that can be used to type in R commands. The console is a great place to test out lines of code that doesn't necessarily have to go into the project you are woring on. The console is also the place were the output of your code are printed [^2]. The console however, is not the place to write any code that you need to rerun since it is not possible to save code that is written in the console as a file. You will need to use the code pane to do that.
+2. The code: This is were you will write the majority of the code for your projects. There are several different formats in which you can write code. This pane only appears if you have an open file that you are currently working on. Click on the ![](assets/scripts.png) button at the top left of R Studio to see the different options. We will use the first two options R Notebook and R Script for most of this course.
+3. The viewer: The pane to the bottom right is where you can view plots rendered by your code, packages that are currently loaded to the environment, access help files, view documents, and access folders on your computer. Click on the ![](assets/packages.png) tab to scroll through the list and see all the packages that are checked. These are the packages that are pre-loaded with your session. If you don't know what packages are, don't worry, we will be covering that very soon.
+4. The environment: The environment pane is the one on the top-right. This is were all the variables and functions that you create are displayed. R Studio provides additional functionality that allows users to click on these variables to view their contents. Click on ![](assets/global environ.png) dropdown you will notice that there are several other packages that are listed there. These are the same as those that are checked in the packages tab on the viewer pane. Selecting one of them will display the entire list of functions that are currently available for you to use.
 
 ⚡***Ninja Tasks***⚡
 
 1. Create a Numbers Ninja Folder on your local machine
-2. Create an R Notebook "Class 1" and save it in this folder
+2. Create an R Notebook "Class_1" and save it in this folder
 
-##A quick markdown detour
+[^1]: The techinical term for this type of software application is: [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment)(IDE).
 
-####What is a markup language?
+[^2]: This is true for all formats other than those that use R Markdown. In the case script formats that use R markdown the output is printed within the script rather than in the console.
+
+##A quick R Markdown detour
+
+Markdown is a markup language.
 
 >In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text...the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - Wikipedia
 
-Some examples of markup languages includes - [TeX](https://en.wikipedia.org/wiki/TeX), [LaTeX](https://en.wikipedia.org/wiki/LaTeX), [HTML](https://en.wikipedia.org/wiki/HTML) etc. TeX markup language that created a [typesetting system](https://en.wikipedia.org/wiki/Typesetting) in computers for high quality books. LaTeX is used extensively in academia to create documents. HTML is the language used to create and organize content on the web. All websites use HTML.
+<span class="highlight">Hyper Text Markup Language</span>([HTML](https://en.wikipedia.org/wiki/HTML)) is perhaps the most well-known markup language out there [^3]. It is used to render content on websites. Go ahead and right click on any webpage and click on inspect to open up the web inspector to view the underlying HTML code that was used to generate it. <span class="highlight">Markdown</span> is a more human friendly (but limited) version of HTML. Markdown uses simple and easy to read tags to markup text which is compiled (by your computer) into HTML that can be used to render webpages. Making it easier to create content that can be rendered on a webpage for those who are unfamiliar with HTML. 
 
-####What is R Markdown?
+<span class="highlight">R Markdown</span> is a package in that allows us to combine markdown with R code. Using R Markdown we can create a wide variety of easy to read and reproduce R documents that contain both code and nicely formatted. This online R notebook is a case in point. 
 
-R Markdown combine markdown with R code. You can think of markdown as a markup language that is human readable version of HTML. Using R Markdown we can insert "code chunks" in between R markdown to generate a variety of different document formats such as HTML reports and notebooks, pdf, Word etc. The main benefit of R Markdown is that it is readable and reproducible. 
-
-For this and future R Lab sessions we will be using an RStudio's Notebook feature which is build using R Markdown. An R Notebook is a markdown document with chunks that can be executed independently and interactively, with output visible immediately beneath the input.
-
-In addition to using markdown to markup text, R Markdown documents also use a [YAML](https://en.wikipedia.org/wiki/YAML) header. This is the section right at the top of the notebook that is separated by the `---`. You don't have to learn much about YAML, however, we need to be familiar enough to perform basic tweaks such as adding a new title, changing authors etc.
+In addition to using markdown to markup text, R Markdown documents also uses <span class="highlight">R Markdown</span>[YAML](https://en.wikipedia.org/wiki/YAML)</span>. This is the section right at the top of the notebook that is separated by the `---`. This is the part of the document were you specify the title and other characteristics of the report.
 
 Here are a few references to keep handy
 
 1. [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
 2. [R Markdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
 
-
 ⚡***Ninja Tasks***⚡
 
 1. Create an H2 level header with title Class 1 Exercises
 2. Write the following text: "The list below shows the exercises for this class"
-3. Create an unordered list with following list items: "1. Practice Shortcuts" "2. Practice dplyr"
-3. Click on the preview button at the top left of the IDE to preview your document.
+3. Create an ordered list with following list items: "1. Practice Shortcuts" "2. Practice dplyr"
+4. Click on the preview button at the top left of the IDE to preview your notebook
+
+[^3]: Some other examples include - [TeX](https://en.wikipedia.org/wiki/TeX) and [LaTeX](https://en.wikipedia.org/wiki/LaTeX). TeX is the markup language that used as a [typesetting system](https://en.wikipedia.org/wiki/Typesetting) in computers for high quality books. LaTeX is used extensively in academia to create documents. 
 
 ##Shortcuts
 
-Here are a few keyboard shortcuts you should use all the time
+Before we move on, lets learn a few shortcuts.
 
 1. `Cmd + Option + I` or `Ctrl + Alt + I`: Insert a chunk in markdown/notebook etc
 2. `Option + -` or `Alt + -`: Enter the assignment operator
@@ -87,62 +84,85 @@ You can find more shortcut keys [here](https://support.rstudio.com/hc/en-us/arti
 
 ⚡***Ninja Tasks***⚡
 
-1. Use the shortcuts to create a new code chunk => assign the string "Hello World" to `myFirstVar` variable => run the line of code => add a print command using `print(myFirstVar)` => run the entire chunk
+1. Use all the shortcuts to do the following task: create a new code chunk => assign the string "Hello World" to `myFirstVar` variable => run the line of code => add a print command using `print(myFirstVar)` => run the entire chunk
 
 ##Packages
 
-R packages are additional features that extends the functionality of base R. Packages contain custom functions that are pre-written so that you don't have to worry about re-writing all the code required to create them. In addition to functions, packages can also contain data or point database api (such `wbstats` which points to the World Banks data).
+Packages that make our job as coders easier by extending the functionality of base R. Each package contains a collection of functions that we can use in our code without having to worry about needing to write and maintain them ourselves. In addition to functions, packages can also contain data or point database api (such `wbstats` which points to the World Banks data). R has an extremely rich, well maintained ecosystem of packages that contain functions and data that are relevant to almost any academic (or even trivial) topics of interest.
 
 ⚡***Ninja Tasks***⚡
 
-1. Install the following package - `tidyverse` and `nycflights13` packages using Rstudio
+1. Install the following packages - `tidyverse` and `nycflights13` using the package tab in the viewer pane (use the ![](assets/install.png) button)
+2. Use the `library()` function to load these two packages in the Class 1 notebook
+3. Check the packages tab on your viewer to see if these packages are checked (i.e. loaded to our current environment)
+4. Check the Global Environment dropdown to see that these are listed.
 
 </div>
 
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+library(tidyverse); library(nycflights13)
+```
+
 ##Data Manipulation using dplyr
 
+The tidyverse
 We will be using the `nycflights13` and the `tidyverse` packages for this section. Here is a resource to keep handy whenever you are using the `tidyverse` for [data wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 
 
 ####Tibbles
 
 
-```{r}
-library(dplyr); library(nycflights13)
-
-
-```
-
 ⚡***Ninja Tasks***⚡
 
 1. Create a tibble (of your choice) with three observations and three variables.
 2. Show the class and structure of the tibble you created.
 3. Convert the mtcars data set to a tibble.
-4. Load the nycflights13 package.
 
+🏆***Solution***🏆
+
+Lets create a tibble using the `tibble()` command. Check out the code below. Each input in the tibble command is a column. Notice how I have used both column vectors created within `tibble()` and an externally created the vector `hobby` inside the command. 
 ```{r}
-library(dplyr)
-myFavoriteThings <- tibble(gadgets = c("Pixel", "Kindle", "Vaccum Cleaner"), books = c("Das Kapital", "Harry Potter", "Enid Blyton"), hobbies = c("dancing", "hiking", "reading"), milesRun = c(1, 3, 10))
+hobbies <-  c("dancing", "hiking", "reading")
+myFavoriteThings <- tibble(gadgets = c("Pixel", "Kindle", "Vaccum Cleaner"), books = c("Das Kapital", "Harry Potter", "Enid Blyton"), hobbies, milesRun = c(1, 3, 10))
 
-class(myFavoriteThings)
+myFavoriteThings
 ```
+
+
+Lets checkout the structure using the `str()` command.
 
 ```{r}
 str(myFavoriteThings)
 ```
 
+The tidyverse also provides a function called `glimpse()` to do the same thing as `str()`. Notice the differences between the outputs from the two commands.
+
 ```{r}
-mtcars
+glimpse(myFavoriteThings)
+```
 
-mtcarTibble <- as_tibble(mtcars)
+You can access the class of any object in R using the `class()` command. Notice how there are three classes for a tibble - "tbl_df", "df" and "data.frame". This implies that a tibble is really a data.frame with some added functionality on top that is provided by the df and tbl_df classes.
+```{r}
+class(myFavoriteThings)
+```
 
-str(mtcarTibble)
+
+`mtcars` is a part of the `datasets` package that is preloaded in R. Lets first look at its structure using `str()`
+```{r}
+str(mtcars)
+```
+
+As you can see the class of mtcars is a data.frame and not a tibble. We can convert it to a tibble using the `as_tibble()` command. Below, I have used this command to create a new tibble called `mtTibble`. The output shows it structure. Notice that now we have the two additional classes "df" and "tbl_df" that characterize tibbles.
+
+```{r}
+mtTibble <- as_tibble(mtcars)
+
+str(mtTibble)
 ```
 
 
 
 ####Pipes
-
 
 
 ⚡***Ninja Tasks***⚡
@@ -190,7 +210,6 @@ max(flights$dep_delay, na.rm = T)
 ⚡***Ninja Tasks***⚡
 
 1. Which flight out of JFK was the most delayed in 2013?
-
 
 ```{r}
 library(nycflights13)
