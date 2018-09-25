@@ -9,24 +9,23 @@ output:
     highlight: kate
     smart: yes
     theme: cosmo
-  pdf_document: default
   html_document:
     df_print: paged
     includes: assets/header.html
+  github_document: default
+  pdf_document: default
 css: assets/custom.css
 ---
 
 <div class="completed">
 ##Pre-requisites
-
 There two things we need to do before we start the lesson.
 
 1. [Install R](https://cran.r-project.org/): Any of the links on that page should work
 2. [Install Rstudio](https://www.rstudio.com/products/rstudio/download/): Choose the option that is suited for your Operating System (OS).
 
 ##Get familiar with your working environment
-
-When you installed R on your computer, you provide it the tools necessary to process code that is written in R. RStudio is a software application that gives you additional functionality to write and manage R code and projects [^1]. It is by far the most popular IDE for R and has several features that are custom made to support data science in R.
+When you installed R on your computer, you provide it the tools necessary to process code that is written in R. The Base R installation ships with a simple code editor that can be used to write R scripts. RStudio is a software application that builds on top of your R installation to give you additional functionality to write and manage R code and projects [^1]. It is by far the most popular integrated development environment (IDE) for R and has several features that are custom made to support data science in R.
 
 There are four different panes on RStudio that you need to get familiar with.
 
@@ -45,7 +44,6 @@ There are four different panes on RStudio that you need to get familiar with.
 [^2]: This is true for all formats other than those that use R Markdown. In the case script formats that use R markdown the output is printed within the script rather than in the console.
 
 ##A quick R Markdown detour
-
 Markdown is a markup language.
 
 >In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text...the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - Wikipedia
@@ -71,7 +69,6 @@ Here are a few references to keep handy
 [^3]: Some other examples include - [TeX](https://en.wikipedia.org/wiki/TeX) and [LaTeX](https://en.wikipedia.org/wiki/LaTeX). TeX is the markup language that used as a [typesetting system](https://en.wikipedia.org/wiki/Typesetting) in computers for high quality books. LaTeX is used extensively in academia to create documents. 
 
 ##Shortcuts
-
 Before we move on, lets learn a few shortcuts.
 
 1. `Cmd + Option + I` or `Ctrl + Alt + I`: Insert a chunk in markdown/notebook etc
@@ -87,7 +84,6 @@ You can find more shortcut keys [here](https://support.rstudio.com/hc/en-us/arti
 1. Use all the shortcuts to do the following task: create a new code chunk => assign the string "Hello World" to `myFirstVar` variable => run the line of code => add a print command using `print(myFirstVar)` => run the entire chunk
 
 ##Packages
-
 Packages that make our job as coders easier by extending the functionality of base R. Each package contains a collection of functions that we can use in our code without having to worry about needing to write and maintain them ourselves. In addition to functions, packages can also contain data or point database api (such `wbstats` which points to the World Banks data). R has an extremely rich, well maintained ecosystem of packages that contain functions and data that are relevant to almost any academic (or even trivial) topics of interest.
 
 ⚡***Ninja Tasks***⚡
@@ -103,14 +99,44 @@ Packages that make our job as coders easier by extending the functionality of ba
 library(tidyverse); library(nycflights13)
 ```
 
+##Tidyverse
+The tidyverse is a collection of packages that follow the tidy tools philosophy. 
+
+>There are four basic principles to a tidy API:
+>
+1. Reuse existing data structures.
+2. Compose simple functions with the pipe.
+3. Embrace functional programming.
+4. Design for humans.
+>
+-- The Tidy Tools Manifesto, Hadley Wickham
+
+The tidyverse packages are characterized by their extensive use of pipes to break down complex functions into simpler pieces that are easier to to read and understand. We will learn about pipes shortly.
+
+⚡***Ninja Tasks***⚡
+
+1. Read the [tidy tools manifesto](https://tidyverse.tidyverse.org/articles/manifesto.html)
+
+
+##nycflight13 data
+We will be using the `nycflights13` datasets package to learn data manipulation. The package contains relational datasets that offer information on all the flights that took off from 3 airports in NYC (EWR, JFK, LGA) in 2013. The different datasets in the package are as follows:
+
+1. airlines: Names of the different airline carriers
+2. airports: Meta data on the airports in the dataset
+3. flights: Data on all the flights that departed NYC in 2013
+4. planes: Meta data on the planes (their make, capacity etc)
+5. weather: Weather at the three NYC airports on all days of 2013
+
+For this notebook we will be using only the flights data.
+
 ##Data Manipulation using dplyr
+dplyr is a package in the tidyverse collection. It provides elegant and easy to understand functions for manipulating data in R.
 
-The tidyverse
-We will be using the `nycflights13` and the `tidyverse` packages for this section. Here is a resource to keep handy whenever you are using the `tidyverse` for [data wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
-
+Keep this [data wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) cheatsheet open on your browser as a ready reference for the rest of the notebook.
 
 ####Tibbles
 
+A tibble is a tidy version of a data.frame. It adds a few extra features (through two new classes) that give it a few advantages over data.frames.
 
 ⚡***Ninja Tasks***⚡
 
@@ -123,7 +149,7 @@ We will be using the `nycflights13` and the `tidyverse` packages for this sectio
 Lets create a tibble using the `tibble()` command. Check out the code below. Each input in the tibble command is a column. Notice how I have used both column vectors created within `tibble()` and an externally created the vector `hobby` inside the command. 
 ```{r}
 hobbies <-  c("dancing", "hiking", "reading")
-myFavoriteThings <- tibble(gadgets = c("Pixel", "Kindle", "Vaccum Cleaner"), books = c("Das Kapital", "Harry Potter", "Enid Blyton"), hobbies, milesRun = c(1, 3, 10))
+myFavoriteThings <- tibble(gadgets = c("Pixel", "Kindle", "Vaccum Cleaner"), books = c("Das Kapital", "Harry Potter", "Enid Blyton"), hobbies)
 
 myFavoriteThings
 ```
@@ -161,7 +187,22 @@ str(mtTibble)
 
 
 
-####Pipes
+####The Pipe Operator
+
+The pipe operator is a part of the `magittr` packages
+```{r}
+# mtcars[[3]]
+# models <- mtcars %>% 
+#   split(.$cyl) %>% 
+#   map(function(df) lm(mpg ~ wt, data = df))
+# 
+# models %>% 
+#   map(summary) %>% 
+#   map_dbl(~.$r.squared)
+```
+
+
+
 
 
 ⚡***Ninja Tasks***⚡
