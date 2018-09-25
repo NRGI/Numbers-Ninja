@@ -109,6 +109,15 @@ The tidyverse
 We will be using the `nycflights13` and the `tidyverse` packages for this section. Here is a resource to keep handy whenever you are using the `tidyverse` for [data wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 
 
+
+```{r}
+mtcars %>%
+    filter(hp > 100)
+
+
+```
+
+
 ####Tibbles
 
 
@@ -185,11 +194,32 @@ seq(from = sqrt(sum(seq(from = 1, to = 100, by = 2))), to = 3 * sqrt(sum(seq(fro
 
 Lets find all the flights that departed in the morning
 
-```{r}
-morningFlights <- flights %>% 
-        filter(dep_time <= 1200 & month == 1 & day == 1)
 
-max(morningFlights$dep_time, na.rm = T)
+```{r}
+##alonso
+flights %>% 
+    filter(dep_time <= 1200 & month == 1 & day == 1) %>% 
+    filter(dep_time <= 1200 & month == 2 & day == 1)
+
+# max(morningFlights$dep_time, na.rm = T)
+```
+
+
+```{r}
+##anne
+flights %>% 
+    filter(dep_time <= 1200 & month %in% c(1, 8) & day == 1)
+
+testVector <- 1:100
+testVector[1:12]
+```
+
+
+```{r}
+##solongo
+solongo <- flights %>% 
+    filter(dep_time <= 1200 & month %in% testVector[1:12] & day == 1)
+
 ```
 
 The most delayed flight from JFK in 2013 
@@ -252,10 +282,7 @@ flights %>%
 
 
 ```{r}
-flights %>% 
-    filter(origin %in% c("JFK")) %>% ##origin == "JFK" | origin == "EWR"
-    select(origin, contains("dest"),air_time) %>% 
-    top_n(air_time, n = 10)
+
 ```
 
 
@@ -282,12 +309,41 @@ Find the answer? Is that correct?
 
 ####Mutate
 
+```{r}
+if(condition) {
+    execute true code
+} else {
+    execute false code
+}
+```
+
+```{r}
+flights %>% 
+    select(origin, contains("dep")) %>% 
+    mutate(was_it_delayed = if_else(dep_delay > 0, TRUE, FALSE))
+```
+
 
 ⚡***Ninja Tasks***⚡
 
-1. Create a new variable called total_delay that is the sum of the arrival delay and departure delay
+1. Create a new variable called total_delay that is the sum of the arrival delay and departure delay. Keep only arrival delay, departure delay and total_delay in our output.
 
 ####Group and Summarise
+
+
+
+```{r}
+flights %>% 
+    group_by(origin) %>% 
+    summarise(mean_air_time = mean(air_time, na.rm = T), n_carriers = n_distinct(carrier), nFlights = n()) 
+
+str(flights)
+sum(testSummary$nFlights)
+```
+
+```{r}
+flights
+```
 
 
 ⚡***Ninja Tasks***⚡
