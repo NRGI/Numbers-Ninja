@@ -21,3 +21,9 @@ css: assets/custom.css
 3. Introduction to ggplot2
 4. Load and clean data
     + File traversal (working directory etc)
+    
+    
+Resources
+
+1. ggplot: https://github.com/jennybc/ggplot2-tutorial
+2. untidy data: https://github.com/jvcasillas/untidydata

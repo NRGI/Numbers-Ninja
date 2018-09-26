@@ -1,0 +1,18 @@
+---
+title: "Numbers Ninja: Class 3"
+author: |
+    | Hari Subhash
+    | Data Scientist @NRGI
+output:
+  html_notebook:
+    code_folding: hide
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  html_document:
+    df_print: paged
+date: '`r Sys.Date()`'
+css: assets/custom.css
+---
+
+untidy data: https://github.com/jvcasillas/untidydata

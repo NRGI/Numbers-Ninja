@@ -14,13 +14,15 @@ output:
 date: '`r Sys.Date()`'
 css: assets/custom.css
 ---
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-htmltools::img(src = knitr::image_uri('assets/ninja-logo2.jpg'), 
-               alt = 'logo', 
-               style = 'position:absolute; top:5%; right:5%; padding:10px;')
+<div style= "float:right; position: relative; top: -80px; padding-left: 0px">
+```{r, echo=FALSE, warning=FALSE, message=FALSE, out.width='10%'}
+##load the packages
+library(tidyverse); library(nycflights13); library(gapminder)
+##add the icon
+knitr::include_graphics("assets/ninja-logo2.jpg")
 ```
-
-##Topics
+</div>
+##Topics to cover
 
 1. ggplot2
 2. Data Joins
@@ -28,4 +30,87 @@ htmltools::img(src = knitr::image_uri('assets/ninja-logo2.jpg'),
 
 
 ##ggplot2
-ggplot2 is a declaritive plotting library that is used
+ggplot2 is a declaritive plotting library in R. The gg in ggplot2 stands for "Grammer of Graphics" a book on the principles of data visualization that the package is based on. Please keep [this](https://ggplot2.tidyverse.org/reference/) reference website open through out the call. We will be using the the `tidyverse` and `nycflights13` packages. Make sure that you create a chunk at the top of your notebook to load these two packages.
+
+###Basic charts
+There are seven different layers that are used for creating plots in ggplot. We need to specify three out of these seven layers to create any chart (the rest adopt default values if not specified). These are as follows:
+
+1. A data layer
+2. An aesthetics layer
+3. A geom layer
+
+With these three layers in mind, lets use the gapminder dataset to draw a few common plot types:
+
+1. Scatterplot
+```{r}
+##use a scatterplot explore the relation between time (in years) and life expectancy
+
+##is this the best way to show this relationship?
+```
+
+⚡***Ninja Tasks***⚡
+
+1. Use a scatterplot to explore the relationship between GDP per capita and life expectancy
+2. Bonus question: Can you map the population to a particular aesthetic so that it can be displayed on the chart too?
+
+
+2. Line chart
+```{r}
+##use a line chart to show the relationship between time and life expectancy
+
+```
+
+```{r}
+##repeat the same but with one line for each continent/country, (guess why there is a sudden drop for a few countries)?
+```
+
+⚡***Ninja Tasks***⚡
+
+1. Draw a line chart showing the trend for average gdp per capita through time for each continent
+
+3. Histogram
+```{r}
+##draw a histogram of gdpPerCap. What does it represent? What could be a potential problem with this histogram?
+
+```
+
+⚡***Ninja Tasks***⚡
+
+1. Draw a histogram to show the characteristics of population
+
+4. Bar chart
+```{r}
+##draw a bar chart with average life expectancy in different continents
+
+```
+
+⚡***Ninja Tasks***⚡
+
+1. Draw a bar chart showing the average lifeExp across years
+
+
+###Facetting
+
+```{r}
+##plot gdp per capita and life expectancy facetted by continents
+
+```
+
+
+⚡***Ninja Tasks***⚡
+1. 
+
+###Layering multiple geoms
+
+
+###Adding summary stats to plots
+
+
+##Data Joins
+
+
+
+
+
+
+
