@@ -146,17 +146,20 @@ ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, group = country)) 
 
 
 ⚡***Ninja Tasks***⚡
+
 1. Show the relationship between GDP per capita and Life Expectancy using a facetted chart of your choice
 
 ###Layering multiple geoms
 
 ⚡***Ninja Tasks***⚡
+
 1. Add a line of best fit to a scatter plot showing the relationship between GDP per capita and life expectancy
 
 ###Adding summary stats to plots
 
 
 ⚡***Ninja Tasks***⚡
+
 1. Add a vertical line showing the mean of population to the histogram showing its distribution
 
 ##Data Joins
