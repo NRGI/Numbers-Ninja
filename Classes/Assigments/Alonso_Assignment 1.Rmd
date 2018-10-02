@@ -1,0 +1,57 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(gapminder)
+gapminder
+ggplot(gapminder,aes(x=gdpPercap,y=lifeExp,group=country,size=pop))+
+geom_point(aes(color=year, alpha=if_else(country=="Peru",1,0.5))) +
+  scale_x_log10()+
+  facet_wrap(~continent)+
+  labs(title="Life expentancy in Peru not as highly impacted by GDP",x="GDP per Capita", y="Life expentancy")+
+  guides(alpha="none",color="none",size="none")
+  
+
+```
+```{r}
+gapminder %>% 
+  group_by(continent,year) %>% 
+  summarise(avrGDPperCap=mean(gdpPercap)) %>% 
+  ggplot(.,aes(x=year,y=avrGDPperCap))+
+  geom_line(aes(color=continent))+
+  labs(x="Year", y="Average GDP per capita")
+
+```
+
+```{r}
+
+
+```
+```{r}
+library(ggplot2)
+library(dplyr)
+library(gapminder)
+
+ 
+```
+```{r}
+gapminder %>% 
+  ggplot(.,aes(x=pop, fill=continent))+
+  geom_histogram()+
+  scale_x_log10()
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(gapminder)
+
+```
+```{r}
+gapminder %>%
+  ggplot(.,aes(x=year, weight=pop))+
+  geom_bar(aes(fill=continent))
+  
+```
+

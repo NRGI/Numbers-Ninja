@@ -1,17 +1,17 @@
 ---
 title: "Numbers Ninja: Class 2"
 author: |
-    | Hari Subhash
-    | Data Scientist @NRGI
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
 output:
   html_notebook:
-    code_folding: hide
     highlight: kate
     smart: yes
     theme: cosmo
   html_document:
     df_print: paged
-date: '`r Sys.Date()`'
+    includes: assets/header.html
 css: assets/custom.css
 ---
 <div style= "float:right; position: relative; top: -80px; padding-left: 0px">
@@ -28,9 +28,8 @@ knitr::include_graphics("assets/ninja-logo2.jpg")
 2. Data Joins
 3. More plots
 
-
 ##ggplot2
-ggplot2 is a declaritive plotting library in R. The gg in ggplot2 stands for "Grammer of Graphics" a book on the principles of data visualization that the package is based on. Please keep [this](https://ggplot2.tidyverse.org/reference/) reference website open through out the call. We will be using the the `tidyverse` and `nycflights13` packages. Make sure that you create a chunk at the top of your notebook to load these two packages.
+ggplot2 is a declaritive plotting library in R. The gg in ggplot2 stands for "Grammer of Graphics" a book on the principles of data visualization that the package is based on. Please keep [this](https://ggplot2.tidyverse.org/reference/) reference website open through out the call. We will be using the the `tidyverse` and `gapminder` packages. Make sure that you create a chunk at the top of your notebook to load these two packages.
 
 ###Basic charts
 There are seven different layers that are used for creating plots in ggplot. We need to specify three out of these seven layers to create any chart (the rest adopt default values if not specified). These are as follows:
@@ -39,34 +38,82 @@ There are seven different layers that are used for creating plots in ggplot. We 
 2. An aesthetics layer
 3. A geom layer
 
-With these three layers in mind, lets use the gapminder dataset to draw a few common plot types:
+With these three layers in mind, lets use the gapminder dataset to draw a few common plot types.
 
-1. Scatterplot
 ```{r}
-##use a scatterplot explore the relation between time (in years) and life expectancy
+gapminder
+```
 
-##is this the best way to show this relationship?
+
+###Scatterplot
+
+Lets explore the relationship between year and life expectancy using a scatterplot. The first task is to create the data and the aesthetics layer after which we specify the geom we are interested in plotting. As can be seen below, this is not a particulary useful chart. Each year in the data has several observations for life expectancy (one for each country), this results in a chart for which it is difficult to perceive a clear trend. In the next step we will see how to improve this chart.
+
+```{r, fig.width=3}
+ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
+    geom_point() +
+    labs(x = "Year", y = "Life Expectancy")
 ```
 
 ⚡***Ninja Tasks***⚡
 
-1. Use a scatterplot to explore the relationship between GDP per capita and life expectancy
-2. Bonus question: Can you map the population to a particular aesthetic so that it can be displayed on the chart too?
+1. Explain why the scatter plot the previous scatter plot showing the relationship between life expectancy and year is not particularly useful
+2. Use a scatterplot to explore the relationship between GDP per capita and life expectancy
+3. Bonus question: Can you map the population to a particular aesthetic so that it can be displayed on the chart too?
+
+🏆***Solution***🏆
 
 
-2. Line chart
-```{r}
-##use a line chart to show the relationship between time and life expectancy
 
+### Line chart
+Now lets use dplyr to calculate the average global life expectancy by year and plot that using a line. As can be seen below, the average global life expectancy has been increasing over the years.
+
+```{r, fig.width=3}
+gapminder %>% 
+    ##group by year to calculate the yearly average life expectancy
+    group_by(year) %>% 
+    summarise(meanLifeExp = mean(lifeExp, na.rm = T)) %>% 
+    ##draw a line marking the trend of life expectancy over years
+    ggplot(., aes(x = year, y = meanLifeExp)) +
+    geom_line() +
+    labs(title = "Average life expectancy has been increasing", x = "Years", y = "Mean Life Expectancy")
 ```
 
-```{r}
+
+Now lets go a bit further and explore the trend for life expectancy for different countries. Notice how in the second line I have separated the alpha aesthetic from inside the mapping.[^1] 
+
+[^1]: This is because alpha is hardcoded to 0.5 and is **not** mapped to any variables in the data i.e. it is the same value of 0.5 across all data. In other words, all we have done is change it from its default value of 1 to 0.5. 
+
+```{r, fig.width=4}
+ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) +
+    ##colour and group are mapped to continent and country and aesthetic is set to 0.5
+    geom_line(mapping = aes(colour = continent, group = country), alpha = 0.5) +
+    labs(title = "Countries in Africa have lower life expectancy", x = "Year", y = "Life Expectancy") +
+    theme(
+        legend.position = "top"
+        
+    )
+```
+
+In the chart above there are a few countries were there are sudden drops in life expectancy. These are because of genocides that occured in Rwanda, Cambodia and China. The chart below used color and alpha mapping to highlight these values. Notice how, I use a alphaMapping and colorMapping variables to fix the alpha and colour aesthetics in the chart.[^2] 
+
+[^2]: These aesthetic parameters are not being mapped to the data. Instead we are using vectors that were created outside the current function call to specify the values for these vectors.
+
+```{r, fig.width=4}
 ##repeat the same but with one line for each continent/country, (guess why there is a sudden drop for a few countries)?
+alphaMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China"), 0.8, 0.1)
+colorMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China"), "darkred", "black")
+
+ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, group = country)) +
+    geom_line(alpha = alphaMapping, colour = colorMapping) +
+    labs(title = "The impact of genocides on life expectancy", x = "Year", y = "Life Expectancy")
 ```
+
 
 ⚡***Ninja Tasks***⚡
 
 1. Draw a line chart showing the trend for average gdp per capita through time for each continent
+
 
 3. Histogram
 ```{r}
@@ -89,6 +136,7 @@ With these three layers in mind, lets use the gapminder dataset to draw a few co
 1. Draw a bar chart showing the average lifeExp across years
 
 
+
 ###Facetting
 
 ```{r}
@@ -98,16 +146,25 @@ With these three layers in mind, lets use the gapminder dataset to draw a few co
 
 
 ⚡***Ninja Tasks***⚡
-1. 
+1. Show the relationship between GDP per capita and Life Expectancy using a facetted chart of your choice
 
 ###Layering multiple geoms
 
+⚡***Ninja Tasks***⚡
+1. Add a line of best fit to a scatter plot showing the relationship between GDP per capita and life expectancy
 
 ###Adding summary stats to plots
 
 
+⚡***Ninja Tasks***⚡
+1. Add a vertical line showing the mean of population to the histogram showing its distribution
+
 ##Data Joins
 
+###Left Join
+```{r}
+
+```
 
 
 
