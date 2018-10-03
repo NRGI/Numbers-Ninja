@@ -1,0 +1,94 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+rm(list = ls())
+library(gapminder); library(tidyverse)
+```
+
+```{r}
+gapminder
+```
+
+```{r}
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+```
+
+```{r}
+ggplot(data = gapminder) + 
+  geom_point(aes(x = gdpPercap, y = lifeExp, size = pop))
+```
+
+
+```{r}
+ggplot(data = gapminder, aes(x = year, y = lifeExp, group = country)) + 
+  geom_line(aes(alpha = if_else(country == "Rwanda", 1, 0.3))) +
+  guides(alpha = "none")
+```
+
+
+```{r}
+gapminder %>% 
+    group_by(year, continent) %>% 
+    summarise(meanLifeExp = mean(lifeExp)) %>% 
+    ggplot(data = ., aes(x = year, y = meanLifeExp, colour = continent)) +
+    geom_line()
+
+```
+
+
+```{r}
+gapminder %>% 
+  group_by(continent, year) %>% 
+  summarise(meanGDPperCap = mean(gdpPercap, na.rm = T)) %>% 
+  ggplot(data = ., aes(x = year, y = meanGDPperCap, group = continent, colour = continent)) +
+  geom_line()
+
+
+```
+
+##nature of gdp per capita
+
+```{r}
+gapminder %>%
+    filter(year == 2007) %>% 
+    ggplot(data = ., aes(x = gdpPercap)) +
+    geom_histogram(bins = 50)
+```
+
+
+```{r}
+gapminder %>% 
+    filter(year == 2007) %>%
+    ggplot(., aes(x = pop)) +
+    geom_histogram(bins = 200)
+```
+
+
+
+```{r}
+gapminder %>% 
+    group_by(continent, year) %>% 
+    summarise(meanlifeExp = mean(lifeExp, na.rm = T)) %>% 
+    ggplot(data = ., aes(x = year, y = meanlifeExp)) +
+    geom_col() +
+    facet_wrap(~continent)
+
+```
+
+```{r}
+n_distinct(gapminder$year)
+```
+
+
+```{r}
+gapminder %>% 
+  group_by(year, continent) %>% 
+  summarise(meanlifeExp = mean(lifeExp, na.rm = T)) %>% 
+  ggplot(data = ., aes(x = year, y = meanlifeExp)) +
+  geom_col() +
+    facet_wrap(~continent)
+```
+

@@ -29,7 +29,7 @@ knitr::include_graphics("assets/ninja-logo2.jpg")
 3. More plots
 
 ##ggplot2
-ggplot2 is a declaritive plotting library in R. The gg in ggplot2 stands for "Grammer of Graphics" a book on the principles of data visualization that the package is based on. Please keep [this](https://ggplot2.tidyverse.org/reference/) reference website open through out the call. We will be using the the `tidyverse` and `gapminder` packages. Make sure that you create a chunk at the top of your notebook to load these two packages.
+ggplot2 is a declarative plotting library in R. The gg in ggplot2 stands for "Grammar of Graphics" a book on the principles of data visualization that the package is based on. Please keep [this](https://ggplot2.tidyverse.org/reference/) reference website open through out the call. We will be using the the `tidyverse` and `gapminder` packages. Make sure that you create a chunk at the top of your notebook to load these two packages.
 
 ###Basic charts
 There are seven different layers that are used for creating plots in ggplot. We need to specify three out of these seven layers to create any chart (the rest adopt default values if not specified). These are as follows:
@@ -47,9 +47,9 @@ gapminder
 
 ###Scatterplot
 
-Lets explore the relationship between year and life expectancy using a scatterplot. The first task is to create the data and the aesthetics layer after which we specify the geom we are interested in plotting. As can be seen below, this is not a particulary useful chart. Each year in the data has several observations for life expectancy (one for each country), this results in a chart for which it is difficult to perceive a clear trend. In the next step we will see how to improve this chart.
+Lets explore the relationship between year and life expectancy using a scatter-plot. The first task is to create the data and the aesthetics layer after which we specify the geom we are interested in plotting. As can be seen below, this is not a particularly useful chart. Each year in the data has several observations for life expectancy (one for each country), this results in a chart for which it is difficult to perceive a clear trend. In the next step we will see how to improve this chart.
 
-```{r, fig.width=3}
+```{r}
 ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
     geom_point() +
     labs(x = "Year", y = "Life Expectancy")
@@ -57,18 +57,48 @@ ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
 
 ⚡***Ninja Tasks***⚡
 
-1. Explain why the scatter plot the previous scatter plot showing the relationship between life expectancy and year is not particularly useful
-2. Use a scatterplot to explore the relationship between GDP per capita and life expectancy
+1. Explain why the scatter plot the previous scatter plot showing the relationship between life expectancy and year is not particularly useful.
+2. Use a scatter-plot to explore the relationship between GDP per capita and life expectancy
 3. Bonus question: Can you map the population to a particular aesthetic so that it can be displayed on the chart too?
 
 🏆***Solution***🏆
 
+####2. Relationship between GDP per capita and life expectancy
+The gapminder data consists of an observation for each country for each year. We are interested in capturing the relationship between GDP per capita and the life expectancy. However, since the data is a time series, we need to average the GDP per capita and life expectancy for each country for the entire time series before plotting. This would smooth out time trends and avoid over-plotting [^1]. Another way to do this would have been to filter out the most recent year to study the relationship. Both are valid options, however the former has the benefit of capturing more information since it takes into account the entire time series of data that is available to calculate the mean values, while the latter disregard all but one year of the data.
 
+In addition, since there are large values in the GDP per capita, we can plot the log of the mean GDP per capita to smooth out the large numbers (<span class="highlight">[watch](#logs)</span> the video below if you don't fully understand logarithmic scales yet). We can do this in two ways, first we could mutate `meanGDPperCap` by taking its log and plotting that (try this yourself)[^2], and the second option would be to use ggplots inbuilt `scale_x_log10` command to transform the plotting scale instead of the variable. While the charts would largely look the same, the second option preserves the actual variable and plots it on the new scale i.e. we are still plotting `mean`
+
+```{r}
+gapminder %>% 
+    group_by(country) %>% 
+    summarise(meanGDPperCap = mean(gdpPercap, na.rm = T), meanLifeExp = mean(lifeExp, na.rm = T)) %>% 
+    ggplot(., aes(x = meanGDPperCap, y = meanLifeExp)) + 
+    geom_point(colour = "blue", size = 2.5, alpha = 0.8) +
+    scale_x_log10() +
+    labs(x = "Mean GDP per capita", y = "Mean Life Expectancy", title = "Life Expectancy increases with GDP per capita")
+```
+
+<a name="logs"><iframe width="720" height="405" src="https://www.youtube.com/embed/sBhEi4L91Sg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></a>
+
+[^1]: Over-plotting happens when data points are plotted on top of each other multiple times. It makes charts more confusing and difficult to read. It should be avoided as far as possible
+[^2]: You can do this using the following command `ggplot(., aes(x = log(meanGDPperCap, base = 10), y = meanLifeExp))` instead of `ggplot(., aes(x = meanGDPperCap, y = meanLifeExp))`. Can you tell the difference between this plot and the one that was made using the scale transformation?
+
+####3. Map an additional aesthetic to the plot
+In this case I don't apply the log transformation just to show the difference from the previous case. In this case we can see that the true relationship between life expectancy and GDP per capita is exponential. In addition, I map the size of each point to the `meanPop` variable. Notice how I had to create this variable in the `summarise()` command so that I could have access to it in the ggplot function.
+```{r}
+gapminder %>% 
+    group_by(country) %>% 
+    summarise(meanGDPperCap = mean(gdpPercap, na.rm = T), meanLifeExp = mean(lifeExp, na.rm = T), meanPop = mean(pop, na.rm = T)) %>% 
+    ggplot(., aes(x = meanGDPperCap, y = meanLifeExp, size = log(meanPop))) + 
+    geom_point() +
+    labs(x = "Mean GDP per capita", y = "Mean Life Expectancy", title = "Life Expectancy increases exponentially with GDP per capita", size = "Log of mean population") +
+    theme(legend.position = "top")
+```
 
 ### Line chart
 Now lets use dplyr to calculate the average global life expectancy by year and plot that using a line. As can be seen below, the average global life expectancy has been increasing over the years.
 
-```{r, fig.width=3}
+```{r}
 gapminder %>% 
     ##group by year to calculate the yearly average life expectancy
     group_by(year) %>% 
@@ -82,9 +112,9 @@ gapminder %>%
 
 Now lets go a bit further and explore the trend for life expectancy for different countries. Notice how in the second line I have separated the alpha aesthetic from inside the mapping.[^1] 
 
-[^1]: This is because alpha is hardcoded to 0.5 and is **not** mapped to any variables in the data i.e. it is the same value of 0.5 across all data. In other words, all we have done is change it from its default value of 1 to 0.5. 
+[^1]: This is because alpha is hard coded to 0.5 and is **not** mapped to any variables in the data i.e. it is the same value of 0.5 across all data. In other words, all we have done is change it from its default value of 1 to 0.5. 
 
-```{r, fig.width=4}
+```{r}
 ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) +
     ##colour and group are mapped to continent and country and aesthetic is set to 0.5
     geom_line(mapping = aes(colour = continent, group = country), alpha = 0.5) +
@@ -95,11 +125,11 @@ ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) +
     )
 ```
 
-In the chart above there are a few countries were there are sudden drops in life expectancy. These are because of genocides that occured in Rwanda, Cambodia and China. The chart below used color and alpha mapping to highlight these values. Notice how, I use a alphaMapping and colorMapping variables to fix the alpha and colour aesthetics in the chart.[^2] 
+In the chart above there are a few countries were there are sudden drops in life expectancy. These are because of genocides that occurred in Rwanda, Cambodia and China. The chart below used color and alpha mapping to highlight these values. Notice how, I use a alphaMapping and colorMapping variables to fix the alpha and colour aesthetics in the chart.[^2] 
 
 [^2]: These aesthetic parameters are not being mapped to the data. Instead we are using vectors that were created outside the current function call to specify the values for these vectors.
 
-```{r, fig.width=4}
+```{r}
 ##repeat the same but with one line for each continent/country, (guess why there is a sudden drop for a few countries)?
 alphaMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China"), 0.8, 0.1)
 colorMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China"), "darkred", "black")
@@ -112,44 +142,103 @@ ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, group = country)) 
 
 ⚡***Ninja Tasks***⚡
 
-1. Draw a line chart showing the trend for average gdp per capita through time for each continent
+1. Draw a line chart showing the trend for average GDP per capita through time for each continent
+
+🏆***Solution***🏆
+The chart below shows that poorer countries in the Africa and Asia are still lagging behind those in the West. According to [Wikipedia](https://en.wikipedia.org/wiki/Convergence_(economics)) convergence can be described as follows:
+
+>The idea of convergence in economics (also sometimes known as the catch-up effect) is the hypothesis that poorer economies' per capita incomes will tend to grow at faster rates than richer economies. As a result, all economies should eventually converge in terms of per capita income.
+
+```{r}
+gapminder %>% 
+    group_by(continent, year) %>% 
+    summarise(meanGDP = mean(gdpPercap, na.rm = T)) %>% 
+    ggplot(., aes(x = year, y = meanGDP)) +
+    geom_line(aes(colour = continent)) +
+    labs(x = "Year", y = "Mean GDP per Capita", title = "Convergence where art thou?", colour = "Continent") +
+    theme(legend.position = "top")
+```
+
 
 
 3. Histogram
+Watch the video [below](#hist) to refresh your understanding of histograms. The plot below shows the histogram of `gdpPerCap` in the gapminder dataset. There is however a problem with this chart. It shows the distribution of GDP per capita over time. We are however not interested in the spread of GDP per capita across time, rather our interest is in seeing the spread across countries. In this case, we might be better off by filtering down to a single year and observing the distribution of GDP per capita across countries. Lets try this out with the training exercise.
 ```{r}
-##draw a histogram of gdpPerCap. What does it represent? What could be a potential problem with this histogram?
-
+ggplot(data = gapminder, aes(gdpPercap)) +
+    geom_histogram(bins = 30)
 ```
+<a id="hist"><iframe width="560" height="315" src="https://www.youtube.com/embed/gSEYtAjuZ-Y" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></a>
 
 ⚡***Ninja Tasks***⚡
 
 1. Draw a histogram to show the characteristics of population
 
-4. Bar chart
+🏆***Solution***🏆
+
+For this chart we select the latest year in the dataset and plot the distribution of the population. Could you think of the pros and cons for using this method versus the one in which we calculate the average population for each country over the entire dataset and plotting that? [^3]
+
+```{r}
+gapminder %>% 
+    filter(year == max(year, na.rm = T)) %>% 
+    ggplot(., aes(pop)) +
+    geom_histogram(bins = 60) +
+    labs(x = "Population", y = "Count")
+```
+
+
+
+
+###Bar chart
+The chart below shows the average life expectancy for different continents for the most recent year in the data. Can you think of the reason why it might be slightly better to have only considered the most recent year when calculating the average life expectancy for a continent? Also notice, how the bars are aligned from the smallest to the tallest. Can you find out how I might have achieved this?
 ```{r}
 ##draw a bar chart with average life expectancy in different continents
-
+gapminder %>% 
+    filter(year == max(year, na.rm = T)) %>% 
+    group_by(continent) %>% 
+    summarise(meanLifeExp = mean(lifeExp, na.rm = T)) %>% 
+    ggplot(., aes(x = reorder(continent, meanLifeExp), y = meanLifeExp)) +
+    geom_col() +
+    labs(y = "Mean life expectancy") +
+    theme(
+        axis.title.x = element_blank()
+    )
+    
 ```
 
 ⚡***Ninja Tasks***⚡
 
 1. Draw a bar chart showing the average lifeExp across years
 
+🏆***Solution***🏆
+```{r}
+gapminder %>% 
+    group_by(year) %>% 
+    summarise(meanLifeExp = mean(lifeExp, na.rm = T)) %>% 
+    ggplot(data = ., aes(x = year, y = meanLifeExp)) +
+    geom_col()
+    
+```
+
 
 
 ###Facetting
 
 ```{r}
-##plot gdp per capita and life expectancy facetted by continents
+##reuse some of the plots above as a facetted plot
 
 ```
 
 
 ⚡***Ninja Tasks***⚡
 
-1. Show the relationship between GDP per capita and Life Expectancy using a facetted chart of your choice
+1. Show the relationship between GDP per capita and Life Expectancy using a faceted chart of your choice
 
 ###Layering multiple geoms
+
+```{r}
+##draw a line of fit in a chart of population and life expectancy
+```
+
 
 ⚡***Ninja Tasks***⚡
 
@@ -158,18 +247,74 @@ ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, group = country)) 
 ###Adding summary stats to plots
 
 
-⚡***Ninja Tasks***⚡
-
-1. Add a vertical line showing the mean of population to the histogram showing its distribution
-
-##Data Joins
-
-###Left Join
 ```{r}
+##explore gdp per capita over the years using a jitter plot and stat_summary (rule of thumb, always stay as close to the data as possible)
+
+    
+```
+
+
+```{r}
+##Using vline and hline
 
 ```
 
 
+
+⚡***Ninja Tasks***⚡
+
+1. Add a vertical line showing the mean of population to the histogram showing its distribution
+
+
+###Add some style
+
+
+```{r}
+##Use the plot from the previous section and add some pizazz (explore ggthemes, legend position etc)
+```
+
+
+
+
+###Add some more complexity (based on time)
+
+####Coords
+
+####Scales
+
+
+##Data Joins
+
+There are 6 different types of joins. These are as follows:
+
+1. `inner_join()`: return <span class="highlight">all rows from x where there are matching values in y</span>, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned
+2. `left_join()`: return <span class="highlight">all rows from x</span>, and all columns from x and y. Rows in x with no match in y will have NA values in the new columns. If there are multiple matches between x and y, all combinations of the matches are returned.
+3. `right_join()`: return <span class="highlight">all rows from y</span>, and all columns from x and y. Rows in y with no match in x will have NA values in the new columns. If there are multiple matches between x and y, all combinations of the matches are returned.
+4. `full_join()`: return <span class="highlight">all rows</span> and all columns from both x and y. Where there are not matching values, returns NA for the one missing.
+5. `semi_join()`: return all rows from x where there are matching values in y, keeping just columns from x. A semi join differs from an inner join because an inner join will return one row of x for each matching row of y, where a semi join will never duplicate rows of x.
+6. `anti_join()`: return all rows from x where there are not matching values in y, keeping just columns from x
+
+```{r}
+band_members
+```
+
+```{r}
+band_instruments
+```
+
+
+###Left Join
+This is the most popular type of join (analogous to Vlookup in Excel).
+```{r}
+library(nycflights13)
+
+flightsWithWeather <- left_join(flights, weather, by = c("origin", "month", "day", "hour"))
+```
+
+
+```{r}
+weather
+```
 
 
 

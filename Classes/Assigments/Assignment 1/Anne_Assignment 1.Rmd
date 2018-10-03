@@ -7,22 +7,32 @@ output: html_notebook
 ##Use a scatterplot to explore the relationship between GDP per capita and life expectancy
 ##Bonus question: Can you map the population to a particular aesthetic so that it can be displayed on the chart too?
 ```{r}
-gapminder
 library(gapminder); library(tidyverse); library(scales); library(dplyr)
+
+gapminder
+```
+
+```{r}
 ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 
 ```
+
+
 ```{r}
 ggplot(gapminder, aes (x = gdpPercap, y = lifeExp, size = pop)) +
   geom_point()
 ```
+
 ##Line Chart
+
 ```{r}
-gapminder
-library(gapminder); library(tidyverse); library(scales); library(dplyr)
-ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) +
-  geom_line()
+gapminder %>% 
+    group_by(year, continent) %>% 
+    summarise(meanLifeExp = mean(lifeExp, na.rm = T), meanGDPperCap = mean(gdpPercap, na.rm = T)) %>% 
+    ggplot(., aes(x = meanGDPperCap, y = meanLifeExp)) +
+    geom_line() + 
+    facet_wrap(~continent)
 ```
 
 
@@ -32,27 +42,33 @@ gapminder %>%
 group_by(year, continent) %>%
 summarize(meangdpPercap = mean(gdpPercap), na.rm = T) %>%
   ggplot(data = ., aes(x = year, y = meangdpPercap)) +
-  geom_line(aes(color=continent))
+  geom_line(aes(color = continent))
 ```
+
 ##Draw a histogram to show the characteristics of population
 ```{r}
-ggplot(gapminder, aes(x = pop)) +
-  geom_histogram() +
-scale_x_log10()
+gapminder %>% 
+    filter(year == 2007) %>% 
+    ggplot(., aes(x = pop)) +
+    geom_histogram(bins = 200)
 ```
+
 ##Draw a Bar chart
 ```{r}
-ggplot(gapminder, aes(x = year, weight = pop)) +
-  geom_bar() +
-scale_x_log10()
+gapminder %>% 
+    group_by(year) %>% 
+    summarise(meanPop = mean(pop, na.rm = T)) %>% 
+    ggplot(., aes(x = year, y = meanPop)) +
+    geom_col()
 ```
+
 ##Draw a bar chart showing the average lifeExp across years
 ```{r}
-by_year <- gapminder %>%
-group_by(year) %>%
-summarize(meanLifeExp = mean(lifeExp), na.rm = T) %>%
-  ggplot(aes(x = year, y = meanlifeExp, by_year)) +
-  geom_bar(aes(color = year))
+gapminder %>%
+    group_by(year) %>%
+    summarize(meanLifeExp = mean(lifeExp, na.rm = T)) %>%
+    ggplot(data = ., mapping = aes(x = year, y = meanLifeExp)) +
+    geom_col(width = 2)
 ```
 
 

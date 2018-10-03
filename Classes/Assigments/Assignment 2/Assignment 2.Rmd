@@ -12,12 +12,12 @@ output:
   html_document:
     df_print: paged
 date: '`r Sys.Date()`'
-css: assets/custom.css
+css: /Users/hsubhash/Documents/GitHub/Numbers Ninja/Classes/assets/custom.css
 ---
 
 ###Explore the causes for departure delay
 
-Our goal for this week is to try an understand why flight departures get delayed. Here are a few hypotheses that I would like to test. The aim is not to find a definitive answer but to explore each of the listed hypotheses. Create a separate h2 level heading for each hypothese and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses. The output should be saved as a notebook and shared with me as either an online link via GitHub or as an email attachment.
+Our goal for this week is to try an understand why flight departures get delayed. Here are a few hypotheses that I would like to test. The aim is not to find a definitive answer but to explore each of the listed hypotheses. Create a separate h2 level heading for each hypothese and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses. The output should be saved as a notebook (.nb.html file) and shared with me as either an online link via GitHub or as an email attachment.
 
 1. Departure delays are more common for long distance flights
 2. Some airports have more departure delays than others

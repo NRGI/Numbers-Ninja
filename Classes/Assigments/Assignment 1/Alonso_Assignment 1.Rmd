@@ -2,18 +2,25 @@
 title: "R Notebook"
 output: html_notebook
 ---
+
 ```{r}
-library(gapminder)
+rm(list = ls())
+library(gapminder); library(ggplot2); library(dplyr); library(gapminder)
+
 gapminder
+```
+
+```{r}
 ggplot(gapminder,aes(x=gdpPercap,y=lifeExp,group=country,size=pop))+
 geom_point(aes(color=year, alpha=if_else(country=="Peru",1,0.5))) +
   scale_x_log10()+
   facet_wrap(~continent)+
   labs(title="Life expentancy in Peru not as highly impacted by GDP",x="GDP per Capita", y="Life expentancy")+
   guides(alpha="none",color="none",size="none")
-  
 
 ```
+
+
 ```{r}
 gapminder %>% 
   group_by(continent,year) %>% 
@@ -24,34 +31,26 @@ gapminder %>%
 
 ```
 
-```{r}
 
 
-```
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(gapminder)
-
- 
-```
-```{r}
+myBinWidth <- 5e7
 gapminder %>% 
-  ggplot(.,aes(x=pop, fill=continent))+
-  geom_histogram()+
-  scale_x_log10()
+    filter(year == 2007) %>% 
+    ggplot(.,aes(x = pop)) +
+    geom_histogram(bins = 200)
 ```
 
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(gapminder)
-
+(max(gapminder$pop) - min(gapminder$pop))/myBinWidth
 ```
+
+
+
 ```{r}
 gapminder %>%
-  ggplot(.,aes(x=year, weight=pop))+
-  geom_bar(aes(fill=continent))
+  ggplot(.,aes(x = year)) +
+  geom_bar(aes(weight = lifeExp, fill = continent), position = "stack")
   
 ```
 
