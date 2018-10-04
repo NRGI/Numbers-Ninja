@@ -1,8 +1,5 @@
 ---
-title: "Numbers Ninja: Class Assignment"
-author: |
-    | Hari Subhash
-    | Data Scientist @NRGI
+title: "Numbers Ninja: Class Assignment 2"
 output:
   html_notebook:
     code_folding: hide
