@@ -11,6 +11,11 @@ output:
 date: '`r Sys.Date()`'
 css: /Users/hsubhash/Documents/GitHub/Numbers Ninja/Classes/assets/custom.css
 ---
+<div class="full-width">
+```{r, echo=FALSE}
+knitr::include_graphics("/Users/hsubhash/Documents/GitHub/Numbers Ninja/Classes/assets/kobu-agency-798655-unsplash.jpg")
+```
+</div>
 **Deadline**: <span class="highlight">Wednesday, October 10th, 9 AM EST</span>. The class on Thursday October 11th will only be conducted after the assignment has been submitted.
 
 **Instructions**:
