@@ -1,8 +1,6 @@
 body {
   /* font-family: "PT Serif", Georgia, "Times New Roman", serif; */
   line-height: 1.7em;
-  background-color: rgb(34, 34, 51);
-  color: rgb(170, 204, 255);
 }
 h1,
 h2,
@@ -70,4 +68,12 @@ blockquote {
   background-color: #fef2cc;
   padding: 2px 4px 2px 4px;
   border-radius: 6px;
+}
+
+.emphasize {
+  background-color: rgba(34, 34, 51, 0.8);
+  color: rgb(107, 165, 252);
+  padding: 2%;
+  margin-bottom: 8px;
+  margin-top: 1px;
 }
