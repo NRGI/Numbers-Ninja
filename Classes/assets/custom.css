@@ -1,23 +1,29 @@
 body {
   /* font-family: "PT Serif", Georgia, "Times New Roman", serif; */
   line-height: 1.7em;
+  background-color: rgb(34, 34, 51);
+  color: rgb(170, 204, 255);
 }
-h1, h2, h3, h4, h5, h6{
-  
-  font-family: 'PT Sans Narrow', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "PT Sans Narrow", sans-serif;
 }
 code,
 pre {
   font-family: Menlo, Monaco, "Courier New", monospace;
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
 }
-.sourceCode{
+.sourceCode {
   /* margin:0px; */
 }
 p,
 li {
   font-size: 1em;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 p,
@@ -60,8 +66,8 @@ blockquote {
   /* text-decoration: underline overline wavy rgb(192, 192, 207); */
 }
 
-.highlight{
-  background-color: #FEF2CC;
+.highlight {
+  background-color: #fef2cc;
   padding: 2px 4px 2px 4px;
   border-radius: 6px;
 }

@@ -1,19 +1,19 @@
 ---
 title: "Numbers Ninja: Class Assignment 2"
 output:
+  html_document:
+    df_print: paged
   html_notebook:
     code_folding: hide
     highlight: kate
     smart: yes
     theme: cosmo
-  html_document:
-    df_print: paged
 date: '`r Sys.Date()`'
 css: /Users/hsubhash/Documents/GitHub/Numbers Ninja/Classes/assets/custom.css
 ---
-**Deadline**: Wednesday, October 10th, 9 AM EST. The class on Thursday October 11th will only be conducted after the assignment has been submitted.
+**Deadline**: <span class="highlight">Wednesday, October 10th, 9 AM EST</span>. The class on Thursday October 11th will only be conducted after the assignment has been submitted.
 
-**Instructions**: I want to understand why flights get delayed. Here are a few hypotheses that I would like you to explore. Some of these might be true while others might not be.
+**Instructions**: Please read the following instructions carefully. I want to understand why flights get delayed. Here are a few hypotheses that I would like you to explore. Some of these might be true while others might not be.
 
 1. Departure delays are more common for long distance flights
 2. Some airports have more departure delays than others
