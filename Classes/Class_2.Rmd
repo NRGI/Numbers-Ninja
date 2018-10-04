@@ -22,14 +22,33 @@ library(tidyverse); library(nycflights13); library(gapminder)
 knitr::include_graphics("assets/ninja-logo2.jpg")
 ```
 </div>
-##Topics to cover
 
-1. ggplot2
+
+
+
+    
+
+
+
+##Topics Covered
+
+1. Visualizing data using ggplot2
 2. Data Joins
-3. More plots
 
-##ggplot2
-ggplot2 is a declarative plotting library in R. The gg in ggplot2 stands for "Grammar of Graphics" a book on the principles of data visualization that the package is based on. Please keep [this](https://ggplot2.tidyverse.org/reference/) reference website open through out the call. We will be using the the `tidyverse` and `gapminder` packages. Make sure that you create a chunk at the top of your notebook to load these two packages.
+<div class="full-width">
+
+```{r, echo=FALSE}
+knitr::include_graphics("assets/ian-dooley-407846-unsplash.jpg")
+```
+
+</div>
+
+##Visualizing data using ggplot2
+ggplot2 is a declarative plotting library in R. The gg in ggplot2 stands for "Grammar of Graphics" a book on the principles of data visualization that the package is based on. According to this [article](https://towardsdatascience.com/a-comprehensive-guide-to-the-grammar-of-graphics-for-effective-visualization-of-multi-dimensional-1f92b4ed4149):
+
+>Basically, a grammar of graphics is a framework which follows a layered approach to describe and construct visualizations or graphics in a structured manner. A visualization involving multi-dimensional data often has multiple components or aspects, and leveraging this layered grammar of graphics helps us describe and understand each component involved in visualization — in terms of data, aesthetics, scale, objects and so on.
+
+While we Please keep [this](https://ggplot2.tidyverse.org/reference/) reference website open through out the call. We will be using the the `tidyverse` and `gapminder` packages. Make sure that you create a chunk at the top of your notebook to load these two packages.
 
 ###Basic charts
 There are seven different layers that are used for creating plots in ggplot. We need to specify three out of these seven layers to create any chart (the rest adopt default values if not specified). These are as follows:

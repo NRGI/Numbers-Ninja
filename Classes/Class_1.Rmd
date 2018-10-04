@@ -31,8 +31,13 @@ There two things we need to do before we start the lesson.
 1. [Install R](https://cran.r-project.org/): Any of the links on that page should work
 2. [Install Rstudio](https://www.rstudio.com/products/rstudio/download/): Choose the option that is suited for your Operating System (OS).
 
+<div class="full-width">
+```{r, echo=FALSE}
+knitr::include_graphics("assets/braden-collum-87874-unsplash.jpg")
+```
+</div>
 ##Get familiar with your working environment
-When you installed R on your computer, you provide it the tools necessary to process code that is written in R. The Base R installation ships with a simple code editor that can be used to write R scripts. RStudio is a software application that builds on top of your R installation to give you additional functionality to write and manage R code and projects [^1]. It is by far the most popular integrated development environment (IDE) for R and has several features that are custom made to support data science in R.
+When you installed ![R](assets/R.png) on your computer, you provide it the tools necessary to process code that is written in R. The Base R installation ships with a simple code editor that can be used to write R scripts. ![RStudio](assets/Rstudio.png) is a software application that builds on top of your R installation to give you additional functionality to write and manage R code and projects [^1]. It is by far the most popular integrated development environment (IDE) for R and has several features that are custom made to support data science in R.
 
 There are four different panes on RStudio that you need to get familiar with.
 
