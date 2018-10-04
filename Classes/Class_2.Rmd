@@ -1,5 +1,5 @@
 ---
-title: "Numbers Ninja: Class 2"
+title: "Numbers Ninja: Week 2"
 author: |
   | Hari Subhash
   | Data Scientist @NRGI

@@ -76,6 +76,7 @@ blockquote {
   padding: 2%;
   margin-bottom: 8px;
   margin-top: 1px;
+  border-radius: 4px;
 }
 
 .full-width {

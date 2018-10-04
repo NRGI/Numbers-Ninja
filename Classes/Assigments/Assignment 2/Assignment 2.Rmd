@@ -11,12 +11,13 @@ output:
 date: '`r Sys.Date()`'
 css: /Users/hsubhash/Documents/GitHub/Numbers Ninja/Classes/assets/custom.css
 ---
+**Deadline**: <span class="highlight">Wednesday, October 10th, 9 AM EST</span>. The class on Thursday October 11th will only be conducted after the assignment has been submitted.
+
 <div class="full-width">
 ```{r, echo=FALSE}
 knitr::include_graphics("/Users/hsubhash/Documents/GitHub/Numbers Ninja/Classes/assets/kobu-agency-798655-unsplash.jpg")
 ```
 </div>
-**Deadline**: <span class="highlight">Wednesday, October 10th, 9 AM EST</span>. The class on Thursday October 11th will only be conducted after the assignment has been submitted.
 
 **Instructions**:
 <div class="emphasize">
@@ -31,10 +32,16 @@ Please read the following instructions carefully. I want to understand why fligh
 7. Some months have more delay than others (seasonal trends)
 8. Flights during certain times of the day are more delayed
 
-Create a separate h2 level heading for each hypotheses and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses. 
+Concepts that you would need to apply to fully answer all the questions are as follows: 
+
+* data manipulation using dplyr
+* visualizations using ggplot2
+* data joins
 </div>
 
-**How to submit:** The output should be saved as a notebook (.nb.html file) and shared **privately** with me on slack as either an online link via GitHub or as an email attachment. The name of the assignment should be "<your first name>_assignment_2".
+**How to answer:** Create a separate h2 level heading for each hypotheses and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses. The final notebook should be nicely formatted and look professional.
+
+**How to submit:** The output should be saved as a notebook (.nb.html file) and shared **privately** with me on Slack. The name of the assignment should be "<your first name>_assignment_2".
 
 **Addition tasks to be completed by deadline**
 <div class="emphasize">
