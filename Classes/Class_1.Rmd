@@ -367,13 +367,7 @@ flights %>%
     
 ```
 
-    
+  
 
-⚡***Ninja Tasks***⚡
 
-##Homework
-
-1. Setup a [GitHub Account](https://github.com)
-2. Install [GitHub Desktop](https://desktop.github.com/)
-3. Read up about [version control](https://www.atlassian.com/git/tutorials/what-is-version-control)
 

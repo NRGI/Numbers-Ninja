@@ -14,10 +14,9 @@ output:
 date: '`r Sys.Date()`'
 css: /Users/hsubhash/Documents/GitHub/Numbers Ninja/Classes/assets/custom.css
 ---
+**Deadline**: Wednesday, October 10th, 9 AM EST. The class on Thursday October 11th will only be conducted after the assignment has been submitted.
 
-###Explore the causes for departure delay
-
-Our goal for this week is to try an understand why flight departures get delayed. Here are a few hypotheses that I would like to test. The aim is not to find a definitive answer but to explore each of the listed hypotheses. Create a separate h2 level heading for each hypothese and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses. The output should be saved as a notebook (.nb.html file) and shared with me as either an online link via GitHub or as an email attachment.
+**Instructions**: I want to understand why flights get delayed. Here are a few hypotheses that I would like you to explore. Some of these might be true while others might not be.
 
 1. Departure delays are more common for long distance flights
 2. Some airports have more departure delays than others
@@ -27,3 +26,15 @@ Our goal for this week is to try an understand why flight departures get delayed
 6. Busy days (days with more flights) have more departure delays.
 7. Some months have more delay than others (seasonal trends)
 8. Flights during certain times of the day are more delayed
+
+Create a separate h2 level heading for each hypotheses and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses. 
+
+**How to submit:** The output should be saved as a notebook (.nb.html file) and shared **privately** with me on slack as either an online link via GitHub or as an email attachment. The name of the assignment should be "<your first name>_assignment_2".
+
+**Addition tasks to be completed by deadline**
+
+1. Setup a [GitHub Account](https://github.com) and share your username with me
+2. Install [GitHub Desktop](https://desktop.github.com/)
+3. Read up about [version control](https://www.atlassian.com/git/tutorials/what-is-version-control)
+
+

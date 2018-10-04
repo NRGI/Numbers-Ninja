@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2018-10-03" />
+<meta name="date" content="2018-10-04" />
 
 <title>Numbers Ninja: Class Assignment</title>
 
@@ -158,15 +158,14 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">Numbers Ninja: Class Assignment</h1>
 <h4 class="author"><em><div style="white-space: pre-line;">Hari Subhash
 Data Scientist <span class="citation">@NRGI</span></div></em></h4>
-<h4 class="date"><em>2018-10-03</em></h4>
+<h4 class="date"><em>2018-10-04</em></h4>
 
 </div>
 
 
 <!-- rnb-text-begin -->
-<div id="explore-the-causes-for-departure-delay" class="section level3">
-<h3>Explore the causes for departure delay</h3>
-<p>Our goal for this week is to try an understand why flight departures get delayed. Here are a few hypotheses that I would like to test. The aim is not to find a definitive answer but to explore each of the listed hypotheses. Create a separate h2 level heading for each hypothese and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses. The output should be saved as a notebook (.nb.html file) and shared with me as either an online link via GitHub or as an email attachment.</p>
+<p><strong>Deadline</strong>: Wednesday, October 10th, 9 AM EST. The class on Thursday October 11th will only be conducted after the assignment has been submitted.</p>
+<p><strong>Instructions</strong>: I want to understand why flights get delayed. Here are a few hypotheses that I would like you to explore. Some of these might be true while others might not be.</p>
 <ol style="list-style-type: decimal">
 <li>Departure delays are more common for long distance flights</li>
 <li>Some airports have more departure delays than others</li>
@@ -177,10 +176,17 @@ Data Scientist <span class="citation">@NRGI</span></div></em></h4>
 <li>Some months have more delay than others (seasonal trends)</li>
 <li>Flights during certain times of the day are more delayed</li>
 </ol>
+<p>Create a separate h2 level heading for each hypotheses and use the concepts that you have learnt so far to explore it. Each h2 section at minimum must have a chart or a table, and text explaining your reasons for accepting or rejecting each of these hypotheses.</p>
+<p><strong>How to submit:</strong> The output should be saved as a notebook (.nb.html file) and shared <strong>privately</strong> with me on slack as either an online link via GitHub or as an email attachment. The name of the assignment should be “<your first name>_assignment_2“.</p>
+<p><strong>Addition tasks to be completed by deadline</strong></p>
+<ol style="list-style-type: decimal">
+<li>Setup a <a href="https://github.com">GitHub Account</a> and share your username with me</li>
+<li>Install <a href="https://desktop.github.com/">GitHub Desktop</a></li>
+<li>Read up about <a href="https://www.atlassian.com/git/tutorials/what-is-version-control">version control</a></li>
+</ol>
 <!-- rnb-text-end -->
-</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTnVtYmVycyBOaW5qYTogQ2xhc3MgQXNzaWdubWVudCIKYXV0aG9yOiB8CiAgICB8IEhhcmkgU3ViaGFzaAogICAgfCBEYXRhIFNjaWVudGlzdCBATlJHSQpvdXRwdXQ6CiAgaHRtbF9ub3RlYm9vazoKICAgIGNvZGVfZm9sZGluZzogaGlkZQogICAgaGlnaGxpZ2h0OiBrYXRlCiAgICBzbWFydDogeWVzCiAgICB0aGVtZTogY29zbW8KICBodG1sX2RvY3VtZW50OgogICAgZGZfcHJpbnQ6IHBhZ2VkCmRhdGU6ICdgciBTeXMuRGF0ZSgpYCcKY3NzOiAvVXNlcnMvaHN1Ymhhc2gvRG9jdW1lbnRzL0dpdEh1Yi9OdW1iZXJzIE5pbmphL0NsYXNzZXMvYXNzZXRzL2N1c3RvbS5jc3MKLS0tCgojIyNFeHBsb3JlIHRoZSBjYXVzZXMgZm9yIGRlcGFydHVyZSBkZWxheQoKT3VyIGdvYWwgZm9yIHRoaXMgd2VlayBpcyB0byB0cnkgYW4gdW5kZXJzdGFuZCB3aHkgZmxpZ2h0IGRlcGFydHVyZXMgZ2V0IGRlbGF5ZWQuIEhlcmUgYXJlIGEgZmV3IGh5cG90aGVzZXMgdGhhdCBJIHdvdWxkIGxpa2UgdG8gdGVzdC4gVGhlIGFpbSBpcyBub3QgdG8gZmluZCBhIGRlZmluaXRpdmUgYW5zd2VyIGJ1dCB0byBleHBsb3JlIGVhY2ggb2YgdGhlIGxpc3RlZCBoeXBvdGhlc2VzLiBDcmVhdGUgYSBzZXBhcmF0ZSBoMiBsZXZlbCBoZWFkaW5nIGZvciBlYWNoIGh5cG90aGVzZSBhbmQgdXNlIHRoZSBjb25jZXB0cyB0aGF0IHlvdSBoYXZlIGxlYXJudCBzbyBmYXIgdG8gZXhwbG9yZSBpdC4gRWFjaCBoMiBzZWN0aW9uIGF0IG1pbmltdW0gbXVzdCBoYXZlIGEgY2hhcnQgb3IgYSB0YWJsZSwgYW5kIHRleHQgZXhwbGFpbmluZyB5b3VyIHJlYXNvbnMgZm9yIGFjY2VwdGluZyBvciByZWplY3RpbmcgZWFjaCBvZiB0aGVzZSBoeXBvdGhlc2VzLiBUaGUgb3V0cHV0IHNob3VsZCBiZSBzYXZlZCBhcyBhIG5vdGVib29rICgubmIuaHRtbCBmaWxlKSBhbmQgc2hhcmVkIHdpdGggbWUgYXMgZWl0aGVyIGFuIG9ubGluZSBsaW5rIHZpYSBHaXRIdWIgb3IgYXMgYW4gZW1haWwgYXR0YWNobWVudC4KCjEuIERlcGFydHVyZSBkZWxheXMgYXJlIG1vcmUgY29tbW9uIGZvciBsb25nIGRpc3RhbmNlIGZsaWdodHMKMi4gU29tZSBhaXJwb3J0cyBoYXZlIG1vcmUgZGVwYXJ0dXJlIGRlbGF5cyB0aGFuIG90aGVycwozLiBTb21lIGZsaWdodCBjYXJyaWVycyBoYXZlIG1vcmUgZGVwYXJ0dXJlIGRlbGF5cyB0aGFuIG90aGVycwo0LiBGbGlnaHRzIHRvIGNlcnRhaW4gZGVzdGluYXRpb25zIGhhdmUgbW9yZSBkZWxheXMgdGhhbiBvdGhlcnMuCjUuIEJhZCB3ZWF0aGVyIGNhdXNlcyBkZXBhcnR1cmUgZGVsYXlzCjYuIEJ1c3kgZGF5cyAoZGF5cyB3aXRoIG1vcmUgZmxpZ2h0cykgaGF2ZSBtb3JlIGRlcGFydHVyZSBkZWxheXMuCjcuIFNvbWUgbW9udGhzIGhhdmUgbW9yZSBkZWxheSB0aGFuIG90aGVycyAoc2Vhc29uYWwgdHJlbmRzKQo4LiBGbGlnaHRzIGR1cmluZyBjZXJ0YWluIHRpbWVzIG9mIHRoZSBkYXkgYXJlIG1vcmUgZGVsYXllZAo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTnVtYmVycyBOaW5qYTogQ2xhc3MgQXNzaWdubWVudCIKYXV0aG9yOiB8CiAgICB8IEhhcmkgU3ViaGFzaAogICAgfCBEYXRhIFNjaWVudGlzdCBATlJHSQpvdXRwdXQ6CiAgaHRtbF9ub3RlYm9vazoKICAgIGNvZGVfZm9sZGluZzogaGlkZQogICAgaGlnaGxpZ2h0OiBrYXRlCiAgICBzbWFydDogeWVzCiAgICB0aGVtZTogY29zbW8KICBodG1sX2RvY3VtZW50OgogICAgZGZfcHJpbnQ6IHBhZ2VkCmRhdGU6ICdgciBTeXMuRGF0ZSgpYCcKY3NzOiAvVXNlcnMvaHN1Ymhhc2gvRG9jdW1lbnRzL0dpdEh1Yi9OdW1iZXJzIE5pbmphL0NsYXNzZXMvYXNzZXRzL2N1c3RvbS5jc3MKLS0tCioqRGVhZGxpbmUqKjogV2VkbmVzZGF5LCBPY3RvYmVyIDEwdGgsIDkgQU0gRVNULiBUaGUgY2xhc3Mgb24gVGh1cnNkYXkgT2N0b2JlciAxMXRoIHdpbGwgb25seSBiZSBjb25kdWN0ZWQgYWZ0ZXIgdGhlIGFzc2lnbm1lbnQgaGFzIGJlZW4gc3VibWl0dGVkLgoKKipJbnN0cnVjdGlvbnMqKjogSSB3YW50IHRvIHVuZGVyc3RhbmQgd2h5IGZsaWdodHMgZ2V0IGRlbGF5ZWQuIEhlcmUgYXJlIGEgZmV3IGh5cG90aGVzZXMgdGhhdCBJIHdvdWxkIGxpa2UgeW91IHRvIGV4cGxvcmUuIFNvbWUgb2YgdGhlc2UgbWlnaHQgYmUgdHJ1ZSB3aGlsZSBvdGhlcnMgbWlnaHQgbm90IGJlLgoKMS4gRGVwYXJ0dXJlIGRlbGF5cyBhcmUgbW9yZSBjb21tb24gZm9yIGxvbmcgZGlzdGFuY2UgZmxpZ2h0cwoyLiBTb21lIGFpcnBvcnRzIGhhdmUgbW9yZSBkZXBhcnR1cmUgZGVsYXlzIHRoYW4gb3RoZXJzCjMuIFNvbWUgZmxpZ2h0IGNhcnJpZXJzIGhhdmUgbW9yZSBkZXBhcnR1cmUgZGVsYXlzIHRoYW4gb3RoZXJzCjQuIEZsaWdodHMgdG8gY2VydGFpbiBkZXN0aW5hdGlvbnMgaGF2ZSBtb3JlIGRlbGF5cyB0aGFuIG90aGVycy4KNS4gQmFkIHdlYXRoZXIgY2F1c2VzIGRlcGFydHVyZSBkZWxheXMKNi4gQnVzeSBkYXlzIChkYXlzIHdpdGggbW9yZSBmbGlnaHRzKSBoYXZlIG1vcmUgZGVwYXJ0dXJlIGRlbGF5cy4KNy4gU29tZSBtb250aHMgaGF2ZSBtb3JlIGRlbGF5IHRoYW4gb3RoZXJzIChzZWFzb25hbCB0cmVuZHMpCjguIEZsaWdodHMgZHVyaW5nIGNlcnRhaW4gdGltZXMgb2YgdGhlIGRheSBhcmUgbW9yZSBkZWxheWVkCgpDcmVhdGUgYSBzZXBhcmF0ZSBoMiBsZXZlbCBoZWFkaW5nIGZvciBlYWNoIGh5cG90aGVzZXMgYW5kIHVzZSB0aGUgY29uY2VwdHMgdGhhdCB5b3UgaGF2ZSBsZWFybnQgc28gZmFyIHRvIGV4cGxvcmUgaXQuIEVhY2ggaDIgc2VjdGlvbiBhdCBtaW5pbXVtIG11c3QgaGF2ZSBhIGNoYXJ0IG9yIGEgdGFibGUsIGFuZCB0ZXh0IGV4cGxhaW5pbmcgeW91ciByZWFzb25zIGZvciBhY2NlcHRpbmcgb3IgcmVqZWN0aW5nIGVhY2ggb2YgdGhlc2UgaHlwb3RoZXNlcy4gCgoqKkhvdyB0byBzdWJtaXQ6KiogVGhlIG91dHB1dCBzaG91bGQgYmUgc2F2ZWQgYXMgYSBub3RlYm9vayAoLm5iLmh0bWwgZmlsZSkgYW5kIHNoYXJlZCAqKnByaXZhdGVseSoqIHdpdGggbWUgb24gc2xhY2sgYXMgZWl0aGVyIGFuIG9ubGluZSBsaW5rIHZpYSBHaXRIdWIgb3IgYXMgYW4gZW1haWwgYXR0YWNobWVudC4gVGhlIG5hbWUgb2YgdGhlIGFzc2lnbm1lbnQgc2hvdWxkIGJlICI8eW91ciBmaXJzdCBuYW1lPl9hc3NpZ25tZW50XzIiLgoKKipBZGRpdGlvbiB0YXNrcyB0byBiZSBjb21wbGV0ZWQgYnkgZGVhZGxpbmUqKgoKMS4gU2V0dXAgYSBbR2l0SHViIEFjY291bnRdKGh0dHBzOi8vZ2l0aHViLmNvbSkgYW5kIHNoYXJlIHlvdXIgdXNlcm5hbWUgd2l0aCBtZQoyLiBJbnN0YWxsIFtHaXRIdWIgRGVza3RvcF0oaHR0cHM6Ly9kZXNrdG9wLmdpdGh1Yi5jb20vKQozLiBSZWFkIHVwIGFib3V0IFt2ZXJzaW9uIGNvbnRyb2xdKGh0dHBzOi8vd3d3LmF0bGFzc2lhbi5jb20vZ2l0L3R1dG9yaWFscy93aGF0LWlzLXZlcnNpb24tY29udHJvbCkKCgo=</div>
 
 
 

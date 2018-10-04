@@ -219,13 +219,23 @@ gapminder %>%
     
 ```
 
+```{r}
+gapminder %>% 
+    group_by(year) %>% 
+    summarise(meanGDP = mean(gdpPercap, na.rm = T)) %>% 
+    ggplot(., aes(x = year, y = meanGDP)) +
+    geom_col()
+```
+
 
 
 ###Facetting
 
 ```{r}
 ##reuse some of the plots above as a facetted plot
-
+ggplot(gapminder, aes(x = year, y = lifeExp)) +
+    geom_jitter(width = 1.5, alpha = 0.6) +
+    facet_wrap(~continent)
 ```
 
 
@@ -233,10 +243,21 @@ gapminder %>%
 
 1. Show the relationship between GDP per capita and Life Expectancy using a faceted chart of your choice
 
+
+
+
 ###Layering multiple geoms
+
 
 ```{r}
 ##draw a line of fit in a chart of population and life expectancy
+gapminder %>% 
+    group_by(country) %>% 
+    summarise(continent = unique(continent), meanPop = mean(pop, na.rm = T), meanLifeExp = mean(lifeExp, na.rm = T)) %>% 
+    filter(meanPop < 5e7) %>% 
+ggplot(., aes(x = meanPop, y = meanLifeExp)) +
+    geom_jitter() + 
+    geom_smooth(method = "lm", se = F)
 ```
 
 
@@ -253,6 +274,13 @@ gapminder %>%
     
 ```
 
+
+
+
+```{r}
+ggplot(gapminder, aes(x = year, y = gdpPercap)) +
+    geom_jitter()
+```
 
 ```{r}
 ##Using vline and hline
@@ -300,6 +328,35 @@ band_members
 
 ```{r}
 band_instruments
+```
+```{r}
+inner_join(band_members, band_instruments)
+```
+
+
+
+```{r}
+left_join(band_members, band_instruments)
+```
+
+
+```{r}
+right_join(band_members, band_instruments)
+```
+
+```{r}
+full_join(band_members, band_instruments)
+```
+
+
+
+```{r}
+semi_join(band_members, band_instruments)
+```
+
+
+```{r}
+anti_join(band_members, band_instruments)
 ```
 
 
