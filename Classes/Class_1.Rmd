@@ -1,5 +1,5 @@
 ---
-title: 'Numbers Ninja: Week 1'
+title: 'Numbers Ninja Week 1: Getting Started'
 author: |
   | Hari Subhash
   | Data Scientist @NRGI
@@ -33,27 +33,29 @@ There two things we need to do before we start the lesson.
 
 <div class="full-width">
 ```{r, echo=FALSE}
-knitr::include_graphics("assets/braden-collum-87874-unsplash.jpg")
+knitr::include_graphics("assets/images/braden-collum-87874-unsplash.jpg")
 ```
 </div>
 ##Get familiar with your working environment
-When you installed ![R](assets/R.png) on your computer, you provide it the tools necessary to process code that is written in R. The Base R installation ships with a simple code editor that can be used to write R scripts. ![RStudio](assets/Rstudio.png) is a software application that builds on top of your R installation to give you additional functionality to write and manage R code and projects [^1]. It is by far the most popular integrated development environment (IDE) for R and has several features that are custom made to support data science in R.
+When you installed ![R](assets/images/R.png) on your computer, you provide it the tools necessary to process code that is written in R. The Base R installation ships with a simple code editor that can be used to write R scripts. ![RStudio](assets/images/Rstudio.png) is a software application that builds on top of your R installation to give you additional functionality to write and manage R code and projects [^1]. It is by far the most popular integrated development environment (IDE) for R and has several features that are custom made to support data science in R.
 
 There are four different panes on RStudio that you need to get familiar with.
 
+```{r}
+knitr::include_graphics("assets/images/Rstudio panes.png")
+```
+
+
 1. The console: This is the pane that is usually located on the left (at the bottom if you have a script or notebook open) that can be used to type in R commands. The console is a great place to test out lines of code that doesn't necessarily have to go into the project you are woring on. The console is also the place were the output of your code are printed [^2]. The console however, is not the place to write any code that you need to rerun since it is not possible to save code that is written in the console as a file. You will need to use the code pane to do that.
-2. The code: This is were you will write the majority of the code for your projects. There are several different formats in which you can write code. This pane only appears if you have an open file that you are currently working on. Click on the ![](assets/scripts.png) button at the top left of R Studio to see the different options. We will use the first two options R Notebook and R Script for most of this course.
-3. The viewer: The pane to the bottom right is where you can view plots rendered by your code, packages that are currently loaded to the environment, access help files, view documents, and access folders on your computer. Click on the ![](assets/packages.png) tab to scroll through the list and see all the packages that are checked. These are the packages that are pre-loaded with your session. If you don't know what packages are, don't worry, we will be covering that very soon.
-4. The environment: The environment pane is the one on the top-right. This is were all the variables and functions that you create are displayed. R Studio provides additional functionality that allows users to click on these variables to view their contents. Click on ![](assets/global environ.png) dropdown you will notice that there are several other packages that are listed there. These are the same as those that are checked in the packages tab on the viewer pane. Selecting one of them will display the entire list of functions that are currently available for you to use.
+2. The code: This is were you will write the majority of the code for your projects. There are several different formats in which you can write code. This pane only appears if you have an open file that you are currently working on. Click on the ![](assets/images/scripts.png) button at the top left of R Studio to see the different options. We will use the first two options R Notebook and R Script for most of this course.
+3. The viewer: The pane to the bottom right is where you can view plots rendered by your code, packages that are currently loaded to the environment, access help files, view documents, and access folders on your computer. Click on the ![](assets/images/packages.png) tab to scroll through the list and see all the packages that are checked. These are the packages that are pre-loaded with your session. If you don't know what packages are, don't worry, we will be covering that very soon.
+4. The environment: The environment pane is the one on the top-right. This is were all the variables and functions that you create are displayed. R Studio provides additional functionality that allows users to click on these variables to view their contents. Click on ![](assets/images/global environ.png) dropdown you will notice that there are several other packages that are listed there. These are the same as those that are checked in the packages tab on the viewer pane. Selecting one of them will display the entire list of functions that are currently available for you to use.
 
 ⚡***Ninja Tasks***⚡
 
 1. Create a Numbers Ninja Folder on your local machine
 2. Create an R Notebook "Class_1" and save it in this folder
 
-[^1]: The techinical term for this type of software application is: [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment)(IDE).
-
-[^2]: This is true for all formats other than those that use R Markdown. In the case script formats that use R markdown the output is printed within the script rather than in the console.
 
 ##A quick R Markdown detour
 Markdown is a markup language.
@@ -62,11 +64,11 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Markup_language):
 
 >In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text...the whole idea of a mark up language is to avoid the formatting work for the text, as the tags in the mark up language serve the purpose to format the appropriate text (like a header or beginning of a next para...etc.). Every tag used in a Markup language has a property to format the text we write. - 
 
-<span class="highlight">Hyper Text Markup Language</span>([HTML](https://en.wikipedia.org/wiki/HTML)) is perhaps the most well-known markup language out there [^3]. It is used to render content on websites. Go ahead and right click on any webpage and click on inspect to open up the web inspector to view the underlying HTML code that was used to generate it. <span class="highlight">Markdown</span> is a more human friendly (but limited) version of HTML. Markdown uses simple and easy to read tags to markup text which is compiled (by your computer) into HTML that can be used to render webpages. Making it easier to create content that can be rendered on a webpage for those who are unfamiliar with HTML. 
+<span class="highlight">Hyper Text Markup Language</span> or as its more commonly use abbreviation ([HTML](https://en.wikipedia.org/wiki/HTML)) is perhaps the most well-known markup language out there [^3]. It is used to render content on websites. Go ahead and right click on this webpage and click on inspect to open up the web inspector. What you see is a markup language that takes in text and marks it up using tags (<p>, <body> etc) so that a browser can understand and render it appropriately. 
 
-<span class="highlight">R Markdown</span> is a package in that allows us to combine markdown with R code. Using R Markdown we can create a wide variety of easy to read and reproduce R documents that contain both code and nicely formatted. This online R notebook is a case in point. 
+<span class="highlight">[Markdown](https://en.wikipedia.org/wiki/Markdown)</span> is a more human friendly (but limited) version of HTML. Markdown uses simpler and easier to read tags than HTML to markup text which is compiled into HTML to render webpages on browsers. <span class="highlight">[R Markdown](https://rmarkdown.rstudio.com/lesson-1.html)</span> is a package in R that allows us to combine markdown with R code to generate and share documents that seamlessly embed code and text. Using R Markdown we can create a wide variety of easy to read and reproduce R documents. This online notebook was created using R markdown. 
 
-In addition to using markdown to markup text, R Markdown documents also uses <span class="highlight">R Markdown</span>[YAML](https://en.wikipedia.org/wiki/YAML)</span>. This is the section right at the top of the notebook that is separated by the `---`. This is the part of the document were you specify the title and other characteristics of the report.
+<!-- In addition to using markdown to markup text, R Markdown documents also uses <span class="highlight">[YAML](https://en.wikipedia.org/wiki/YAML)</span>. This is the section right at the top of the notebook that is separated by the `---`. This is the part of the document were you specify the title and other characteristics of the report. -->
 
 Here are a few references to keep handy
 
@@ -82,6 +84,9 @@ Here are a few references to keep handy
 
 [^3]: Some other examples include - [TeX](https://en.wikipedia.org/wiki/TeX) and [LaTeX](https://en.wikipedia.org/wiki/LaTeX). TeX is the markup language that used as a [typesetting system](https://en.wikipedia.org/wiki/Typesetting) in computers for high quality books. LaTeX is used extensively in academia to create documents. 
 
+##Variables and assignments
+Add in the future.
+
 ##Shortcuts
 Before we move on, lets learn a few shortcuts.
 
@@ -95,14 +100,44 @@ You can find more shortcut keys [here](https://support.rstudio.com/hc/en-us/arti
 
 ⚡***Ninja Tasks***⚡
 
-1. Use all the shortcuts to do the following task: create a new code chunk => assign the string "Hello World" to `myFirstVar` variable => run the line of code => add a print command using `print(myFirstVar)` => run the entire chunk
+1. Use all the shortcuts to do the following task: create a new code chunk => assign the string "Hello Wrold!" to `myFirstVar` variable => run the line of code => add a print command using `print(myFirstVar)` => run the entire chunk
 
-##Packages
-Packages that make our job as coders easier by extending the functionality of base R. Each package contains a collection of functions that we can use in our code without having to worry about needing to write and maintain them ourselves. In addition to functions, packages can also contain data or point database api (such `wbstats` which points to the World Banks data). R has an extremely rich, well maintained ecosystem of packages that contain functions and data that are relevant to almost any academic (or even trivial) topics of interest.
+```{r}
+myFirstVar <- "Hello Wrold!"
+
+print(myFirstVar)
+```
+
+
+##Functions
+R is a [functional programming language](https://en.wikipedia.org/wiki/Functional_programming). Functions are self-contained blocks of code that accomplish a specific task(s). In most cases (though not always), functions take in a certain input called an <span class="highlight">argument</span> and <span class="highlight">return</span> a certain result. Once it is written and loaded, a function can be <span class="highlight">called</span> again and again to accomplish the same task.
+
+For instance, in your previous chunk of code you called the function `print()` and passed it the argument `myFirstVar` to print "Hello Wrold" on to you console. You were able to use `print()` because it is a built-in function that was written by someone that is pre-loaded when you start your R sessions. 
 
 ⚡***Ninja Tasks***⚡
 
-1. Install the following packages - `tidyverse` and `nycflights13` using the package tab in the viewer pane (use the ![](assets/install.png) button)
+Start a new code chunk. Create a new variable called `mySecondVar` and assign it the value "R is Functional!" and <span class="highlight">call</span> the <span class="highlight">function</span> `print()` with the <span class="highlight">argument</span> `mySecondVar` and observe what it <span class="highlight">returns</span>.
+
+##Packages
+Isaac Newton:
+
+> If I have seen further than others, it is by standing on the shoulders of giants.
+
+<div class="left-container">
+```{r, echo=FALSE}
+knitr::include_graphics("assets/images/standing on the shoulders.jpeg")
+```
+</div>
+
+Packages are bundles of code containing functions that make our job as coders easier. The `print()` command that you used in the previous section is part of the base package in R that is maintained by the [R Core team](https://www.r-project.org/foundation/members.html). This built-in package is installed along with R and is pre-loaded when you start a new R session (i.e. when you open R Studio or the R application). The base package provides a [large set of commonly used functions](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html) such as for instance, `sum()` and `mean()` that you will use pretty regularly to calculate the sum and average of a vector of numbers. While the base package is perhaps something you will use the most regularly, it would be almost impossible for a single core team of coders to provide for all the complex functionality required to accomodate the varied interests and needs of a diverse group of data professionals that comprise the R community. This is were the rich ecosystem of open source packages comes in.
+
+There are currently over 15000 open source packages in R that have been written by R users like you and me to address needs ranging from bioinformatics to corporate finance to particle physics[^3]. These packages contain custom built functions that make it easier for practitioners in these varied fields to run their analysis without always having to write custom functions of their own.
+
+In addition to providing functions that are specific to the needs of a particular topic, packages can also provide other goodies. For instance, this week we will be using <span class="highlight">tidyverse</span>, which is a group of package that provides functions that make it easier to manipulate data in R and <span class="highlight">nycflights13</span>, which provides access to data on flights that took off from New York City in 2013.
+
+⚡***Ninja Tasks***⚡
+
+1. Install the following packages - `tidyverse` and `nycflights13` using the package tab in the viewer pane (use the ![](assets/images/install.png) button)
 2. Use the `library()` function to load these two packages in the Class 1 notebook
 3. Check the packages tab on your viewer to see if these packages are checked (i.e. loaded to our current environment)
 4. Check the Global Environment dropdown to see that these are listed.
@@ -123,16 +158,16 @@ The tidyverse is a collection of packages that follow the tidy tools philosophy.
 3. Embrace functional programming.
 4. Design for humans.
 
-There are two overarching programming concepts here that are important for us to note - composition and the use of declaritive instead of imperative code. Composition is simply the use of several smaller functions to create a more complex function. The tidyverse achieves composition through the use of pipes (`%>%`). We will learn about pipes relatively soon.
+There are two overarching programming concepts here that are important for us to note - composition and the use of declaritive instead of imperative code. Composition is simply the use of several smaller functions to create a more complex function. The tidyverse achieves composition through the use of pipes (`%>%`). We will learn about pipes shortly.
 
 According to [Wikipedia](https://en.wikipedia.org/wiki/Declarative_programming):
 
 > In computer science, declarative programming is a programming paradigm—a style of building the structure and elements of computer programs—that expresses the logic of a computation without describing its control flow.
 
 This video explains this further using the real-world example of a car (albeit from the persepective of React a Javascript library).
+<div class="center-container">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JXR2p_vtP3c" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-The tidyverse packages are characterized by their extensive use of pipes to break down complex functions into simpler pieces that are easier to to read and understand. We will learn about pipes shortly.
+</div>
 
 ⚡***Ninja Tasks***⚡
 
@@ -374,5 +409,10 @@ flights %>%
 
   
 
+##Data types and structures in R
+Add content. Probably best to introduce this after dplyr.
 
 
+[^1]: The techinical term for this type of software application is: [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment)(IDE).
+[^2]: This is true for all formats other than those that use R Markdown. In the case script formats that use R markdown the output is printed within the script rather than in the console.
+[^3]: The Comprehensive R Archive Network (CRAN) is the global repository of packages in R.

@@ -1,18 +1,17 @@
 ---
-title: "Numbers Ninja: Class 3"
+title: "Numbers Ninja Week 3: Cleaning Data"
 author: |
-    | Hari Subhash
-    | Data Scientist @NRGI
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
 output:
   html_notebook:
-    code_folding: hide
     highlight: kate
     smart: yes
     theme: cosmo
   html_document:
     df_print: paged
-date: '`r Sys.Date()`'
+    includes: assets/header.html
 css: assets/custom.css
 ---
-
 untidy data: https://github.com/jvcasillas/untidydata

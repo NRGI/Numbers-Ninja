@@ -30,7 +30,7 @@ ol,
 ul {
   margin-bottom: 15px;
 }
-.author,
+/* .author,
 .date {
   margin-top: 5px;
 }
@@ -38,7 +38,7 @@ ul {
   font-size: 1em;
   font-weight: 300;
   margin-bottom: 0px;
-}
+} */
 
 .date {
   font-size: 0.9em;
@@ -65,9 +65,10 @@ blockquote {
 }
 
 .highlight {
-  background-color: #fef2cc;
+  /* background-color: rgb(245, 216, 62); */
+  background-color: rgba(233, 140, 94, 0.8);
   padding: 2px 4px 2px 4px;
-  border-radius: 6px;
+  border-radius: 15px;
 }
 
 .emphasize {
@@ -86,4 +87,31 @@ blockquote {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+}
+
+.center-container {
+  text-align: center;
+}
+
+.left-container,
+.right-container {
+  position: relative;
+  top: 10px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.left-container {
+  padding-right: 6px;
+  float: left;
+}
+
+.right-container {
+  padding-left: 6px;
+  float: right;
+}
+
+.left-container img,
+.right-container img {
+  border-radius: 2%;
 }
