@@ -14,4 +14,89 @@ output:
     includes: assets/header.html
 css: assets/custom.css
 ---
-untidy data: https://github.com/jvcasillas/untidydata
+
+##Topics to Cover
+
+1. File traversal
+2. Loading files in R
+3. What is tidy data?
+4. What is relational data?
+5. Clean the UN data
+
+
+##The migration data
+
+
+##File Traversal
+```{r}
+rm(list = ls())
+library(readxl); library(tidyverse)
+##what is a working directory?
+```
+
+```{r}
+##move down folders
+```
+
+```{r}
+##move up folders
+```
+
+
+
+##Loading data
+```{r}
+##readxl (get the list of sheets)
+```
+
+
+```{r}
+##url download
+```
+
+
+
+⚡***Ninja Tasks***⚡
+
+1. Download the data from the [here](http://www.un.org/en/development/desa/population/migration/data/estimates2/estimates17.shtml) using the `download.file()` command and put it in a folder called "data" inside your Numbers Ninja folder. Call the file "rawUNData.xlsx"
+2. Create a new notebook called "Data Cleaning" put it inside a folder called "notebooks"
+3. Use the `readxl` package to load the sheet "Table 2" from the excel file rawUNData into your notebook
+4. Display the first 10 rows of this data using the `head()` command.
+
+##Tidy Data
+
+<div class="center-container"> 
+```{r, echo=FALSE}
+knitr::include_graphics("assets/images/tidy_data.png")
+```
+</div>
+
+⚡***Ninja Tasks***⚡
+
+1. List some of the problems with the UN data
+
+##Relational Data
+
+```{r}
+##nycflights relations
+
+```
+
+⚡***Ninja Tasks***⚡
+
+1. Describe how the tidy version of the UN data would look like by naming the columns you would use for the sheet Table 2.
+
+
+##Clean up UN Data
+
+
+⚡***Ninja Tasks***⚡
+
+1. Create the tidy version and then use the spread command to make it untidy again.
+
+##Clean up WHO data
+
+```{r}
+```
+
+
