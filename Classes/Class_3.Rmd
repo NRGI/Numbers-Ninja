@@ -32,14 +32,18 @@ css: assets/custom.css
 rm(list = ls())
 library(readxl); library(tidyverse)
 ##what is a working directory?
+
 ```
 
 ```{r}
+UNfilePath <- "assets/data/UN_MigrantStockTotal_2017.xlsx"
 ##move down folders
+testingLoad <- read_excel(path = UNfilePath, sheet = "Table 1")
 ```
 
 ```{r}
 ##move up folders
+knitr::include_graphics("../../assets/images/ninja-banner.jpg")
 ```
 
 
@@ -47,19 +51,44 @@ library(readxl); library(tidyverse)
 ##Loading data
 ```{r}
 ##readxl (get the list of sheets)
+sheetList <- excel_sheets("assets/data/UN_MigrantStockTotal_2017.xlsx")
+
 ```
 
 
 ```{r}
+table2 <- read_excel(path = "assets/data/UN_MigrantStockTotal_2017.xlsx", sheet = sheetList[3], skip = 15) %>% 
+    select(1:11) %>% 
+    gather(key = "year", value = "totPopBoth", 5:11) %>% 
+    select(-1)
+
+names(table2)[1:3] <- c("country", "notes", "code")
+
+table1 <- read_excel(path = "assets/data/UN_MigrantStockTotal_2017.xlsx", sheet = sheetList[2], skip = 15) %>% 
+    select(1:12) %>% 
+    gather(key = "year", value = "totMigStock", 6:12) %>% 
+    arrange(X__2, year) %>% 
+    select(-X__1)
+
+names(table1)[1:4] <- c("country", "notes", "code", "dataType")
+
+
+sheetList[3]
+```
+
+
+
+```{r}
 ##url download
+download.file(url = "http://www.un.org/en/development/desa/population/migration/data/estimates2/data/UN_MigrantStockTotal_2017.xlsx", destfile = "assets/data/UNRaw.xlsx")
 ```
 
 
 
 ⚡***Ninja Tasks***⚡
 
-1. Download the data from the [here](http://www.un.org/en/development/desa/population/migration/data/estimates2/estimates17.shtml) using the `download.file()` command and put it in a folder called "data" inside your Numbers Ninja folder. Call the file "rawUNData.xlsx"
-2. Create a new notebook called "Data Cleaning" put it inside a folder called "notebooks"
+1. Create a new notebook called "Data Cleaning" put it inside a folder called "notebooks"
+2. Download the data from the [here](http://www.un.org/en/development/desa/population/migration/data/estimates2/estimates17.shtml) using the `download.file()` command and put it in a folder called "data" inside your Numbers Ninja folder. Call the file "rawUNData.xlsx"
 3. Use the `readxl` package to load the sheet "Table 2" from the excel file rawUNData into your notebook
 4. Display the first 10 rows of this data using the `head()` command.
 
@@ -77,9 +106,52 @@ knitr::include_graphics("assets/images/tidy_data.png")
 
 ##Relational Data
 
-```{r}
-##nycflights relations
+KEYS
 
+Table 1 -> {key} <- Table 2
+
+```{r}
+library(nycflights13)
+
+flights
+```
+
+```{r}
+airlines
+```
+
+```{r}
+##average departure delay for each carrier from nycflightsForAllYear
+flights
+
+
+%>% 
+    ##to find the mean delay for carrier we group the data by carrier and calculate the mean for each group
+    group_by(carrier) %>% 
+    summarise(meanDelay = mean(dep_delay, na.rm = T)) 
+
+
+
+%>% 
+    left_join(., airlines, by = "carrier")
+    
+    
+```
+
+```{r}
+
+```
+
+
+
+
+```{r}
+planes
+```
+
+
+```{r}
+weather
 ```
 
 ⚡***Ninja Tasks***⚡
@@ -88,6 +160,12 @@ knitr::include_graphics("assets/images/tidy_data.png")
 
 
 ##Clean up UN Data
+
+
+```{r}
+
+```
+
 
 
 ⚡***Ninja Tasks***⚡
