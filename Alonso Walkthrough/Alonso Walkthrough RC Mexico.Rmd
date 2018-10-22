@@ -1,0 +1,62 @@
+---
+title: "Walkthrough of cleaning Mexico EITI data"
+author: |
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  html_document:
+    df_print: paged
+    includes: /Users/hsubhash/Documents/GitHub/Common Assets/header.html
+css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
+---
+
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+
+eitiImport <- read_csv("http://eiti.transparenciapresupuestaria.gob.mx/es/eiti/ficha_recurso/_rid/13/_mto/3/_mod/descargar?tipo=recurso_csv&id=4")
+
+rcData <- read_csv("rcMX.csv")
+```
+
+
+```{r}
+names(eitiImport)
+```
+
+```{r}
+names(rcData)
+```
+
+The non-Pemex contracts are identifiable by contract type id. All Pemex contracts have a contract type ID that is either 8, 9 or 10. So we select all the contract that are not these three to identify non-Pemex.
+
+```{r}
+nonPemex <- eitiImport %>% 
+    filter(!ID_TIPO_CONTRATO %in% 8:10)
+
+```
+
+
+### Lets get everything into shape
+
+```{r}
+splitNames <- str_split(nonPemex$DESC_ORGANIZACION, pattern = " y ")
+```
+
+
+
+####Tidy up the RC data
+
+```{r}
+unique(rcData$`Company Name 2`)
+
+listOfCompExtensions <- c("S. de R.L. de C.V.", "S.A. de C.V.", "S.A.P.I. de C.V.", "S.A.PI. de C.V.", "S.AP.I. de C.V.")
+```
+
+

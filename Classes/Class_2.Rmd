@@ -11,9 +11,16 @@ output:
     theme: cosmo
   html_document:
     df_print: paged
-    includes: assets/header.html
-css: assets/custom.css
+    includes: /Users/hsubhash/Documents/GitHub/Common Assets/header.html
+css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
 ---
+##Reading list
+
+1. [Maximizing the data to ink ratio](https://medium.com/@plotlygraphs/maximizing-the-data-ink-ratio-in-dashboards-and-slide-deck-7887f7c1fab)
+2. [Principles of data visualization](https://sites.google.com/site/tufteondesign/home/six-fundamental-principles-of-design)
+3. [Design Practices](https://sites.google.com/site/tufteondesign/home/practical-design-strategies)
+4. [Lying with charts](https://sites.google.com/site/tufteondesign/home/data-tricks)
+
 <div style= "float:right; position: relative; top: -80px; padding-left: 0px">
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, out.width='10%'}
 ##add the icon
@@ -33,9 +40,9 @@ knitr::include_graphics("assets/images/ninja-logo2.jpg")
 1. Visualizing data using ggplot2
 2. Data Joins
 
-<div class="full-width">
+<div class="full-width center-container">
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("assets/images/ian-dooley-407846-unsplash.jpg")
 ```
 
@@ -46,7 +53,7 @@ ggplot2 is a declarative plotting library. The gg in ggplot2 stands for "Grammar
 
 >grammar of graphics is a framework which follows a layered approach to describe and construct visualizations or graphics in a structured manner. A visualization involving multi-dimensional data often has multiple components or aspects, and leveraging this layered grammar of graphics helps us describe and understand each component involved in visualization — in terms of data, aesthetics, scale, objects and so on.
 
-You can think about the layering of graphics in the same way as the principle of composition that you learnt last week i.e. building complex functionality by breaking things down into smaller pieces. In the context of data manipulation using `dplyr` we used ` %>%`, here we use graphical layers.
+You can think about the layering of graphics in the same way as the principle of composition that you learnt last week i.e. building complex functionality by breaking things down into smaller pieces. In the context of data manipulation using `dplyr` we used ` %>%` to compose complex operations using simpler pieces while in the case of `ggplot` we use graphical layers.
 
 <div class="center-container">
 ```{r, echo=FALSE}
@@ -55,16 +62,16 @@ knitr::include_graphics("assets/images/layers of ggplot.png")
 </div>
 <small>**Source**: A Comprehensive Guide to the Grammar of Graphics for Effective Visualization of Multi-dimensional Data - Dipanjan Sarkar</small>
 
-There are seven layers in ggplot. All plots need a minimum of three out of these seven layers (the rest adopt default values if not specified). These are as follows:
+There are seven layers in ggplot (shown in chart above). All plots need a minimum of three out of these seven layers (the rest adopt default values if not specified). These are as follows:
 
-1. A data layer
-2. An aesthetics layer
-3. A geom or statistics layer
+1. A data layer that specifies the `data` that we are plotting
+2. An aesthetics layer that specifies the mapping of <span class="variable">variables</span> to plot elements.
+3. A geom layer that specifies the type of plot/shape that we want to make
 
-Lets start plotting!
+Open the [reference website for ggplot](https://ggplot2.tidyverse.org/reference/index.html) in a new tab so that we have it handy. Now we are ready. Lets start plotting!
 
 ###Basic charts
-In this section we will explore a few basic chart types. Lets also open the [reference website for ggplot](https://ggplot2.tidyverse.org/reference/index.html) in a new tab so that we have it handy. We will be using the gapminder dataset to illustrate ggplot commands. This dataset is available as a package of the same name [^1]. Go ahead and install this on your computer. The gapminder dataset is displayed below. It provides data on life expectancy (<span class="variable">lifeExp</span>), population (<span class="variable">pop</span>) and GDP per capita (<span class="variable">gdpPercap</span>) for each country for five year intervals from `r min(gapminder$year)` to `r max(gapminder$year)`.
+In this section we will explore a few basic chart types.  We will be using the gapminder dataset to illustrate ggplot commands. This dataset is available as a package of the same name [^1]. Go ahead and install this package on your computer. The gapminder dataset is displayed below. It provides data on life expectancy (<span class="variable">lifeExp</span>), population (<span class="variable">pop</span>) and GDP per capita (<span class="variable">gdpPercap</span>) for each country for five year intervals from `r min(gapminder$year)` to `r max(gapminder$year)`.
 
 ```{r, message=FALSE, warning=FALSE}
 rm(list = ls())
@@ -74,13 +81,15 @@ gapminder
 ```
 
 ###Scatterplot
-The first plot we will explore is the scatter-plot. A scatter-plot simply places a point on a cartesian (2-D) coordinate system for corresponding values of the x and y variables. Lets explore the relationship between year and life expectancy using a scatter-plot. 
+The first geom we will explore is `geom_point()`. `geom_point()` is more commonly identified as a scatter-plot, which simply is a collection of points on a cartesian (2-D) coordinate system. Each value of the x and y variables correspond to a point. Can you think of the necessary elements that we would need to map to data to generate a point? 
 
-Go through the code below to identify the data, aesthetics and geom layers. As can be seen below, this is not a particularly useful chart. Each year in the data has several observations for <span class="variable">lifeExp</span> (one for each country), this results in a chart for which it is difficult to perceive a clear trend. In the next step we will see how to improve this chart.
+Lets explore the relationship between year and life expectancy using a scatter-plot. Go through the code below to identify the data, aesthetics and geom layers. There are two essential aesthetics that we need to specify to plot a point. These are the values on the x-axis and those on the y-axis. In the code below, the data is specified as gapminder and the x aesthetic is mapped to <span class="variable">year</span> and y aesthetic to <span class="variable">lifeExp</span>. 
+
+The resulting chart does not look that great. Each year in the data has several observations for <span class="variable">lifeExp</span> (one for each country), each of these points will have the same x-aesthetic value since year is the same. As a result the plot contains a set of values that are plotted along the vertical axis for each of the years. How would you improve this chart? Hint: you learnt to do this last week.
 
 ```{r}
 ##specify the data and aesthetics layer
-ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
+ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) +
     ##specifying the geom type
     geom_point() +
     ##adding x and y axis titles
@@ -92,7 +101,7 @@ ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
 1. Use a scatter-plot to explore the relationship between <span class="variable">gdpPercap</span> and <span class="variable">lifeExp</span>
 
 <div class="solution">
-🏆***Solution***🏆: The gapminder data consists of observations for each country for each year. We are interested in capturing the relationship between <span class="variable">gdpPercap</span> and the <span class="variable">lifeExp</span>. However, since the data is a time series, we need to average the <span class="variable">gdpPercap</span> and <span class="variable">lifeExp</span> for each country for the entire time series before plotting to smooth out time trends and avoid over-plotting [^2]. This would allow us to observe the relationship between the two variables more clearly without any confusing time trends [^3].
+🏆***Solution***🏆: The gapminder data consists of observations for each country for each year. We are interested in capturing the relationship between <span class="variable">gdpPercap</span> and the <span class="variable">lifeExp</span>. But lets not make the same mistake we made with the first scatter plot. Instead of plotting all the points, lets average the <span class="variable">gdpPercap</span> and <span class="variable">lifeExp</span> for each country for the entire time series. Lets then pipe this data to ggplot to avoid overplotting[^2]. This would allow us to observe the relationship between the two variables more clearly without any confusing time trends[^3].
 
 ```{r}
 gapminder %>% 
@@ -114,7 +123,7 @@ The scatter-plot shows one single point for each country in the dataset represen
 
 </div>
 
-2. Bonus question: Can you map the <span class="variable">pop</span> to a particular aesthetic so that it can be displayed on the chart too?
+2. Bonus question: Can you map the <span class="variable">pop</span> to an aesthetic other than x or y so that it can be displayed on the chart too?
 
 <div class="solution">
 🏆***Solution***🏆:  Lets map the size of each point to the average population. I also introduce an additional aesthetic mapping of colour to the continent variable. In addition, since there are large values in the <span class="variable">gdpPercap</span>, we can plot the log of the mean <span class="variable">gdpPercap</span> to smooth out the large numbers (<span class="highlight">[watch](#logs)</span> the video below if you don't fully understand logarithmic scales). 
@@ -172,12 +181,14 @@ gapminder %>%
     labs(title = "Average life expectancy has been increasing", x = "Years", y = "Mean Life Expectancy")
 ```
 
-Now lets go a bit further and explore the trend for <span class="variable">lifeExp</span> for different countries. No
+Now lets go a bit further and explore the trend for <span class="variable">lifeExp</span> for different countries.
 ```{r}
 ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) +
     ##colour and group are mapped to continent and country and aesthetic is set to 0.5
     geom_line(mapping = aes(colour = continent, group = country), alpha = 0.5) +
-    labs(title = "Countries in Africa have lower life expectancy", x = "Year", y = "Life Expectancy") +
+    labs(title = "Countries in Africa have lower life expectancy", 
+         x = "Year", 
+         y = "Life Expectancy") +
     theme(
         legend.position = "top"
         
@@ -192,7 +203,12 @@ colorMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China"),
 
 ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, group = country)) +
     geom_line(alpha = alphaMapping, colour = colorMapping) +
-    labs(title = "The impact of genocides on life expectancy", x = "Year", y = "Life Expectancy")
+    annotate(geom = "text", x = 1962, y = 47, label = "China", colour = "blue") +
+    annotate(geom = "text", x = 1977, y = 30, label = "Cambodia", colour = "blue") +
+    annotate(geom = "text", x = 1992, y = 23, label = "Rwanda", colour = "blue") +
+    labs(title = "The impact of genocides on life expectancy", 
+         x = "Year", 
+         y = "Life Expectancy")
 ```
 
 
@@ -217,12 +233,13 @@ gapminder %>%
 
 </div>
 
-3. Histogram
+### Histogram
 Watch the video [below](#hist) to refresh your understanding of histograms. The plot below shows the histogram of `gdpPerCap` in the gapminder dataset. There is however a problem with this chart. It shows the distribution of <span class="variable">gdpPercap</span> over time. We are however not interested in the spread of <span class="variable">gdpPercap</span> across time, rather our interest is in seeing the spread across countries. In this case, we might be better off by filtering down to a single year and observing the distribution of <span class="variable">gdpPercap</span> across countries. Lets try this out with the training exercise.
 ```{r}
 ggplot(data = gapminder, aes(gdpPercap)) +
     geom_histogram(bins = 30)
 ```
+
 <div class="center-container">
 <a id="hist"><iframe width="560" height="315" src="https://www.youtube.com/embed/gSEYtAjuZ-Y" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></a>
 </div>
@@ -266,9 +283,10 @@ gapminder %>%
 1. Draw a bar chart showing the average lifeExp across years
 
 <div class="solution">
+🏆***Solu
 🏆***Solution***🏆
-```{r}
-gapminder %>% 
+p
+mThe bar chart below shows that the mean <span class="variable">lifeExp</span> has been increasing over time. This chart however, is not the best way to show trends. Instead we should stick with our earlier choice of using a line chart to show such relationships.inder %>% 
     group_by(year) %>% 
     summarise(meanLifeExp = mean(lifeExp, na.rm = T)) %>% 
     ggplot(data = ., aes(x = year, y = meanLifeExp)) +
@@ -318,7 +336,8 @@ ggplot(., aes(x = meanPop, y = meanLifeExp)) +
 ```
 
 
-⚡***Ninja Tasks***⚡
+⚡***N +
+    geom_rug()inja Tasks***⚡
 
 1. Add a line of best fit to a scatter plot showing the relationship between <span class="variable">gdpPercap</span> and <span class="variable">lifeExp</span>
 
@@ -458,7 +477,7 @@ weather
 
 
 
-[^1]: The gapminder package is an excerpt of the data that exists [here](https://www.gapminder.org/data/). This data was created by the Gapminder Foundation led by Hans Rosling.
+[^1]: T##Describe Relational datahe gapminder package is an excerpt of the data that exists [here](https://www.gapminder.org/data/). This data was created by the Gapminder Foundation led by Hans Rosling.
 [^2]: Over-plotting happens when data points are plotted on top of each other multiple times. It makes charts more confusing and difficult to read. It should be avoided as far as possible
 [^3]: We could also do this by filtering out the most recent year to study the relationship. Both are valid options, however the former has the benefit of capturing more information since it takes into account the entire time series of data that is available to calculate the mean values, while the latter disregards all but one year of the data. In this case this suits our purposes of wanting to study the relationship between <span class="variable">gdpPercap</span> and <span class="variable">lifeExp</span>.
 [^4]: You can do this using the following command `ggplot(., aes(x = log(meanGDPperCap, base = 10), y = meanLifeExp))` instead of `ggplot(., aes(x = meanGDPperCap, y = meanLifeExp))`. Can you tell the difference between this plot and the one that was made using the scale transformation?

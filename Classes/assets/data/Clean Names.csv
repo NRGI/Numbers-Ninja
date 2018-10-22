@@ -1,0 +1,17 @@
+rawNames,cleanNames
+International migrant stock at mid-year (both sexes),mig_stock_both
+International migrant stock at mid-year (male),mig_stock_m
+International migrant stock at mid-year (female),mig_stock_f
+Total population of both sexes at mid-year (thousands)g,pop
+Total male population at mid-year (thousands),pop_m
+Total female population at mid-year (thousands),pop_f
+International migrant stock as a percentage of the total population (both sexes),prop_mig
+International migrant stock as a percentage of the total population (male),prop_mig_m
+International migrant stock as a percentage of the total population (female),prop_mig_f
+Female migrants as a percentage of the international migrant stock,fem_prop_allMigs
+Annual rate of change of the migrant stock (both sexes),change_mig_both
+Annual rate of change of the migrant stock (male),change_mig_m
+Annual rate of change of the migrant stock (female),change_mig_f
+Estimated refugee stock (including asylum seekers) at mid-year (both sexes),ref_asylum_stock
+Refugees and asylum seekers as a percentage of the international migrant stock,ref_asylum_prop
+Annual rate of change of the refugee stock (including asylum seekers),change_ref

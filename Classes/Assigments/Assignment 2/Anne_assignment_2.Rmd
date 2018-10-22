@@ -1,0 +1,230 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## 1. Departure delays are more common for long distance flights
+
+**Comment**: What is the reason for grouping by `dep_delay` and distance? 
+```{r}
+library(nycflights13); library(tidyverse); library(dplyr)
+flights %>% 
+  group_by(dep_delay, distance) %>%
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T), meanDistance = mean(distance, na.rm = T)) %>%
+  ggplot(.,aes(x = meanDistance, y = meanDepDelay)) +
+  geom_point() +
+  expand_limits(y = 0)
+```
+
+**Comment**: Could you describe the groups that are created by using distance?
+```{r}
+flights %>% 
+  group_by(distance) %>%
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T), meanDistance = mean(distance, na.rm = T)) %>%
+  ggplot(.,aes(x = meanDistance, y = meanDepDelay)) +
+  geom_point(colour = "blue", size = 2.5, alpha = 0.8) +
+  expand_limits(y = 0)
+```
+First attempt was done grouping by departure delays and distance because I believed that to find out if departure delays are more common in longer distance flights, I had to group by the two variables - dep_delay and distance.
+
+**Comment**: Can you describe the groups that this would create? For instance look at the first 10 rows of flights data and manually calculate the mean departure delay for the grouping that you used.
+
+The result gave me a meaningless chart  
+
+**Comment**: Could you describe what the first chart shows and why it was meaningless?
+
+then I decided to group by distance only then find the average departure delay vs. the average distance. From this chart it seems that the further the flights distance, there are less delayed flights. In short these look like outliers on the chart and seem like they rarely occur. There are more points in the shorter distance range hence we can assume that there are more delays during shorter flights. 
+
+**Comment**: The presence of more points merely indicates the presence of more data. To claim that there are more delays on shorter flights we will need to calculate the average delays at these distances (or some other measure)
+
+Of course I could be wrong and we might introduce more variables to determine whether departure delays are more common in longer distance flights. The aesthetics info was for practice and doesnt necessarily seperate information or imply anything.
+
+
+
+## 2. Some airports have more departure delays than others
+
+```{r}
+flights %>% 
+  group_by(origin) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T), 
+            maxDepDelay = max(dep_delay, na.rm = T), 
+            minDepDelay = min(dep_delay, na.rm = T)) %>% 
+  arrange(desc(meanDepDelay))
+```
+```{r}
+ flights %>% 
+  group_by(origin) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>% 
+  ggplot(., aes(x = origin, y = meanDepDelay)) +
+    geom_col()
+```
+Since we are trying to find out if some airports have more departure delays than others, I first grouped the flights info by origin then found the average departure delay. Plotted this using a bar chart to clearly depict the different airports and the average departure delay through the course of 2013. it is safe to assume that the most delays occured in Newark airport. 
+
+**Comment**: Good job with the summarising a plotting the delays. Here are a few additional points to ponder, how would this chart look if we only considered positive delays i.e removed all the flights that left early (negative dep_delay)? What if we cut the departure delay into 10 bins, would the relationship between origina and delay look the same for each of those buckets?
+ 
+## 3. Some flight carriers have more departure delays than others
+```{r}
+flights %>% 
+  group_by(carrier) %>%
+  arrange(carrier) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>% 
+  ggplot(., aes(x = carrier, y = meanDepDelay)) +
+  geom_col()
+```
+To find out if some flight carriers have more departure delays than others, I grouped the flights info by carriers and summarised the average departure delay. From the bar chart, you can see that some carriers have longer departure delays than others. I tried to apply the arrange command to see if I will have the bars arranged in ascending order but the data is arranged in alphabetical order and I couldn't get that to work.
+
+**Comment**: Good job. You have used the correct groupings to identify the mean delays for each carrier. To arrange the bars you need to use the `reorder()` function. I have drawn the same chart but with ordered bars below.
+
+```{r}
+flights %>% 
+  group_by(carrier) %>%
+  arrange(carrier) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>% 
+  ggplot(., aes(x = reorder(carrier, meanDepDelay), y = meanDepDelay)) +
+  geom_col()
+```
+
+
+
+## 4. Flights to certain destinations have more delays than others.
+```{r}
+flights %>% 
+  group_by(dest) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>% 
+  ggplot(., aes(x = dest, y = meanDepDelay)) +
+  geom_col() +
+  expand_limits(x = 0)
+```
+
+**Comment**: Good job again on the grouping. `expand_limits()` did not help you expand the x axis of the chart. Can you figure out why that happened?
+
+```{r}
+flights %>% 
+  group_by(dest) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>% 
+  top_n(dest, n = 20) %>%
+  ggplot(., aes(x = dest, y = meanDepDelay)) +
+  geom_col() +
+  expand_limits(x = 0)
+
+
+```
+I grouped this info by destination then found the average departure delay then plotted a bar chart. The first bar chart was a cluster and not very readable so I decided to select the top 20 delays by destination. This doesn't necessarily give an an accurate analysis
+
+**Comment**: You almost got this correct (at least in terms of achieving what you wanted). In the `top_n()` command you should use the `meanDepDelay` instead of the dest variable. When you use the dest variable it simply sort (Z to A) destination alphabetically and picks out the top rows from that. I have done this below.
+
+```{r}
+flights %>% 
+  group_by(dest) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>% 
+    ungroup() %>% 
+  top_n(meanDepDelay, n = 20) %>%
+  ggplot(., aes(x = reorder(dest, meanDepDelay), y = meanDepDelay)) +
+  geom_col()
+```
+
+
+## 5. Bad weather causes departure delays
+```{r}
+rm(list = ls())
+library(nycflights13)
+nycflights13::weather
+```
+```{r}
+flights %>% 
+  group_by(dep_delay) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T),
+            meanVisib = mean(visib, na.rm = T))  %>% 
+  ggplot(PlotData, aes(x = meanVisib, y = meanDepDelay)) +
+  geom_point()
+```
+```{r}
+flights %>%
+  filter(weather == visib) %>% 
+  group_by(weather) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T),
+            meanVisib = mean(visib, na.rm = T))  %>% 
+  ggplot(PlotData, aes(x = meanVisib, y = meanDepDelay)) +
+  geom_point()
+```
+
+**Comment**: The previous two chunks won't work. Can you look at the error to decode why. What does it mean 'visib' not found?
+
+
+```{r}
+flights %>% 
+  select(origin, month, day, hour, dep_delay) %>% 
+  left_join(., weather, by = c("origin", "month", "day", "hour")) %>% 
+  filter(precip != 0) %>% 
+  ggplot(., aes(x = visib, y = dep_delay)) +
+  geom_line()
+```
+I have made several attempts to validate whether bad weather causes departure delays with no luck. My first thinking was to list the weather info to see the different variables that exist. I decided to work with visibility. I grouped the weather then tried to find the average of the departure delays and average of the visibility info then plot the data. the error "weather or visib not found" keeps popping up. I will like to know where I am making a mistake. I thought this was going to be the easiest question to answer. I was wrong!
+
+**Comment**: Great job on achieving the correct `left_join()`. The reason the chart looks like this is because there are multiple values for the same values of visib. I have extracted all the different values of visibility from the weather data below.
+
+```{r}
+unique(weather$visib)
+```
+
+Instead of a line chart we could try a chart that shows mean delay for different visibility. See below. Notice how I have converted the 'visib' into a factor variable. Try it on your end without doing this and observe the result.
+
+```{r}
+left_join(flights, weather, by = c("origin", "month", "day", "hour")) %>% 
+    group_by(visib) %>% 
+    summarise(meanDelay = mean(dep_delay, na.rm = T)) %>% 
+    ggplot(., aes(x = as.factor(visib), y = meanDelay)) +
+    geom_col()
+```
+
+
+
+## 6. Busy days (days with more flights) have more departure delays.
+```{r}
+
+```
+
+## 7. Some months have more delay than others (seasonal trends)
+```{r}
+flights %>% 
+  group_by(month) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>%
+  ggplot(aes(x = month, y = meanDepDelay)) +
+  geom_col() +
+  labs(x = "Month", 
+         y = "Mean Departure Delay", 
+         title = "Months & Departure Delay")
+
+```
+To determine of some months have departure delays, I grouped the flight data by months and found the mean of the departure delay. I used the geom_point originally but the data was more readable using the bar chart. From this chart, I can tell that between June and July and also in December there seems to be more departure delay than other months. Just for practice, I included the title and renamed the x and y axis.
+
+**Comment**: Excellent work. Can you think of why the delays would be more in June and July and in December?
+
+## 8. Flights during certain times of the day are more delayed
+```{r}
+flights %>% 
+  group_by(sched_dep_time) %>% 
+  mutate(tot_delay = arr_delay + dep_delay) %>% 
+  select(contains("delay"))
+```
+```{r}
+flights %>% 
+  group_by(sched_dep_time) %>% 
+  mutate(tot_delay = arr_delay + dep_delay) %>% 
+  summarise(meanDepDelay = mean(dep_delay, na.rm = T)) %>% 
+  ggplot(., aes(x = sched_dep_time, y = meanDepDelay)) +
+  geom_line()
+```
+
+Chart obviously wrong as departure delays are in time brackets such as 5.00, 5.15, 6 etc. 
+
+**Comment**: Instead of the scheduled departure time, what if we tried grouping the data by hour? See below
+
+```{r}
+flights %>% 
+    group_by(hour) %>% 
+    summarise(meanDelay = mean(dep_delay, na.rm = T)) %>% 
+    ggplot(., aes(x = hour, y = meanDelay)) + 
+    geom_line(na.rm = T)
+```
+

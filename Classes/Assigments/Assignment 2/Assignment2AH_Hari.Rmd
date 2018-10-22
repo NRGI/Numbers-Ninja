@@ -1,0 +1,172 @@
+---
+title: "R Notebook"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  html_document:
+    df_print: paged
+    includes: /Users/hsubhash/Documents/GitHub/Common Assets/header.html
+css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
+---
+```{r}
+library(ggplot2)
+library(dplyr)
+library(nycflights13)
+```
+
+###Departure delays are more common for long distance flights 
+False: The largest concentration in high departure delay averages take place in short distances.
+
+
+```{r}
+flights %>% 
+  group_by(distance) %>% 
+  summarise(meanDD=mean(dep_delay,na.rm=TRUE),meanDist=mean(distance,na.rm=TRUE)) %>% 
+  ggplot(.,aes(x=meanDist,y=meanDD))+
+  geom_point()
+```
+
+**Comments from Hari**: Good job on using dplyr to summarise the data before visualizing it. I am not sure your claim "The largest concentration in high departure delay averages take place in short distances" is well-substantiated by your chart. If you were to fit a regression line on this plot, while the line might slope downwards it would have too big a confidence interval for us to be certain about any claims we make. Check out the plot below at distances greater than 3000. You have only three points and we are making judgements about the trend based on these three, there simply is not enough data for that.
+
+```{r}
+flights %>% 
+    group_by(distance) %>% 
+    summarise(meanDD = mean(dep_delay,na.rm = TRUE),
+              meanDist = mean(distance, na.rm = TRUE)) %>% 
+    ggplot(.,aes(x = meanDist,y = meanDD)) +
+    geom_point(na.rm = T) +
+    geom_smooth(method = "lm", na.rm = T) +
+    annotate("rect", xmin = 3200, xmax = 5100, ymin = 3, ymax = 15, fill = "red", alpha = 0.2) +
+    annotate("text", x = 4200, y = 16, label = "Not enough data")
+```
+
+The chart below is a more reasonable estimate of the relationship and the conclusion I would draw from it is that "There is no relationship between the two"
+```{r}
+flights %>% 
+    group_by(distance) %>% 
+    summarise(meanDD = mean(dep_delay,na.rm = TRUE),
+              meanDist = mean(distance,na.rm = TRUE)) %>% 
+    filter(meanDist < 3000) %>% 
+    ggplot(.,aes(x = meanDist,y = meanDD)) +
+    geom_point(na.rm = T) +
+    geom_smooth(method = "lm", na.rm = T)
+```
+
+Another way to explore this would have been to categorize the distances to explore the relationship within each category. The chart below for instance, cuts the distance into 10 different categories (each with the same number of observations) and creates a boxplot of departure delay for each distance category. As we move to the right (increasing distance) the shape and extent of the boxplot does not change with it. This indicates that there probably is no relationship between the two.
+
+```{r, fig.width=12}
+flights %>% 
+    filter(dep_delay > 10) %>% 
+    mutate(distanceCategory = cut_number(distance, n = 10)) %>% 
+    ggplot(., aes(x = distanceCategory, width = 2, y = dep_delay)) +
+    geom_jitter(alpha = 0.1, colour = "lightblue") +
+    geom_boxplot(alpha = 0.4, colour = "brown") +
+    theme_minimal() +
+    labs(x = "Distance Categories",
+         y = "Departure Delay") +
+    theme(
+        axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1.2, size = 12),
+        axis.title = element_text(size = 14)
+    )
+```
+
+
+###Some airports have more departure delays than others
+True: Newark display ahigher departure delay average than JFK and LGA
+
+```{r}
+flights %>% 
+  group_by(origin) %>% 
+  summarise(meanDD=mean(dep_delay,na.rm=TRUE)) %>% 
+  ggplot(.,aes(x=origin, y=meanDD))+
+  geom_col()
+```
+
+**Comments from Hari**: Good work. Again, good use of the dplyr along with ggplot. The mean is a good starting point for comparing delays. While this is a good starting point, this could have been represented more easily in a table (along with other characteristics). Another issue is that this also considers negative delays (i.e. a flight left earlier than expected). The table below shows the charecteristics of the delay after filtering all delays greater than zero.
+
+```{r}
+flights %>% 
+    filter(dep_delay > 0) %>% 
+    group_by(origin) %>% 
+    summarise(maxDelay = max(dep_delay, na.rm = T),
+              meanDelay = mean(dep_delay, na.rm = T),
+              medianDelay = median(dep_delay, na.rm = T),
+              stdDepDelay = sd(dep_delay, na.rm = T)
+              ) %>% 
+    arrange(desc(meanDelay))
+```
+
+Another way to look at this would be to categorize the delays into 10 bins and to see the proportion of flights from each airport that falls into each of those bins.
+```{r, fig.width=12}
+flights %>% 
+    ##calculate the number of flights that took from each airport
+    group_by(origin) %>% 
+    mutate(nFlights = n()) %>% 
+    ungroup() %>% 
+    ##select only positive departures less than 500 mins
+    filter(dep_delay > 0 & dep_delay < 500 & !is.na(dep_delay)) %>% 
+    ##cut the departure delay variable into 10 bins
+    mutate(delayCategories = cut_interval(dep_delay, n = 10)) %>% 
+    group_by(delayCategories, origin) %>% 
+    summarise(proportionDelayed = round(n()/unique(nFlights), 3), 
+              meanDelay = mean(dep_delay, na.rm = T)) %>% #, nFlights = unique(nFlights), delayedFlights = n()
+    ggplot(., aes(x = origin, y = proportionDelayed)) +
+    geom_col() +
+    geom_text(aes(label = round(meanDelay, 1)), vjust = -0.8, size = 3) +
+    facet_wrap(~delayCategories, nrow = 1, strip.position = "bottom") +
+    labs(y = "Proportion of flights delayed",
+         title = "The proportion of delays in EWR is always greater than JFK and LGA for all delay categories") +
+    theme_minimal() +
+    theme(
+        strip.text = element_text(size = 12, colour = "blue"),
+        axis.title.x = element_blank()
+    )
+```
+
+
+```{r, fig.width = 12}
+flights %>% 
+    filter(dep_delay > 0 & dep_delay < 500) %>% 
+    ##cut the departure delay variable into 10 bins
+    mutate(delayCategories = cut_interval(dep_delay, n = 10)) %>% 
+    ggplot(., aes(x = dep_delay, fill = origin)) +
+    geom_density(alpha = 0.5) +
+    facet_wrap(~delayCategories, nrow = 1, scales = "free_x", strip.position = "bottom") +
+    theme_minimal() +
+    scale_fill_viridis_d(direction = -1)
+```
+
+
+### Some carriers have more departure delays than others
+True: Departure delays vary from carrier to carrier.
+```{r}
+flights %>% 
+  group_by(carrier) %>%
+   summarise(meanDD=mean(dep_delay,na.rm=TRUE)) %>% 
+  ggplot(.,aes(x=carrier, y=meanDD))+
+  geom_col()
+```
+
+## Flights to certain destinations have more departure delays than others
+```{r}
+flights %>% 
+  group_by(dest,dep_delay) %>% 
+  summarise(meanDD=mean(dep_delay,na.rm=TRUE)) %>% 
+  ggplot(.,aes(x=dest,y=meanDD))+
+  geom_col()
+```
+
+## Bad weather causes departure delays
+TRUE. More precipitations account for larger departure delays, specially arround may. 
+```{r}
+flightsWithWeather <- left_join(flights, weather, by = c("origin", "month", "day", "hour"))
+flightsWithWeather %>% 
+  group_by(month) %>% 
+  summarise(meanDD=mean(dep_delay, na.rm=T), meanWindS=mean(wind_speed),meanPrecip=mean(precip,na.rm=T)) %>% 
+  ggplot(.,aes(x=month,y=meanPrecip))+
+  geom_point(aes(size=meanDD))
+```
+

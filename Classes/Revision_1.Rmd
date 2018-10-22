@@ -1,0 +1,216 @@
+---
+title: "Numbers Ninja Revision 1"
+author: |
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  html_document:
+    df_print: paged
+    includes: assets/header.html
+css: assets/custom.css
+---
+
+`extractoR`
+
+##Todo
+
+1. What is the class of function?
+2. Share data camp join video
+
+##Concepts to cover
+
+1. ~Data types~
+2. ~Data structures~
+3. ~What is your environment?~
+4. ~What are functions?~
+5. ~What are packages?~
+6. ~What is declaritive code? The opposite is called imperative.~
+7. ~What is composition? Every function should do only one thing~
+8. ~Review of dplyr (focus on group_by() + summarise())~
+9. Review of ggplot
+10. ~Review of data joins~
+
+End of next week you should have enough skills to get started
+
+
+##Data Types
+
+1. characters
+2. numeric
+3. integer
+4. logical/boolean
+
+```{r}
+library(tidyverse); library(nycflights13)
+ninjaNames <- c("Anne", "Alonso","Hari", "Solongo")
+ninjaRunMiles <- c(26L, 3L, 10L)
+
+
+if (typeof(ninjaNames) == "numeric") {
+    ##do something
+    print("hello world")
+} else {
+    print("wrong class")
+}
+
+paste(ninjaNames, c("awesome", "great"))
+
+typeCoercedVector <- c(ninjaNames, ninjaRunMiles)
+typeCoercedVector
+typeof(typeCoercedVector)
+```
+
+```{r}
+
+```
+
+##Data Structures
+
+1. Data Frames/tibbles
+2. Lists
+3. Matrices
+4. Arrays
+5. Vector
+
+Data frames
+
+```{r}
+dim(flights)
+```
+
+List
+```{r}
+testList <- list(flights = flights, 
+                 ninjaNames = ninjaNames, 
+                 ninjaRunMiles = ninjaRunMiles)
+
+testList$flights
+```
+
+```{r}
+testList[[1]]
+```
+
+
+
+
+##What is your environment?
+
+```{r}
+ninjaNames
+```
+
+```{r}
+flights %>% 
+    filter(dep_delay > 100)
+```
+
+
+function in dplyr that we have learnt: ` %>% `, ``
+
+
+```{r}
+class(print)
+```
+
+D.R.Y: Don't Repeat Yourself. Functions are extremely useful for that.
+
+
+```{r}
+
+greetNamesFunc <- function(inputNames) {
+    
+    if (typeof(inputNames) == "character") {
+        for (i in 1:length(inputNames)) {
+            print(paste("Hi", inputNames[i], "how are you?"))
+        }    
+    } else {
+        print("Requires a character vector")
+    }
+}
+
+newCharVector <- c("blaj", "la")
+
+greetNamesFunc(inputNames = ninjaNames)
+greetNamesFunc(ninjaRunMiles)
+greetNamesFunc(newCharVector)
+```
+
+
+##dplyr
+
+group_by
+```{r}
+flights %>% 
+    select(origin, dep_delay, arr_delay) %>% 
+    group_by(origin, dep_delay) %>% 
+    summarise(meanDepDelay = mean(dep_delay, na.rm = T))
+```
+
+
+
+##data joins
+primary key
+```{r}
+band_members
+```
+
+
+```{r}
+ninja_instruments <- bind_rows(band_instruments, tibble(name = "John", plays = "keyboards"))
+ninja_instruments$alive <- c(FALSE, TRUE, TRUE, FALSE)
+ninja_instruments
+```
+
+foreign key
+
+```{r}
+full_join(band_members, ninja_instruments, by = "name")
+```
+
+
+
+```{r}
+flights
+```
+```{r}
+names(flights)
+```
+
+
+```{r}
+left_join(flights, airlines, by = "carrier")
+```
+
+
+```{r}
+weather
+```
+
+
+This plot is a basic scatter between visibility and departure delay. 
+```{r}
+plotData <- flights %>% 
+    select(origin, month, day, hour, dep_delay) %>% 
+    left_join(., weather, by = c("origin", "month", "day", "hour")) %>% 
+    filter(precip != 0) 
+
+
+ggplot(plotData, aes(x = visib, y = dep_delay)) + 
+    geom_point()
+```
+
+Lets try and group the data by visibility and see what happens. Did not work. Lets try something else.
+```{r}
+plotData %>% 
+    group_by(visib) %>% 
+    summarise(meanDD = mean(dep_delay, na.rm = T)) %>% 
+    ggplot(., aes(x = visib, y = meanDD)) +
+    geom_point()
+```
+
