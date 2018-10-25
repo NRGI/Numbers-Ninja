@@ -11,10 +11,8 @@ output:
     theme: cosmo
   html_document:
     df_print: paged
-    includes: assets/header.html
-  github_document: default
-  pdf_document: default
-css: assets/custom.css
+    includes: /Users/hsubhash/Documents/GitHub/Common Assets/header.html
+css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
 ---
 
 
@@ -31,8 +29,8 @@ There two things we need to do before we start the lesson.
 1. [Install R](https://cran.r-project.org/): Any of the links on that page should work
 2. [Install Rstudio](https://www.rstudio.com/products/rstudio/download/): Choose the option that is suited for your Operating System (OS).
 
-<div class="full-width">
-```{r, echo=FALSE}
+<div class="full-width center-container">
+```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("assets/images/braden-collum-87874-unsplash.jpg")
 ```
 </div>
@@ -244,6 +242,12 @@ str(mtTibble)
 
 
 ###The Pipe Operator
+
+<div class="left-container">
+
+
+![](assets/images/pipes.gif)
+</div>
 
 The pipe operator is a part of the `magittr` package. You can create one using the shortcuts you learnt earlier (`Cmd + Shift + M` or `Ctrl + Shift + M`). The pipe transfers the values that are to the left of it to the right side. While this might seem a bit abstract at this point, `%>%` is an excellent way to break down code into smaller pieces that are easier to read and maintain.
 

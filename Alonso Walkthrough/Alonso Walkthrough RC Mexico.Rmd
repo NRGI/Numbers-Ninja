@@ -16,7 +16,7 @@ css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
 ---
 
 
-```{r}
+```{r, message=FALSE}
 rm(list = ls())
 library(tidyverse)
 
@@ -27,7 +27,37 @@ rcData <- read_csv("rcMX.csv")
 
 
 ```{r}
-names(eitiImport)
+classSeparate <- eitiImport %>% 
+    filter(!ID_TIPO_CONTRATO %in% 8:10) %>% 
+    select(orgName = DESC_ORGANIZACION, contractID = ID_CONTRATO) %>%
+    mutate(oldName = orgName) %>% 
+    separate_rows(orgName, sep = " y ") %>% 
+    group_by(contractID) %>% 
+    mutate(companyNum = paste0("company", row_number())) %>% 
+    spread(key = companyNum, value = orgName)
+```
+
+
+```{r}
+testAnswer <- rcData %>% 
+    select(contractID = `Contract Identifier`, companyName = `Company Name 1`) %>% 
+    mutate(companyCombined = companyName) %>% 
+    separate_rows(companyName, sep = " y ") %>% 
+    group_by(contractID) %>% 
+    mutate(companyID = paste0("company", row_number())) %>% 
+    spread(companyID, companyName)
+```
+
+
+```{r}
+testAnswer <- rcData %>% 
+    select(`Contract Name`, companyName = `Company Name 1`) %>% 
+    mutate(companyList = str_split(companyName, pattern = " y ")) %>% 
+    unnest(companyList) %>% 
+    group_by(companyName) %>% 
+    mutate(row = row_number()) %>%
+    spread(row, companyList)
+    
 ```
 
 ```{r}
@@ -39,7 +69,6 @@ The non-Pemex contracts are identifiable by contract type id. All Pemex contract
 ```{r}
 nonPemex <- eitiImport %>% 
     filter(!ID_TIPO_CONTRATO %in% 8:10)
-
 ```
 
 

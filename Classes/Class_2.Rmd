@@ -38,7 +38,7 @@ knitr::include_graphics("assets/images/ninja-logo2.jpg")
 ##Topics Covered
 
 1. Visualizing data using ggplot2
-2. Data Joins
+2. Data Joins (move to section on data manipulation)
 
 <div class="full-width center-container">
 

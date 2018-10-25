@@ -11,8 +11,8 @@ output:
     theme: cosmo
   html_document:
     df_print: paged
-    includes: assets/header.html
-css: assets/custom.css
+    includes: /Users/hsubhash/Documents/GitHub/Common Assets/header.html
+css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
 ---
 
 ##Topics to Cover
@@ -32,6 +32,11 @@ library(readxl); library(tidyverse)
 ```
 
 
+```{r}
+
+```
+
+
 
 <div class="center-container"> 
 
@@ -44,8 +49,22 @@ knitr::include_graphics("assets/images/tidy_data.png")
 
 ##Cleaning The migration data
 
+Loop through sheets to load the data
+```{r}
+##create an empty list to save the output
+outputList <- list()
 
+##get the list of sheets in excel file
+listOfSheets <- excel_sheets("assets/data/UNRaw.xlsx")
 
+##loop through each sheet and save that to outputList
+for (i in 1:length(listOfSheets)) {
+    ##save to outputList
+    outputList[[i]] <- read_excel(path = "assets/data/UNRaw.xlsx", sheet = listOfSheets[i], skip = 15)
+}
+
+outputList[[2]]
+```
 
 
 ```{r}
