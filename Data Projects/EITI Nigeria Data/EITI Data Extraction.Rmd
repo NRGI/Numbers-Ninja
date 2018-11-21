@@ -1,0 +1,146 @@
+---
+title: "Nigeria Eiti Data"
+author: |
+  | Anne Chinweze
+  | Nigeria Officer
+output:
+  html_notebook:
+    code_folding: hide
+    theme: cosmo
+  pdf_document: default
+---
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse); library(ggthemes)
+rm(list = ls())
+source("Function to get eiti data.R")
+```
+
+#Introduction
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+##Extract the data
+ Here we are using the `getEitiData()` function that we wrote to extract all the data for Nigeria.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+```{r, message=FALSE, error=FALSE, warning=FALSE, echo=FALSE}
+allMongoliaData <- getEitiData(pathToFolder = "Data/Mongolia")
+
+mongoliaCompanyData <- allMongoliaData$companyTable
+mongoliaPaymentData <- allMongoliaData$paymentTable
+
+```
+
+```{r, message=FALSE, error=FALSE, warning=FALSE, echo=FALSE}
+
+```
+
+
+##Run data checks
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+##Compare with EITI clean data
+
+Run this for Nigeria
+
+```{r, message=FALSE, warning=FALSE}
+eitiData <- read_csv(url("https://www.resourcedata.org/dataset/7dd3c8b6-9256-4e34-9360-1519efd87407/resource/4e4462a5-6029-4ae3-a4cc-66ad6ccc6d70/download/revenues-received-by-government-agencies.csv"))
+```
+
+
+```{r}
+cleanNigEITI <- eitiData %>% 
+  filter(country == "Nigeria") %>% 
+  group_by(year) %>% 
+  summarise(totPayEiti = round(sum(value_reported_as_USD)/1e9, 2))
+
+cleanNig <- nigeriaPaymentData %>% 
+  group_by(year) %>% 
+  summarise(totPayRaw = round(sum(payment)/1e9, 2))
+
+left_join(cleanNig, cleanNigEITI, by = "year")                
+
+```
+
+
+```{r}
+
+```
+
+###Identify repeating company names
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+###Check company IDs
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+###Check payment values
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+##Analyze the data
+
+Summarise by year and see if there still are large values in the data
+```{r}
+nigeriaPaymentData %>%
+  group_by(year) %>% 
+  summarise("Tot. Payments in Billions of USD" = round(sum(payment)/1e9, 2)) 
+```
+
+
+
+```{r}
+##Plot graph of payment
+nigeriaPaymentData %>%
+    group_by(year) %>% 
+    summarise(totPay = round(sum(payment, na.rm = T), 2)) %>% 
+    ggplot(., aes(x = year, y = totPay/1e9)) +
+    geom_line() +
+    scale_x_continuous(breaks = (min(nigeriaPaymentData$year):max(nigeriaPaymentData$year))) +
+    labs(x = "Year", y = "Total payments in Billions of USD", title = "EITI payments in Nigeria") + 
+    theme_fivethirtyeight() +
+    theme(
+    panel.grid.major = element_line(size = 0.4)
+    
+  )
+```
+
+draw a jitter plot with year on x axis and payments on y axis. remove extreme values.
+```{r}
+nigPayPlot <- nigeriaPaymentData %>%
+    filter(paymentUSD > 0 & paymentUSD < 0.01 * max(paymentUSD, na.rm = T))
+
+ggplot() +
+    geom_jitter(data = nigPayPlot, aes(x = year, y = paymentUSD), alpha = 0.5) +
+    theme_fivethirtyeight()
+ 
+```
+
+
+##identify agency/recipient with largest payment received
+```{r}
+nigeriaPaymentData %>% 
+  group_by(agencyName) %>% 
+  summarise(totPay = round(sum(payment, na.rm = T)/1e9, 2)) %>% 
+  arrange(desc(totPay))
+```
+identify company that made largest payment and the respective GFS code
+```{r}
+nigeriaPaymentData %>% 
+  group_by(companyName, gfsCode) %>% 
+  summarise(totPay = round(sum(payment, na.rm = T)/1e9, 2)) %>% 
+  arrange(desc(totPay))
+```
+identify average payment made by company over the years
+
+```{r}
+nigeriaPaymentData %>%
+  group_by(year) %>%
+  summarise(meanPay = round(mean(payment, na.rm = T)/1e9, 2)) %>%
+  ggplot(., aes(x = year, y = meanPay)) +
+  geom_line(aes(colour = year)) +
+  labs(x = "Year", 
+       y = "Mean payment per Company", 
+       title = "Average Payment") +
+    theme(
+      legend.position = "top"
+      )
+```

@@ -1,0 +1,228 @@
+---
+title: "Exporting contracts data from Mexico" 
+author: |
+  | Alonso Hidalgo
+  | Latin America Associate @NRGI
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    highlight: kate
+    smart: yes
+    theme: cosmo
+    number_sections: TRUE
+    code_folding: hide 
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Background:
+In 2014 Mexico commited to implement EITI as part of the OGP its action plan. From this point on they have made several advances towards fully adhering to the initiative. One of the main innovations comming from the Mexican experience is the publishing of an EITI portal that will function as a "one stop shop" to EITI data.   
+
+# Methodology {.tabset .tabset-fade .tabset-pills}
+
+## Load data
+
+### Data sources
+
+The main data source comes from the EITI data portal. 
+*insert image description of data portal and other sources*
+
+### Loading the data to R environment
+The code below loads the EITI data and the RC template that we need to populate
+
+```{r,warning=FALSE,message=FALSE}
+### Remove all objets from evironment and upload all the libraries requiered
+rm(list = ls())
+library(tidyverse); library(readxl); library(lubridate); library(ggplot2); library(tidyr); library(sf); library(rnaturalearth)
+### Load EITI Mexico Data
+
+eitiImport <- read_csv(url("http://eiti.transparenciapresupuestaria.gob.mx/es/eiti/ficha_recurso/_rid/13/_mto/3/_mod/descargar?tipo=recurso_csv&id=4"), locale = locale(encoding = "latin1"))
+
+### Load Resource Contracts template for MEX
+rcMXdata <- read_csv("data/ResourceContractsMX.csv")
+```
+
+The goal of this file is to convert the large EITI data import file into multiple tidy relational tables.
+
+The EITI data is at level of contract IDs. Each contract ID can have multiple companies associated with it. Currently the companies are kept together in a single row using separators like 'y', ',', '.,' etc. Our first table splits these companies each into a separate row to create a new contract dataset that contains multiple rows for each contract ID that capture the different companies associated with it.
+
+
+
+### Problem
+We assumed that the contract IDs are unique. However, this is not the case. There is a contract id that repeates itself in the data. This is most likely a human error. To solve this we need to concatenate the name of the state and the contract id. We have to do this so we can proceed with separating company names.
+
+**Note**: This is not foolproof. For instance, if we have a data error where the contract id repeats within the same state, this will not work. We need to come up with a better in the future.
+
+```{r}
+eitiImport <- eitiImport %>% 
+  dplyr::rename(contractID = ID_CONTRATO, companyName = DESC_ORGANIZACION) %>% 
+  group_by(contractID) %>% 
+  mutate(nObs = n()) %>% 
+  ungroup() %>% 
+  mutate(contractIDNew = if_else(nObs > 1, paste (contractID, ENTIDAD_FEDERATIVA_ENTREGA_ITEMS_PROCED , sep = "-"), contractID))
+
+
+#create a table that maps old id with new
+idMapping <-  eitiImport %>% 
+  select(contractIDOld = contractID, contractIDNew)
+
+##update the table with unique contract ids that were created in the previous step
+eitiImport <- eitiImport %>% 
+  select(-contractID, contractID = contractIDNew)
+```
+
+## Creating our Main Table
+Our Main Table has separate company vaules. To achieve this we need to find constants that can be used as separators. As the main language is Spanish the common separators are ",", "y" (means 'and' in Spanish). Nevertheless there are 
+
+```{r}
+mainTable <- eitiImport %>% 
+  mutate(companyName = str_replace_all(companyName, 
+                                       c("Exploracion y Extraccion" = "Exploración & Extracción",
+                                       "Exploración y Producción" = "Exploración & Producción",
+                                       "Exploración y Extracción" = "Exploración & Extracción", 
+                                       "Corp., " = "Corp, ",
+                                       ", S\\." = " S\\."))) %>% 
+  #the ", y" separator is used everytime two companies with property regime extentions appear together
+  separate_rows(., companyName , sep = ", y ") %>% 
+  #the ", y" separator is used everytime two companies with property regime extentions appear together and if the second company has a name that begins with letter I
+  separate_rows(., companyName , sep = ", e ") %>% 
+  #the "\\.," separator is used everytime more than two companies with property regime extensions appear together
+  separate_rows(., companyName, sep = "\\., ") %>% 
+  #the " y " separator is used everytime two companies without property regime extensions appear together
+  separate_rows(., companyName, sep = " y ") %>%
+  #the ", " separator appears everytime more than two companies without property regime appear together
+  separate_rows(., companyName, sep = ", ") %>% 
+  select(contractID, companyName) %>% 
+  mutate(participationShare = NA,
+         projIdentifier = NA,
+         licenseID = NA)
+  #Replace the old company names with the new clean values 
+
+
+```
+
+###Data checks
+The code above separates the company names. However, we need to check to see if this was done correctly. To do so we, combine the original company names with the splits to see if this was done correctly.
+```{r}
+joinNames <- left_join(eitiImport, mainTable, by = "contractID") %>% 
+  write_csv(., "data/check splits.csv")
+```
+
+In our case the splits with code were done correctly.
+
+The next task is to reconcile company names. We do that manually and load as .csv file.
+```{r, message=FALSE, warning=FALSE}
+mainTable <- left_join(mainTable, read_csv("data/cleanNames2.csv"), by = c("companyName" = "companyName.sep")) %>%
+  select(-companyName, companyName = companyNameClean)
+
+```
+
+Next step manually reconcile company names. There are cases were different names are used for the same company, these need to be corrected so that they are called the same.
+
+## Creating the tidy Oil table
+The tidy oil needs to display 
+```{r}
+tidyOil <- mainTable %>% 
+  #First we group the data frame by contract ID values. This will allow us to summarise the company names into single row. 
+  group_by(contractID) %>% 
+  summarise(contractName = paste(companyName, collapse = "; ")) %>%
+  #Next we leftjoin the values we are interested in from the eiti data with the company names. The key is contract ID
+  left_join(., eitiImport %>% 
+  select ( contractID , 
+           docURL = URL_DOCUMENTO_CONTRATO, 
+           contractType = DESC_TIPO_CONTRATO,	
+           signatureDate = FECHA_FIRMA_CONTRATO,	
+           urlContract = URL_LOCALIZACION_ITEMS_CONTRATO, 
+           contractStatus =	DETALLE_ESTATUS_CONTRATO,	
+           contractDuration = DURACION_DIAS_CONTRATO, 
+           lon = COORDENADAS_DETALLE_1,	
+           lat = COORDENADAS_DETALLE_2, 
+           area = SUPERFICIE, 
+           state =	ENTIDAD_FEDERATIVA_ENTREGA_ITEMS_PROCED, 
+           municipality =	MUNICIPIO_ENTREGA_ITEMS_PROCED), 
+  by = "contractID") %>% 
+  #Finally we create a new column with the mutate command. We are pasting the contract names with the contract ID and the signature year. This will be our contract name
+  mutate(contractName = paste (contractName,contractID,year(ymd(signatureDate)), sep = "; "))
+```
+
+## Creating the company grouping
+```{r}
+companyGrouping <- eitiImport %>% 
+  distinct(companyGroupID = ID_ADICIONAL_ORGANIZACION, 
+           companyName = companyName, 
+           companyCountry = PAIS_ORGANIZACION)
+```
+
+
+##Making maps
+Explore the sf package (just read the intro)
+
+```{r}
+#Load the sf state map of mexico
+mexSF <-  ne_states(country = 'mexico', returnclass = "sf")
+
+#use the lat lon coordinates in tidy oil to create a sf object
+
+contract_map <- st_as_sf(tidyOil, coords = c("lon","lat"), crs = st_crs(mexSF))
+
+
+mapColor <- str_detect(contract_map$contractName, "Pemex") %>% 
+  if_else(., "blue", "green")
+
+#use geom_sf() to plot the base mexico map
+ggplot() +
+  geom_sf(data = mexSF) +
+  geom_sf(data = contract_map, alpha = 0.4, color = mapColor) +
+  labs(title = "Contract in Mexico") +
+  theme(
+    panel.background = element_rect(fill = "lightblue")
+  )
+```
+
+
+# Create a mining table
+```{r, message=FALSE, warning=FALSE}
+#upload mining datasets
+mexMining <- read_csv(url("https://eiti.transparenciapresupuestaria.gob.mx/es/eiti/ficha_recurso/_rid/13/_mto/3/_mod/descargar?tipo=recurso_csv&id=7"), locale = locale(encoding = "latin1"))
+
+minindd <- read_csv(url("https://eiti.transparenciapresupuestaria.gob.mx/es/eiti/ficha_recurso/_rid/13/_mto/3/_mod/descargar?tipo=recurso_diccionario&id=7"), locale = locale(encoding = "latin1"))
+
+#run checks: ids correspond to individual vaules
+length(unique(mexMining$ID_CONTRATO))
+
+uniqueIDs <- mexMining %>% 
+  select(ID_CONTRATO, DESC_ORGANIZACION) %>% 
+  group_by(ID_CONTRATO) %>% 
+  mutate(nobsM = n())
+  
+unique(uniqueIDs$nobsM)
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+#now that we know that we have individual contract id values we can run the same lines of code we applied for hydrocarbons to create a mining tidy table
+tidyMining <- mexMining %>% 
+  select ( contractID = ID_CONTRATO , 
+           companyName = DESC_ORGANIZACION,
+           docURL = URL_DOCUMENTO_CONTRATO, 
+           contractType = DESC_TIPO_CONTRATO,	
+           signatureDate = FECHA_FIRMA_CONTRATO,	
+           urlContract = URL_LOCALIZACION_ITEMS_CONTRATO, 
+           contractStatus =	DETALLE_ESTATUS_CONTRATO,	
+           contractDuration = DURACION_DIAS_CONTRATO, 
+           lon = COORDENADAS_DETALLE_1,	
+           lat = COORDENADAS_DETALLE_2, 
+           area = SUPERFICIE, 
+           state =	ENTIDAD_FEDERATIVA_ENTREGA_ITEMS_PROCED, 
+           municipality =	MUNICIPIO_ENTREGA_ITEMS_PROCED) %>%
+  mutate(companyName = str_replace_all(companyName, 
+                                       c( ", S." = "\\,S." ))) %>%
+  separate_rows(., companyName , sep = ", ") 
+  
+  
+  
+
+```
+
+

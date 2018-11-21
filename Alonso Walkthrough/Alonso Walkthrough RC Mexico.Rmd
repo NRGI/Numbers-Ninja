@@ -18,11 +18,72 @@ css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
 
 ```{r, message=FALSE}
 rm(list = ls())
-library(tidyverse)
+library(tidyverse); library(sf); library(sp); library(rnaturalearth)
 
-eitiImport <- read_csv("http://eiti.transparenciapresupuestaria.gob.mx/es/eiti/ficha_recurso/_rid/13/_mto/3/_mod/descargar?tipo=recurso_csv&id=4")
+eitiImport <- read_csv("http://eiti.transparenciapresupuestaria.gob.mx/es/eiti/ficha_recurso/_rid/13/_mto/3/_mod/descargar?tipo=recurso_csv&id=4", locale = locale(encoding = "latin1"))
 
 rcData <- read_csv("rcMX.csv")
+```
+
+```{r}
+names(eitiImport)
+```
+
+
+```{r}
+mxMap <- ne_states(country = "Mexico", returnclass = "sf")
+
+ggplot() +
+    geom_sf(data = mxMap) +
+    
+```
+
+
+
+```{r}
+mainTable <- eitiImport %>% 
+    ##select and rename all columns of interest
+    select(contractID = ID_CONTRATO, 
+           companyName = DESC_ORGANIZACION, 
+           state = ENTIDAD_FEDERATIVA_ENTREGA_ITEMS_PROCED) %>%
+    ##group by contractID
+    group_by(contractID) %>%
+    ##create variable that records no. of observations per contract ID
+    mutate(nObs = n()) %>% 
+    ##ungroup contractID so that it can be mutated
+    ungroup() %>% 
+    ##combine contract ID and state for non-unique contract IDs
+    mutate(contractIDNew = if_else(nObs > 1, paste(contractID, state, sep="-"), contractID)) 
+
+##create a mapping between the old and new ids
+idMapping <-  mainTable %>% 
+    select(contractIDOld = contractID, contractIDNew)
+
+##select the contract ID and company name
+mainTable <-  mainTable %>% 
+    select(contractID = contractIDNew, companyName)
+```
+
+
+
+```{r}
+eitiImport %>% 
+    group_by(ID_CONTRATO) %>% 
+    filter(n() > 1) %>% 
+    select()
+```
+
+```{r}
+unique(rcData$`Project Identifier`)
+```
+
+```{r}
+unique(eitiImport$FUENTE_INFORMACION)
+```
+
+
+```{r}
+names(eitiImport)
 ```
 
 

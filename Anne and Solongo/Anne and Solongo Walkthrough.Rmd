@@ -1,0 +1,81 @@
+---
+title: "EITI Data project"
+author: |
+  | Hari Subhash
+  | Data Scientist @NRGI
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    highlight: kate
+    smart: yes
+    theme: cosmo
+  html_document:
+    df_print: paged
+    includes: /Users/hsubhash/Documents/GitHub/Common Assets/header.html
+css: /Users/hsubhash/Documents/GitHub/Common Assets/custom.css
+---
+
+
+```{r, message=FALSE, warning=FALSE}
+rm(list = ls())
+library(readxl); library(tidyverse)
+source("Function to get eiti data.R")
+commData <- read_excel("data/commodity data.xlsx", sheet = "Annual Indices (Real)", skip = 9) %>% 
+    select(year = X__1, energyPrices = KiENERGY, allMetals = KiMETMIN, baseMetals = KiBASEMET)
+
+eitiData <- read_csv(url("https://www.resourcedata.org/dataset/7dd3c8b6-9256-4e34-9360-1519efd87407/resource/4e4462a5-6029-4ae3-a4cc-66ad6ccc6d70/download/revenues-received-by-government-agencies.csv"))
+```
+
+
+```{r}
+ tempCompanyData <- read_excel(path = "Data/Mongolia/2013 Mongolia Summary Data_san.xlsx", sheet = "3. Revenues")
+ tempCompanyDataSkipped <- read_excel(path = "Data/Mongolia/2013 Mongolia Summary Data_san.xlsx", sheet = "3. Revenues", skip = 9)
+ 
+as.numeric(as.Date("1899-12-31"))
+```
+
+
+
+
+```{r, warning=FALSE, message=FALSE}
+nigeriaData <- getEitiData(pathToFolder = "Data/Nigeria")
+
+nigeriaPaymentData <- nigeriaData$paymentTable
+nigeriaCompanyData <- nigeriaData$companyTable
+```
+
+```{r}
+mongoliaData <- getEitiData(pathToFolder = "Data/Mongolia")
+
+mongoliaPaymentTable <- mongoliaData$paymentTable
+mongoliaCompanyTable <- mongoliaData$companyTable
+
+```
+
+
+
+
+```{r}
+eitiCountry <- eitiData %>% 
+    filter(country == "Nigeria") %>% 
+    group_by(year) %>% 
+    summarise(totPayEITI = round(sum(value_reported_as_USD, na.rm = T)/1e9, 2))
+
+nigeriaPaymentData %>% 
+    group_by(year) %>% 
+    summarise(totPay = round(sum(payment, na.rm = T)/1e9, 2), 
+              totPayUSD = round(sum(paymentUSD, na.rm = T)/1e9, 2)) %>% 
+    left_join(., eitiCountry, by = "year")
+```
+
+
+
+
+
+
+
+
+
+
+
+
