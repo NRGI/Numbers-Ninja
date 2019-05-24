@@ -198,8 +198,8 @@ ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) +
 In the chart above there are a few countries that experience sudden drops in <span class="variable">lifeExp</span>. These are because of genocides that occurred in Rwanda, Cambodia and China. The chart below used color and alpha mapping to highlight these values. Notice how, I use a alphaMapping and colorMapping variables to fix the alpha and colour aesthetics in the chart.[^6]
 ```{r}
 ##repeat the same but with one line for each continent/country, (guess why there is a sudden drop for a few countries)?
-alphaMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China"), 0.8, 0.1)
-colorMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China"), "darkred", "black")
+alphaMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China", "Indonesia"), 0.8, 0.1)
+colorMapping <- if_else(gapminder$country %in% c("Rwanda", "Cambodia", "China", "Indonesia"), "darkred", "black")
 
 ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, group = country)) +
     geom_line(alpha = alphaMapping, colour = colorMapping) +
@@ -209,6 +209,26 @@ ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, group = country)) 
     labs(title = "The impact of genocides on life expectancy", 
          x = "Year", 
          y = "Life Expectancy")
+```
+
+
+```{r}
+gapminder %>% 
+    group_by(country) %>% 
+    mutate(change_lifeEx = (lag(lifeExp) - lifeExp) / lag(lifeExp),
+           big_jump_color = if_else(min(change_lifeEx, na.rm = T) < -0.12, "red", "black"),
+           big_jump_alpha = if_else(min(change_lifeEx, na.rm = T) < -0.12, 1, 0.1)) %>% 
+    filter(!is.na(change_lifeEx)) %>% 
+    ggplot(aes(x = year, y = lifeExp, group = country)) +
+    geom_line(aes(colour = big_jump_color, alpha = big_jump_alpha)) +
+    scale_color_identity() +
+    scale_alpha_identity() +
+    theme(
+        panel.background = element_rect(fill = "white"),
+        plot.background = element_rect(fill = "grey95")
+    )
+    
+
 ```
 
 
